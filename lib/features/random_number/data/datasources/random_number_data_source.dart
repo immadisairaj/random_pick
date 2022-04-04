@@ -10,7 +10,7 @@ class RandomNumberDataSourceImpl implements RandomNumberDataSource {
   @override
   Future<int> getRandomNumber(NumberRangeModel numberRange) {
     int difference = numberRange.max - numberRange.min;
-    int randomNumber = Random().nextInt(difference);
+    int randomNumber = Random().nextInt(difference + 1);
     return Future.value(randomNumber + numberRange.min);
   }
 }

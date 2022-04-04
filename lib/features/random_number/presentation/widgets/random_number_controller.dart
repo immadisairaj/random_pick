@@ -89,7 +89,7 @@ class _RandomControllerState extends State<RandomController> {
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.all(10.0),
-                  child: Center(child: Text('Max (exclusive)')),
+                  child: Center(child: Text('Max (inclusive)')),
                 ),
               ),
             ],

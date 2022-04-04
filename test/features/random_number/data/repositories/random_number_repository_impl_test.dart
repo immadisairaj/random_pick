@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:random_pick/core/error/failures.dart';
 
 import 'package:random_pick/features/random_number/data/datasources/random_number_data_source.dart';
 import 'package:random_pick/features/random_number/data/models/number_range_model.dart';

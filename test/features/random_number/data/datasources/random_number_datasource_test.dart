@@ -29,7 +29,7 @@ void main() {
     () async {
       // arrange
       const tMin = 3;
-      const tMax = 4;
+      const tMax = 3;
       final tNumberRange = NumberRangeModel(min: tMin, max: tMax);
       // act
       final result = await dataSource.getRandomNumber(
@@ -37,7 +37,7 @@ void main() {
       );
       // assert
       expect(result, greaterThanOrEqualTo(tMin));
-      expect(result, lessThan(tMax));
+      expect(result, lessThanOrEqualTo(tMax));
     },
   );
 }
