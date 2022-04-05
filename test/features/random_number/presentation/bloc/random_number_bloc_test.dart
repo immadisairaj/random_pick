@@ -4,6 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:random_pick/core/utils/input_converter.dart';
 import 'package:random_pick/features/random_number/domain/entities/number_range.dart';
+import 'package:random_pick/features/random_number/domain/entities/random_number_picked.dart';
 import 'package:random_pick/features/random_number/domain/usecases/get_random_number.dart';
 import 'package:random_pick/features/random_number/presentation/bloc/random_number_bloc.dart';
 
@@ -35,6 +36,8 @@ void main() {
     const int tMaxInt = 10;
     final NumberRange tNumberRange = NumberRange(min: tMinInt, max: tMaxInt);
     const int tRandomNumber = 9;
+    final RandomNumberPicked tRandomNumberPicked = RandomNumberPicked(
+        randomNumber: tRandomNumber, numberRange: tNumberRange);
 
     test('should emit [Error] state when no proper input', () {
       // arrage
@@ -82,7 +85,7 @@ void main() {
         // arrange
         setUpMockInputSuccess();
         when(mockGetRandomNumber(any))
-            .thenAnswer((_) async => const Right(tRandomNumber));
+            .thenAnswer((_) async => Right(tRandomNumberPicked));
         // act
         bloc.add(const GetRandomNumberForRange(
           min: tMinString,
@@ -102,12 +105,12 @@ void main() {
         // arrange
         setUpMockInputSuccess();
         when(mockGetRandomNumber(any))
-            .thenAnswer((_) async => const Right(tRandomNumber));
+            .thenAnswer((_) async => Right(tRandomNumberPicked));
         // assert later
         final expected = [
           // RandomNumberEmpty(),
           RandomNumberLoading(),
-          const RandomNumberLoaded(randomNumber: tRandomNumber),
+          RandomNumberLoaded(randomNumberPicked: tRandomNumberPicked),
         ];
         expectLater(bloc.stream, emitsInOrder(expected));
         // act

@@ -34,8 +34,12 @@ class RandomNumberPage extends StatelessWidget {
                     );
                   } else if (state is RandomNumberLoaded) {
                     return MessageDisplay(
-                      randomPicked: state.randomNumber.toString(),
-                      message: 'is the random number picked',
+                      randomPicked:
+                          state.randomNumberPicked.randomNumber.toString(),
+                      message: 'is the random number picked from\n'
+                          '${state.randomNumberPicked.numberRange.min.toString()}'
+                          ' to '
+                          '${state.randomNumberPicked.numberRange.max.toString()}',
                     );
                   } else if (state is RandomNumberError) {
                     return MessageDisplay(

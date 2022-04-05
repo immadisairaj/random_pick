@@ -7,9 +7,11 @@ import 'dart:async' as _i5;
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:random_pick/core/error/failures.dart' as _i6;
-import 'package:random_pick/core/utils/input_converter.dart' as _i7;
+import 'package:random_pick/core/utils/input_converter.dart' as _i8;
 import 'package:random_pick/features/random_number/domain/entities/number_range.dart'
-    as _i8;
+    as _i9;
+import 'package:random_pick/features/random_number/domain/entities/random_number_picked.dart'
+    as _i7;
 import 'package:random_pick/features/random_number/domain/repositories/random_number_repository.dart'
     as _i2;
 import 'package:random_pick/features/random_number/domain/usecases/get_random_number.dart'
@@ -44,25 +46,27 @@ class MockGetRandomNumber extends _i1.Mock implements _i4.GetRandomNumber {
               returnValue: _FakeRandomNumberRepository_0())
           as _i2.RandomNumberRepository);
   @override
-  _i5.Future<_i3.Either<_i6.Failure, int>> call(_i4.Params? params) =>
+  _i5.Future<_i3.Either<_i6.Failure, _i7.RandomNumberPicked>> call(
+          _i4.Params? params) =>
       (super.noSuchMethod(Invocation.method(#call, [params]),
-              returnValue: Future<_i3.Either<_i6.Failure, int>>.value(
-                  _FakeEither_1<_i6.Failure, int>()))
-          as _i5.Future<_i3.Either<_i6.Failure, int>>);
+              returnValue:
+                  Future<_i3.Either<_i6.Failure, _i7.RandomNumberPicked>>.value(
+                      _FakeEither_1<_i6.Failure, _i7.RandomNumberPicked>()))
+          as _i5.Future<_i3.Either<_i6.Failure, _i7.RandomNumberPicked>>);
 }
 
 /// A class which mocks [InputConverter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockInputConverter extends _i1.Mock implements _i7.InputConverter {
+class MockInputConverter extends _i1.Mock implements _i8.InputConverter {
   MockInputConverter() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Either<_i6.Failure, _i8.NumberRange> stringsToNumberRange(
+  _i3.Either<_i6.Failure, _i9.NumberRange> stringsToNumberRange(
           String? min, String? max) =>
       (super.noSuchMethod(Invocation.method(#stringsToNumberRange, [min, max]),
-              returnValue: _FakeEither_1<_i6.Failure, _i8.NumberRange>())
-          as _i3.Either<_i6.Failure, _i8.NumberRange>);
+              returnValue: _FakeEither_1<_i6.Failure, _i9.NumberRange>())
+          as _i3.Either<_i6.Failure, _i9.NumberRange>);
 }

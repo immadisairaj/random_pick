@@ -1,9 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:random_pick/features/random_number/data/models/number_range_model.dart';
 
 import '../datasources/random_number_data_source.dart';
 import '../../../../core/error/failures.dart';
+import '../../data/models/number_range_model.dart';
 import '../../domain/entities/number_range.dart';
+import '../../domain/entities/random_number_picked.dart';
 import '../../domain/repositories/random_number_repository.dart';
 
 class RandomNumberRepositoryImpl implements RandomNumberRepository {
@@ -14,11 +15,12 @@ class RandomNumberRepositoryImpl implements RandomNumberRepository {
   });
 
   @override
-  Future<Either<Failure, int>> getRandomNumber(NumberRange numberRange) async {
+  Future<Either<Failure, RandomNumberPicked>> getRandomNumber(
+      NumberRange numberRange) async {
     // try {
-    final randomNumber = await dataSource.getRandomNumber(
+    final randomNumberPicked = await dataSource.getRandomNumber(
         NumberRangeModel(min: numberRange.min, max: numberRange.max));
-    return Right(randomNumber);
+    return Right(randomNumberPicked);
     // below is comment because it is already handled in the entity
     // } on ArgumentError {
     //   return Left(ArgumentFailure());

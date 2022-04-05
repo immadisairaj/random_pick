@@ -8,6 +8,8 @@ import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:random_pick/core/error/failures.dart' as _i5;
 import 'package:random_pick/features/random_number/domain/entities/number_range.dart'
+    as _i7;
+import 'package:random_pick/features/random_number/domain/entities/random_number_picked.dart'
     as _i6;
 import 'package:random_pick/features/random_number/domain/repositories/random_number_repository.dart'
     as _i3;
@@ -34,10 +36,11 @@ class MockRandomNumberRepository extends _i1.Mock
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, int>> getRandomNumber(
-          _i6.NumberRange? numberRange) =>
+  _i4.Future<_i2.Either<_i5.Failure, _i6.RandomNumberPicked>> getRandomNumber(
+          _i7.NumberRange? numberRange) =>
       (super.noSuchMethod(Invocation.method(#getRandomNumber, [numberRange]),
-              returnValue: Future<_i2.Either<_i5.Failure, int>>.value(
-                  _FakeEither_0<_i5.Failure, int>()))
-          as _i4.Future<_i2.Either<_i5.Failure, int>>);
+              returnValue:
+                  Future<_i2.Either<_i5.Failure, _i6.RandomNumberPicked>>.value(
+                      _FakeEither_0<_i5.Failure, _i6.RandomNumberPicked>()))
+          as _i4.Future<_i2.Either<_i5.Failure, _i6.RandomNumberPicked>>);
 }

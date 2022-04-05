@@ -12,12 +12,12 @@ class RandomNumberEmpty extends RandomNumberState {}
 class RandomNumberLoading extends RandomNumberState {}
 
 class RandomNumberLoaded extends RandomNumberState {
-  final int randomNumber;
+  final RandomNumberPicked randomNumberPicked;
 
-  const RandomNumberLoaded({required this.randomNumber});
+  const RandomNumberLoaded({required this.randomNumberPicked});
 
   @override
-  List<Object> get props => [randomNumber];
+  List<Object> get props => [randomNumberPicked];
 }
 
 class RandomNumberError extends RandomNumberState {

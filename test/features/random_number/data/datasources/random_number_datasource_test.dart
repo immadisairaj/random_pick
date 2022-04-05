@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:random_pick/features/random_number/data/datasources/random_number_data_source.dart';
 import 'package:random_pick/features/random_number/data/models/number_range_model.dart';
+import 'package:random_pick/features/random_number/data/models/random_number_picked_model.dart';
 
 void main() {
   late RandomNumberDataSourceImpl dataSource;
@@ -10,7 +11,7 @@ void main() {
   });
 
   test(
-    'should return an integer in the given range',
+    'should return an RandomNumberPicked in the given range',
     () async {
       // arrange
       const tMin = 1;
@@ -21,7 +22,7 @@ void main() {
         tNumberRange,
       );
       // assert
-      expect(result, isA<int>());
+      expect(result, isA<RandomNumberPickedModel>());
     },
   );
   test(
@@ -36,8 +37,8 @@ void main() {
         tNumberRange,
       );
       // assert
-      expect(result, greaterThanOrEqualTo(tMin));
-      expect(result, lessThanOrEqualTo(tMax));
+      expect(result.randomNumber, greaterThanOrEqualTo(tMin));
+      expect(result.randomNumber, lessThanOrEqualTo(tMax));
     },
   );
 }

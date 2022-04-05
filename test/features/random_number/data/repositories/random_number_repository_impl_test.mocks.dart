@@ -2,13 +2,15 @@
 // in random_pick/test/features/random_number/data/repositories/random_number_repository_impl_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:random_pick/features/random_number/data/datasources/random_number_data_source.dart'
-    as _i2;
+    as _i3;
 import 'package:random_pick/features/random_number/data/models/number_range_model.dart'
-    as _i4;
+    as _i5;
+import 'package:random_pick/features/random_number/data/models/random_number_picked_model.dart'
+    as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -20,17 +22,23 @@ import 'package:random_pick/features/random_number/data/models/number_range_mode
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
+class _FakeRandomNumberPickedModel_0 extends _i1.Fake
+    implements _i2.RandomNumberPickedModel {}
+
 /// A class which mocks [RandomNumberDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockRandomNumberDataSource extends _i1.Mock
-    implements _i2.RandomNumberDataSource {
+    implements _i3.RandomNumberDataSource {
   MockRandomNumberDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<int> getRandomNumber(_i4.NumberRangeModel? numberRange) =>
+  _i4.Future<_i2.RandomNumberPickedModel> getRandomNumber(
+          _i5.NumberRangeModel? numberRange) =>
       (super.noSuchMethod(Invocation.method(#getRandomNumber, [numberRange]),
-          returnValue: Future<int>.value(0)) as _i3.Future<int>);
+              returnValue: Future<_i2.RandomNumberPickedModel>.value(
+                  _FakeRandomNumberPickedModel_0()))
+          as _i4.Future<_i2.RandomNumberPickedModel>);
 }

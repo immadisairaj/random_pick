@@ -31,12 +31,15 @@ class MessageDisplay extends StatelessWidget {
                   ),
                 ),
               ),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                color: isError ? Colors.red : null,
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: isError ? Colors.red : null,
+                ),
               ),
             ),
           ],

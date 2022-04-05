@@ -1,0 +1,7 @@
+{
+  "randomNumber": 5,
+  "numberRange": {
+    "min": 1,
+    "max": 10
+  }
+}

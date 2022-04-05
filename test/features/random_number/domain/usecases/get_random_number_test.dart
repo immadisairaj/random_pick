@@ -4,6 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:random_pick/features/random_number/domain/entities/number_range.dart';
+import 'package:random_pick/features/random_number/domain/entities/random_number_picked.dart';
 import 'package:random_pick/features/random_number/domain/repositories/random_number_repository.dart';
 import 'package:random_pick/features/random_number/domain/usecases/get_random_number.dart';
 
@@ -20,18 +21,21 @@ void main() {
   });
 
   final tNumberRange = NumberRange(min: 1, max: 10);
-  const tRandomNumber = 3;
+  final tRandomNumberPicked = RandomNumberPicked(
+    randomNumber: 3,
+    numberRange: tNumberRange,
+  );
 
   test(
-    'should get random number from repository',
+    'should get random number picked from repository',
     () async {
       // arrange
       when(mockNumberRangeRepository.getRandomNumber(tNumberRange))
-          .thenAnswer((_) async => const Right(tRandomNumber));
+          .thenAnswer((_) async => Right(tRandomNumberPicked));
       // act
       final result = await usecase(Params(numberRange: tNumberRange));
       // assert
-      expect(result, const Right(tRandomNumber));
+      expect(result, Right(tRandomNumberPicked));
       verify(mockNumberRangeRepository.getRandomNumber(tNumberRange));
       verifyNoMoreInteractions(mockNumberRangeRepository);
     },

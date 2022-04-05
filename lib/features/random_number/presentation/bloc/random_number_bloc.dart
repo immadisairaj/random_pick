@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:random_pick/core/error/failures.dart';
 
 import '../../../../core/utils/input_converter.dart';
+import '../../domain/entities/random_number_picked.dart';
 import '../../domain/usecases/get_random_number.dart';
 
 part 'random_number_event.dart';
@@ -37,8 +38,10 @@ class RandomNumberBloc extends Bloc<RandomNumberEvent, RandomNumberState> {
             // the data source repository here doesn't return a failure/left
             failureOrResult.fold(
               (failure) => _mapFailureToMessage(failure),
-              (randomNumber) {
-                emit(RandomNumberLoaded(randomNumber: randomNumber));
+              (randomNumberPicked) {
+                emit(
+                  RandomNumberLoaded(randomNumberPicked: randomNumberPicked),
+                );
               },
             );
           },
