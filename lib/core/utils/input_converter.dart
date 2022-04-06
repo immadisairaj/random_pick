@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
-import '../error/failures.dart';
 import '../../features/random/random_number/domain/entities/number_range.dart';
+import '../error/failures.dart';
 
 class InputConverter {
   Either<Failure, NumberRange> stringsToNumberRange(String min, String max) {

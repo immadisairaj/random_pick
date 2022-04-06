@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:random_pick/core/error/failures.dart';
-import 'package:random_pick/core/utils/input_converter.dart';
+import '../../../../../core/error/failures.dart';
+import '../../../../../core/utils/input_converter.dart';
 
 import '../../domain/entities/random_number_picked.dart';
 import '../../domain/usecases/get_random_number.dart';

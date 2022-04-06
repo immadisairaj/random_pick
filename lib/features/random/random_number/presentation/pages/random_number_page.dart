@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:random_pick/injection_container.dart';
+import '../../../../../injection_container.dart';
 
 import '../bloc/random_number_bloc.dart';
 import '../widgets/widgets.dart';

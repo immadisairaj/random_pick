@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+// Number range entity with min and max values
 class NumberRange extends Equatable {
   /// range in which min included,
   /// defaults to 0
