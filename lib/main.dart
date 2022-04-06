@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:random_pick/features/random_number/presentation/pages/random_number_page.dart';
+import 'package:random_pick/features/random/random_number/presentation/pages/random_number_page.dart';
 import 'package:random_pick/injection_container.dart' as di;
 
 void main() {

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:random_pick/core/utils/input_converter.dart';
-import 'package:random_pick/features/random_number/domain/entities/number_range.dart';
+import 'package:random_pick/features/random/random_number/domain/entities/number_range.dart';
 
 void main() {
   late InputConverter inputConverter;
