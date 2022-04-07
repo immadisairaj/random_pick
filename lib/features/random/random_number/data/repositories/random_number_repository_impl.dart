@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
 
-import '../datasources/random_number_data_source.dart';
 import '../../../../../core/error/failures.dart';
 import '../../data/models/number_range_model.dart';
 import '../../domain/entities/number_range.dart';
 import '../../domain/entities/random_number_picked.dart';
 import '../../domain/repositories/random_number_repository.dart';
+import '../datasources/random_number_data_source.dart';
 
 class RandomNumberRepositoryImpl implements RandomNumberRepository {
   final RandomNumberDataSource dataSource;

@@ -5,5 +5,5 @@ import '../entities/item.dart';
 import '../entities/random_item_picked.dart';
 
 abstract class RandomListRepository {
-  Future<Either<Failure, RandomItemPicked>> getRandomItem(List<Item> itemsPool);
+  Future<Either<Failure, RandomItemPicked>> getRandomItem(List<Item> itemPool);
 }

@@ -37,8 +37,8 @@ class MockRandomListRepository extends _i1.Mock
 
   @override
   _i4.Future<_i2.Either<_i5.Failure, _i6.RandomItemPicked>> getRandomItem(
-          List<_i7.Item>? itemsPool) =>
-      (super.noSuchMethod(Invocation.method(#getRandomItem, [itemsPool]),
+          List<_i7.Item>? itemPool) =>
+      (super.noSuchMethod(Invocation.method(#getRandomItem, [itemPool]),
               returnValue:
                   Future<_i2.Either<_i5.Failure, _i6.RandomItemPicked>>.value(
                       _FakeEither_0<_i5.Failure, _i6.RandomItemPicked>()))

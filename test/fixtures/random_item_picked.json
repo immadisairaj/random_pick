@@ -1,0 +1,16 @@
+{
+    "itemPicked": {
+        "text": "Item 1",
+        "selected": true
+    },
+    "itemPool": [
+        {
+            "text": "Item 1",
+            "selected": true
+        },
+        {
+            "text": "Item 2",
+            "selected": true
+        }
+    ]
+}

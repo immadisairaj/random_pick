@@ -23,7 +23,7 @@ void main() {
   });
 
   test(
-    'should return if in proper range',
+    'should return if picked properly',
     () async {
       // arrange
       const tMin = 1;

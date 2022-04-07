@@ -6,5 +6,6 @@ abstract class Failure extends Equatable {
   List<Object> get props => [];
 }
 
-// below is commented as it is not requred
-// class ArgumentFailure extends Failure {}
+class LengthFailure extends Failure {}
+
+class NoSelectionFailure extends Failure {}
