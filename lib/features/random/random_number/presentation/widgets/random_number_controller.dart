@@ -109,5 +109,8 @@ class _RandomControllerState extends State<RandomController> {
   void dispatchRandomNumber() {
     BlocProvider.of<RandomNumberBloc>(context).add(GetRandomNumberForRange(
         min: _minController.text, max: _maxController.text));
+    // clear out the min and max text fields
+    _minController.text = '1';
+    _maxController.clear();
   }
 }

@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../../core/error/failures.dart';
 import '../../../../../core/utils/input_converter.dart';
-
 import '../../domain/entities/random_number_picked.dart';
 import '../../domain/usecases/get_random_number.dart';
 
@@ -23,32 +22,35 @@ class RandomNumberBloc extends Bloc<RandomNumberEvent, RandomNumberState> {
     required this.getRandomNumber,
     required this.inputConverter,
   }) : super(RandomNumberEmpty()) {
-    on<RandomNumberEvent>((event, emit) {
-      if (event is GetRandomNumberForRange) {
-        final inputEither =
-            inputConverter.stringsToNumberRange(event.min, event.max);
+    on<GetRandomNumberForRange>(_getNumberForRange);
+  }
 
-        inputEither.fold(
-          (failure) => emit(
-              RandomNumberError(errorMessage: _mapFailureToMessage(failure))),
-          (numberRange) async {
-            emit(RandomNumberLoading());
-            final failureOrResult =
-                await getRandomNumber(Params(numberRange: numberRange));
-            // left event most probably will not happen because
-            // the data source repository here doesn't return a failure/left
-            failureOrResult.fold(
-              (failure) => _mapFailureToMessage(failure),
-              (randomNumberPicked) {
-                emit(
-                  RandomNumberLoaded(randomNumberPicked: randomNumberPicked),
-                );
-              },
+  Future<void> _getNumberForRange(
+    GetRandomNumberForRange event,
+    Emitter<RandomNumberState> emit,
+  ) async {
+    final inputEither =
+        inputConverter.stringsToNumberRange(event.min, event.max);
+
+    inputEither.fold(
+      (failure) =>
+          emit(RandomNumberError(errorMessage: _mapFailureToMessage(failure))),
+      (numberRange) async {
+        emit(RandomNumberLoading());
+        final failureOrResult =
+            await getRandomNumber(Params(numberRange: numberRange));
+        // left event most probably will not happen because
+        // the data source repository here doesn't return a failure/left
+        failureOrResult.fold(
+          (failure) => _mapFailureToMessage(failure),
+          (randomNumberPicked) {
+            emit(
+              RandomNumberLoaded(randomNumberPicked: randomNumberPicked),
             );
           },
         );
-      }
-    });
+      },
+    );
   }
 
   String _mapFailureToMessage(Failure failure) {
