@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'features/random/random_number/presentation/pages/random_number_page.dart';
+
+import 'features/random/presentation/pages/random_page.dart';
 import 'injection_container.dart' as di;
 
 void main() {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: const RandomNumberPage(),
+      home: const RandomPage(),
     );
   }
 }

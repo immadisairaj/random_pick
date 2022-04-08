@@ -5,7 +5,3 @@ abstract class Failure extends Equatable {
   @override
   List<Object> get props => [];
 }
-
-class LengthFailure extends Failure {}
-
-class NoSelectionFailure extends Failure {}

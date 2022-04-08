@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import '../../../../../core/error/exceptions.dart';
 import '../models/item_model.dart';
 import '../models/random_item_picked_model.dart';
 
@@ -26,3 +25,7 @@ class RandomListDataSourceImpl implements RandomListDataSource {
     ));
   }
 }
+
+class LengthException implements Exception {}
+
+class NoSelectionException implements Exception {}

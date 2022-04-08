@@ -3,16 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/random_number_bloc.dart';
 
-class RandomController extends StatefulWidget {
-  const RandomController({
+class RandomNumberController extends StatefulWidget {
+  const RandomNumberController({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<RandomController> createState() => _RandomControllerState();
+  State<RandomNumberController> createState() => _RandomNumberControllerState();
 }
 
-class _RandomControllerState extends State<RandomController> {
+class _RandomNumberControllerState extends State<RandomNumberController> {
   late TextEditingController _minController;
   late TextEditingController _maxController;
 

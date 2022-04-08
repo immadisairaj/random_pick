@@ -2,8 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:random_pick/core/error/exceptions.dart';
-import 'package:random_pick/core/error/failures.dart';
 import 'package:random_pick/features/random/random_list/data/datasources/random_list_data_source.dart';
 import 'package:random_pick/features/random/random_list/data/models/item_model.dart';
 import 'package:random_pick/features/random/random_list/data/models/random_item_picked_model.dart';

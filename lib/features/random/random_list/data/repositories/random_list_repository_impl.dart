@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../../../core/error/exceptions.dart';
 import '../../../../../core/error/failures.dart';
 import '../../domain/entities/item.dart';
 import '../../domain/entities/random_item_picked.dart';
@@ -35,3 +34,7 @@ class RandomListRepositoryImpl implements RandomListRepository {
     }
   }
 }
+
+class LengthFailure extends Failure {}
+
+class NoSelectionFailure extends Failure {}
