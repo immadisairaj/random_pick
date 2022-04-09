@@ -16,11 +16,20 @@ class RandomPickItemController extends StatefulWidget {
 class _RandomPickItemControllerState extends State<RandomPickItemController> {
   late List<String> items;
 
+  late ScrollController _scrollController;
+
   @override
   void initState() {
     items = <String>[''];
+    _scrollController = ScrollController();
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Widget _singleTextField(int index) {
@@ -39,10 +48,13 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
             },
           ),
         ),
-        textInputAction: index != items.length - 1
+        textInputAction: index != (items.length - 1)
             ? TextInputAction.next
             : TextInputAction.done,
         onChanged: (value) => items[index] = value,
+        onSubmitted: (_) => index != (items.length - 1)
+            ? FocusScope.of(context).nextFocus()
+            : FocusScope.of(context).unfocus(),
       ),
     );
   }
@@ -52,20 +64,24 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
     return Stack(
       children: [
         Scrollbar(
+          controller: _scrollController,
           child: SingleChildScrollView(
+            controller: _scrollController,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ListView.builder(
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      if (items.isEmpty) return Container();
-                      return _singleTextField(index);
-                    },
+                  FocusTraversalGroup(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: items.length,
+                      itemBuilder: (context, index) {
+                        if (items.isEmpty) return Container();
+                        return _singleTextField(index);
+                      },
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
