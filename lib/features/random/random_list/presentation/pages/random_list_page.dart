@@ -31,7 +31,7 @@ class RandomListPage extends StatelessWidget {
                   } else if (state is RandomListLoaded) {
                     return MessageDisplay(
                       randomPicked: state.randomItemPicked.itemPicked.text,
-                      message: 'is the random number picked from the list',
+                      message: 'is the random item picked from the list',
                     );
                   } else if (state is RandomListError) {
                     return MessageDisplay(
