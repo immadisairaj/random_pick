@@ -10,6 +10,7 @@ import '../../domain/usecases/get_random_item.dart';
 part 'random_list_event.dart';
 part 'random_list_state.dart';
 
+// constants to show in RandomNumberError
 const String lengthError =
     'Invalid length - Please provide at least one item to at most 2^32-1 items';
 const String selectionError =
@@ -26,6 +27,7 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
     on<GetRandomItemEvent>(_getRandomItemEvent);
   }
 
+  /// logic of what to do when the [GetRandomItemEvent] event is dispatched
   Future<void> _getRandomItemEvent(
     GetRandomItemEvent event,
     Emitter<RandomListState> emit,

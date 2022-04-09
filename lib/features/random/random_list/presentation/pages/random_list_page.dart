@@ -6,15 +6,13 @@ import '../../../presentation/widgets/message_display.dart';
 import '../bloc/random_list_bloc.dart';
 import '../widgets/random_pick_item_controller.dart';
 
+/// Widget or Page that displays the random item pick
 class RandomListPage extends StatelessWidget {
   const RandomListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Random List'),
-      ),
       body: BlocProvider(
         create: (_) => getIt<RandomListBloc>(),
         child: Column(

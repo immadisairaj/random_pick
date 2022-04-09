@@ -7,10 +7,15 @@ abstract class RandomListState extends Equatable {
   List<Object> get props => [];
 }
 
+/// Initial state for random list
 class RandomListEmpty extends RandomListState {}
 
+/// state when random item pick is loading
 class RandomListLoading extends RandomListState {}
 
+/// state when the random item pick is successful
+///
+/// [randomItemPicked] contains the picked and item pool
 class RandomListLoaded extends RandomListState {
   final RandomItemPicked randomItemPicked;
 
@@ -20,6 +25,9 @@ class RandomListLoaded extends RandomListState {
   List<Object> get props => [randomItemPicked];
 }
 
+/// state when the random item pick is unsuccessful
+///
+/// provides an [errorMessage] of why it is unsuccessful
 class RandomListError extends RandomListState {
   final String errorMessage;
 

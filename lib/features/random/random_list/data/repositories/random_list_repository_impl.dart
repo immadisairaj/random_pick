@@ -35,6 +35,8 @@ class RandomListRepositoryImpl implements RandomListRepository {
   }
 }
 
+/// failure when the length of the item pool is 0 or too long
 class LengthFailure extends Failure {}
 
+/// failure when no item is selected
 class NoSelectionFailure extends Failure {}

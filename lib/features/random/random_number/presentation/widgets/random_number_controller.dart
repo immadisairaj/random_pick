@@ -3,7 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/random_number_bloc.dart';
 
+/// Widget that controlls the [RandomNumberBloc]
+///
+/// - contains the min and max text fields
+/// - emits [GetRandomNumberForRange] event to get a random number
 class RandomNumberController extends StatefulWidget {
+  /// creates a random number controller
   const RandomNumberController({
     Key? key,
   }) : super(key: key);
@@ -74,7 +79,7 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
                       keyboardType:
                           const TextInputType.numberWithOptions(signed: true),
                       textInputAction: TextInputAction.done,
-                      onSubmitted: (_) => dispatchRandomNumber(),
+                      onSubmitted: (_) => _dispatchRandomNumber(),
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Max value',
@@ -104,7 +109,7 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: ElevatedButton(
-                onPressed: dispatchRandomNumber,
+                onPressed: _dispatchRandomNumber,
                 child: const Text('Pick Random Number'),
               ),
             ),
@@ -114,7 +119,7 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
     );
   }
 
-  void dispatchRandomNumber() {
+  void _dispatchRandomNumber() {
     BlocProvider.of<RandomNumberBloc>(context).add(GetRandomNumberForRange(
         min: _minController.text, max: _maxController.text));
   }

@@ -7,20 +7,26 @@ import '../entities/item.dart';
 import '../entities/random_item_picked.dart';
 import '../repositories/random_list_repository.dart';
 
+/// usecase class to get random number by taking
+/// [List]<[Item]> as [Params]
 class GetRandomItem implements UseCase<RandomItemPicked, Params> {
   final RandomListRepository repository;
 
+  /// constructor to initialize the [repository]
   GetRandomItem(this.repository);
 
+  /// get random item from repository
   @override
   Future<Either<Failure, RandomItemPicked>> call(Params params) async {
     return await repository.getRandomItem(params.itemPool);
   }
 }
 
+/// params class which include [List]<[Item]> as named parameter
 class Params extends Equatable {
   final List<Item> itemPool;
 
+  /// named parameter constructor to pass [List]<[Item]>
   const Params({required this.itemPool});
 
   @override

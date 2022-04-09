@@ -3,7 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/random_list_bloc.dart';
 
+/// Controller widget for random list
+///
+/// - contains dynamic list of items (text fields)
+/// - dispatches the random item pick event
 class RandomPickItemController extends StatefulWidget {
+  /// creates a contrommer for random list
   const RandomPickItemController({
     Key? key,
   }) : super(key: key);

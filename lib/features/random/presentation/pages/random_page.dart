@@ -7,7 +7,9 @@ import '../../random_list/presentation/pages/random_list_page.dart';
 import '../../random_number/presentation/pages/random_number_page.dart';
 import '../cubit/random_page_cubit.dart';
 
+/// Random Page - the main dashboard which contains two tabs
 class RandomPage extends StatelessWidget {
+  /// creates a random page screen
   const RandomPage({Key? key}) : super(key: key);
 
   @override
@@ -28,6 +30,9 @@ class RandomPageView extends StatelessWidget {
         context.select((RandomPageCubit cubit) => cubit.state.tab);
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Random Pick'),
+      ),
       body: IndexedStack(
         index: selectedTab.index,
         children: const [

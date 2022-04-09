@@ -7,6 +7,8 @@ abstract class RandomNumberEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// dispatch this event to get a random number from the given
+/// number range: min - max
 class GetRandomNumberForRange extends RandomNumberEvent {
   final String min;
   final String max;

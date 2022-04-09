@@ -6,13 +6,13 @@ import '../../../presentation/widgets/message_display.dart';
 import '../bloc/random_number_bloc.dart';
 import '../widgets/random_number_controller.dart';
 
+/// Widget or Page that displays the random number pick
 class RandomNumberPage extends StatelessWidget {
   const RandomNumberPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Random Number')),
       body: BlocProvider(
         create: (_) => getIt<RandomNumberBloc>(),
         child: Stack(

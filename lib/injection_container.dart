@@ -15,6 +15,7 @@ import 'features/random/random_number/presentation/bloc/random_number_bloc.dart'
 
 final getIt = GetIt.instance;
 
+/// Register all the dependencies
 void init() {
   // ! Features - Random
   // Cubit

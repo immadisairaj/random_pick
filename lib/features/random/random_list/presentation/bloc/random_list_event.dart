@@ -7,6 +7,8 @@ abstract class RandomListEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// dispatch this event to get a random item from the given
+/// item pool - list of items (strings)
 class GetRandomItemEvent extends RandomListEvent {
   final List<String> itemPool;
 

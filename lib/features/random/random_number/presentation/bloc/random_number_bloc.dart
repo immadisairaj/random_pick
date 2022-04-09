@@ -9,6 +9,7 @@ import '../../domain/usecases/get_random_number.dart';
 part 'random_number_event.dart';
 part 'random_number_state.dart';
 
+// constants to show in RandomNumberError
 const String invalidNumberRangeError =
     'Invalid range - Please, provide a range';
 const String invalidInputError =
@@ -25,6 +26,7 @@ class RandomNumberBloc extends Bloc<RandomNumberEvent, RandomNumberState> {
     on<GetRandomNumberForRange>(_getNumberForRange);
   }
 
+  /// logic of what to do when the [GetRandomNumberForRange] event is dispatched
   Future<void> _getNumberForRange(
     GetRandomNumberForRange event,
     Emitter<RandomNumberState> emit,

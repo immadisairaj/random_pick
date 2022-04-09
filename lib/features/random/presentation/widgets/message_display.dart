@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
 
+/// Common widget for to display a message
+///
+/// [randomPicked] displays in bold with large size
+/// [message] displays in normal size
+/// when [isError] is true, [message] is displayed in red
 class MessageDisplay extends StatelessWidget {
+  /// The picked number/item to display in bold and large size
   final String? randomPicked;
+
+  /// The message to display in normal size
   final String message;
+
+  /// set to true to display [message] in red
   final bool isError;
 
+  /// creates a message display widget
   const MessageDisplay({
     Key? key,
     this.randomPicked,
