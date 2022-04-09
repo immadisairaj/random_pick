@@ -36,72 +36,80 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: TextField(
-                    controller: _minController,
-                    textAlign: TextAlign.center,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(signed: true),
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Min value',
+    return BlocListener<RandomNumberBloc, RandomNumberState>(
+      listenWhen: (previous, current) => current is RandomNumberLoaded,
+      listener: (context, state) {
+        // clear out the min and max text fields
+        _minController.text = '1';
+        _maxController.clear();
+      },
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextField(
+                      controller: _minController,
+                      textAlign: TextAlign.center,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(signed: true),
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Min value',
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: TextField(
-                    controller: _maxController,
-                    textAlign: TextAlign.center,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(signed: true),
-                    textInputAction: TextInputAction.done,
-                    onSubmitted: (_) => dispatchRandomNumber(),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Max value',
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextField(
+                      controller: _maxController,
+                      textAlign: TextAlign.center,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(signed: true),
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (_) => dispatchRandomNumber(),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Max value',
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Center(child: Text('Min (inclusive)')),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Center(child: Text('Max (inclusive)')),
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: dispatchRandomNumber,
-              child: const Text('Pick Random Number'),
+              ],
             ),
-          ),
-        ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: const [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Center(child: Text('Min (inclusive)')),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Center(child: Text('Max (inclusive)')),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: ElevatedButton(
+                onPressed: dispatchRandomNumber,
+                child: const Text('Pick Random Number'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -109,8 +117,5 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
   void dispatchRandomNumber() {
     BlocProvider.of<RandomNumberBloc>(context).add(GetRandomNumberForRange(
         min: _minController.text, max: _maxController.text));
-    // clear out the min and max text fields
-    _minController.text = '1';
-    _maxController.clear();
   }
 }
