@@ -35,10 +35,35 @@ class MockRandomListDataSource extends _i1.Mock
   }
 
   @override
-  _i4.Future<_i2.RandomItemPickedModel> getRandomItem(
-          List<_i5.ItemModel>? itemPool) =>
-      (super.noSuchMethod(Invocation.method(#getRandomItem, [itemPool]),
+  _i4.Future<_i4.Stream<List<_i5.ItemModel>>> getItemPool() =>
+      (super.noSuchMethod(Invocation.method(#getItemPool, []),
+              returnValue: Future<_i4.Stream<List<_i5.ItemModel>>>.value(
+                  Stream<List<_i5.ItemModel>>.empty()))
+          as _i4.Future<_i4.Stream<List<_i5.ItemModel>>>);
+  @override
+  _i4.Future<_i2.RandomItemPickedModel> getRandomItem() =>
+      (super.noSuchMethod(Invocation.method(#getRandomItem, []),
               returnValue: Future<_i2.RandomItemPickedModel>.value(
                   _FakeRandomItemPickedModel_0()))
           as _i4.Future<_i2.RandomItemPickedModel>);
+  @override
+  _i4.Future<void> addItemToPool(_i5.ItemModel? item) =>
+      (super.noSuchMethod(Invocation.method(#addItemToPool, [item]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+  @override
+  _i4.Future<void> removeItemFromPool(_i5.ItemModel? item) =>
+      (super.noSuchMethod(Invocation.method(#removeItemFromPool, [item]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+  @override
+  _i4.Future<void> clearItemPool() =>
+      (super.noSuchMethod(Invocation.method(#clearItemPool, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+  @override
+  _i4.Future<void> updateItemPool(List<_i5.ItemModel>? items) =>
+      (super.noSuchMethod(Invocation.method(#updateItemPool, [items]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
 }

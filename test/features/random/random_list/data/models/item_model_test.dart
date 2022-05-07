@@ -7,10 +7,17 @@ import 'package:random_pick/features/random/random_list/domain/entities/item.dar
 import '../../../../../fixtures/fixture_reader.dart';
 
 void main() {
-  const tItemModel = ItemModel(text: 'Item 1');
+  final tItemModel = ItemModel(id: '1', text: 'Item 1');
   test('should be a sub class of Item entity', () {
     // assert
     expect(tItemModel, isA<Item>());
+  });
+
+  test('should return properly when copy with', () {
+    // act
+    final tItemModelCopy = tItemModel.copyWith();
+    // assert
+    expect(tItemModelCopy, tItemModel);
   });
 
   group('dealing with JSON', () {
@@ -28,6 +35,7 @@ void main() {
       final result = tItemModel.toJson();
       // assert
       final expectedMap = {
+        'id': '1',
         'text': 'Item 1',
         'selected': true,
       };

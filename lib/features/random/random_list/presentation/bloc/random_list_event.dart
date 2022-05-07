@@ -7,13 +7,27 @@ abstract class RandomListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// dispatch this event to get a random item from the given
-/// item pool - list of items (strings)
+/// dispatch this event to get a random item from the item pool
 class GetRandomItemEvent extends RandomListEvent {
-  final List<String> itemPool;
+  const GetRandomItemEvent();
+}
 
-  const GetRandomItemEvent({required this.itemPool});
+class ItemsSubscriptionRequested extends RandomListEvent {
+  const ItemsSubscriptionRequested();
+}
+
+class ItemAddRequested extends RandomListEvent {
+  final Item item;
+  const ItemAddRequested({required this.item});
 
   @override
-  List<Object> get props => [itemPool];
+  List<Object> get props => [item];
+}
+
+class ItemRemoveRequested extends RandomListEvent {
+  final Item item;
+  const ItemRemoveRequested({required this.item});
+
+  @override
+  List<Object> get props => [item];
 }

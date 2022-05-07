@@ -14,19 +14,21 @@ class RandomListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (_) => getIt<RandomListBloc>(),
+        create: (_) =>
+            getIt<RandomListBloc>()..add(const ItemsSubscriptionRequested()),
         child: Column(
           children: [
             Center(
               child: BlocBuilder<RandomListBloc, RandomListState>(
                 builder: (context, state) {
-                  if (state is RandomListEmpty) {
+                  if (state.status == ItemsSubscriptionStatus.loading ||
+                      state is RandomListPickLoading) {
+                    return const CircularProgressIndicator();
+                  } else if (state.status == ItemsSubscriptionStatus.loaded) {
                     return const MessageDisplay(
                       message: 'Input items to the list',
                     );
-                  } else if (state is RandomListLoading) {
-                    return const CircularProgressIndicator();
-                  } else if (state is RandomListLoaded) {
+                  } else if (state is RandomListPickLoaded) {
                     return MessageDisplay(
                       randomPicked: state.randomItemPicked.itemPicked.text,
                       message: 'is the random item picked from the list',

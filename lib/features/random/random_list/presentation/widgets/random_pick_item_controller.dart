@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../domain/entities/item.dart';
 import '../bloc/random_list_bloc.dart';
 
 /// Controller widget for random list
@@ -19,13 +20,10 @@ class RandomPickItemController extends StatefulWidget {
 }
 
 class _RandomPickItemControllerState extends State<RandomPickItemController> {
-  late List<String> items;
-
   late ScrollController _scrollController;
 
   @override
   void initState() {
-    items = <String>[''];
     _scrollController = ScrollController();
 
     super.initState();
@@ -37,7 +35,7 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
     super.dispose();
   }
 
-  Widget _singleTextField(int index) {
+  Widget _singleTextField(List<Item> items, int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
@@ -47,16 +45,19 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
           suffixIcon: IconButton(
             icon: const Icon(Icons.clear),
             onPressed: () {
-              setState(() {
-                items.removeAt(index);
-              });
+              BlocProvider.of<RandomListBloc>(context)
+                  .add(ItemRemoveRequested(item: items[index]));
             },
           ),
         ),
         textInputAction: index != (items.length - 1)
             ? TextInputAction.next
             : TextInputAction.done,
-        onChanged: (value) => items[index] = value,
+        onChanged: (value) =>
+            BlocProvider.of<RandomListBloc>(context).add(ItemAddRequested(
+                item: items[index].copyWith(
+          text: value,
+        ))),
         onSubmitted: (_) => index != (items.length - 1)
             ? FocusScope.of(context).nextFocus()
             : FocusScope.of(context).unfocus(),
@@ -66,69 +67,80 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scrollbar(
-          controller: _scrollController,
-          child: SingleChildScrollView(
-            controller: _scrollController,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FocusTraversalGroup(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      primary: false,
-                      itemCount: items.length,
-                      itemBuilder: (context, index) {
-                        if (items.isEmpty) return Container();
-                        return _singleTextField(index);
-                      },
+    return BlocBuilder<RandomListBloc, RandomListState>(
+      builder: (context, state) {
+        if (state.status == ItemsSubscriptionStatus.loading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state.status == ItemsSubscriptionStatus.loaded ||
+            state is RandomListError ||
+            state is RandomListPickLoaded ||
+            state is RandomListPickLoading) {
+          var items = state.itemPool;
+          return Stack(
+            children: [
+              Scrollbar(
+                controller: _scrollController,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FocusTraversalGroup(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            primary: false,
+                            itemCount: items.length,
+                            itemBuilder: (context, index) {
+                              if (items.isEmpty) return Container();
+                              return _singleTextField(items, index);
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextButton(
+                            onPressed: () {
+                              BlocProvider.of<RandomListBloc>(context)
+                                  .add(ItemAddRequested(item: Item(text: '')));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.add),
+                                Text('Add Item'),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 60,
+                        ),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          items.add('');
-                        });
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.add),
-                          Text('Add Item'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 60,
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: ElevatedButton(
-              onPressed: () {
-                BlocProvider.of<RandomListBloc>(context).add(
-                  GetRandomItemEvent(
-                      itemPool: items.where((e) => e.isNotEmpty).toList()),
-                );
-              },
-              child: const Text('Pick Random Item'),
-            ),
-          ),
-        ),
-      ],
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      BlocProvider.of<RandomListBloc>(context)
+                          .add(const GetRandomItemEvent());
+                    },
+                    child: const Text('Pick Random Item'),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+        return const Placeholder();
+      },
     );
   }
 }

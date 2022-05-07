@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:random_pick/features/random/random_list/domain/usecases/subscribe_items.dart';
 
 import 'core/utils/input_converter.dart';
 import 'features/random/presentation/cubit/random_page_cubit.dart';
@@ -48,12 +49,13 @@ void init() {
   getIt.registerFactory(
     () => RandomListBloc(
       getRandomItem: getIt(),
-      inputConverter: getIt(),
+      subscribeItems: getIt(),
     ),
   );
 
   // Use cases
   getIt.registerLazySingleton(() => GetRandomItem(getIt()));
+  getIt.registerLazySingleton(() => SubscribeItems(getIt()));
 
   // Repository
   getIt.registerLazySingleton<RandomListRepository>(

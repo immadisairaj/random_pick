@@ -26,6 +26,7 @@ class RandomItemPickedModel extends RandomItemPicked {
 
   ItemModel toItemModel(Item item) {
     return ItemModel(
+      id: item.id,
       text: item.text,
       selected: item.selected,
     );

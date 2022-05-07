@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 
-import '../../features/random/random_list/domain/entities/item.dart';
 import '../../features/random/random_number/domain/entities/number_range.dart';
 import '../error/failures.dart';
 
@@ -16,12 +15,6 @@ class InputConverter {
     } on ArgumentError {
       return Left(InvalidNumberRangeFailure());
     }
-  }
-
-  // for now, we assume that all items are selected by default
-  /// converts the given strings [itemPool] to [List]<[Item]>
-  List<Item> stringsToItemPool(List<String> itemPool) {
-    return itemPool.map((item) => Item(text: item)).toList();
   }
 }
 

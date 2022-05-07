@@ -5,3 +5,9 @@ abstract class Failure extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class UnknownFailure extends Failure {
+  const UnknownFailure();
+  @override
+  List<Object> get props => [];
+}

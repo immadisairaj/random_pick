@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:random_pick/core/usecases/usecase.dart';
 import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
 import 'package:random_pick/features/random/random_list/domain/entities/random_item_picked.dart';
 import 'package:random_pick/features/random/random_list/domain/repositories/random_list_repository.dart';
@@ -19,7 +20,7 @@ void main() {
     usecase = GetRandomItem(mockRandomListRepository);
   });
 
-  const tItemPool = [
+  final tItemPool = [
     Item(text: 'item1'),
     Item(text: 'item2'),
     Item(text: 'item3'),
@@ -32,13 +33,13 @@ void main() {
     'should return item picked from pool',
     () async {
       // arrange
-      when(mockRandomListRepository.getRandomItem(tItemPool))
+      when(mockRandomListRepository.getRandomItem())
           .thenAnswer((_) async => Right(tRandomItemPicked));
       // act
-      final result = await usecase(const Params(itemPool: tItemPool));
+      final result = await usecase(NoParams());
       // assert
       expect(result, Right(tRandomItemPicked));
-      verify(mockRandomListRepository.getRandomItem(tItemPool));
+      verify(mockRandomListRepository.getRandomItem());
       verifyNoMoreInteractions(mockRandomListRepository);
     },
   );

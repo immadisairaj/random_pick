@@ -8,9 +8,9 @@ import 'package:random_pick/features/random/random_list/domain/entities/random_i
 import '../../../../../fixtures/fixture_reader.dart';
 
 void main() {
-  const tItemPool = [
-    ItemModel(text: 'Item 1'),
-    ItemModel(text: 'Item 2'),
+  final tItemPool = [
+    ItemModel(id: '1', text: 'Item 1'),
+    ItemModel(id: '2', text: 'Item 2'),
   ];
   final tRandomItemPicked = RandomItemPickedModel(
     itemPicked: tItemPool[0],
@@ -37,10 +37,10 @@ void main() {
       final result = tRandomItemPicked.toJson();
       // assert
       final expectedMap = {
-        'itemPicked': {'text': 'Item 1', 'selected': true},
+        'itemPicked': {'id': '1', 'text': 'Item 1', 'selected': true},
         'itemPool': [
-          {'text': 'Item 1', 'selected': true},
-          {'text': 'Item 2', 'selected': true}
+          {'id': '1', 'text': 'Item 1', 'selected': true},
+          {'id': '2', 'text': 'Item 2', 'selected': true}
         ]
       };
       expect(result, expectedMap);

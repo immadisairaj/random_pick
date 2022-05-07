@@ -7,7 +7,7 @@ import 'dart:async' as _i5;
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:random_pick/core/error/failures.dart' as _i6;
-import 'package:random_pick/core/utils/input_converter.dart' as _i8;
+import 'package:random_pick/core/usecases/usecase.dart' as _i8;
 import 'package:random_pick/features/random/random_list/domain/entities/item.dart'
     as _i10;
 import 'package:random_pick/features/random/random_list/domain/entities/random_item_picked.dart'
@@ -16,7 +16,7 @@ import 'package:random_pick/features/random/random_list/domain/repositories/rand
     as _i2;
 import 'package:random_pick/features/random/random_list/domain/usecases/get_random_item.dart'
     as _i4;
-import 'package:random_pick/features/random/random_number/domain/entities/number_range.dart'
+import 'package:random_pick/features/random/random_list/domain/usecases/subscribe_items.dart'
     as _i9;
 
 // ignore_for_file: type=lint
@@ -48,30 +48,58 @@ class MockGetRandomItem extends _i1.Mock implements _i4.GetRandomItem {
       returnValue: _FakeRandomListRepository_0()) as _i2.RandomListRepository);
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i7.RandomItemPicked>> call(
-          _i4.Params? params) =>
-      (super.noSuchMethod(Invocation.method(#call, [params]),
+          _i8.NoParams? noParams) =>
+      (super.noSuchMethod(Invocation.method(#call, [noParams]),
               returnValue:
                   Future<_i3.Either<_i6.Failure, _i7.RandomItemPicked>>.value(
                       _FakeEither_1<_i6.Failure, _i7.RandomItemPicked>()))
           as _i5.Future<_i3.Either<_i6.Failure, _i7.RandomItemPicked>>);
 }
 
-/// A class which mocks [InputConverter].
+/// A class which mocks [SubscribeItems].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockInputConverter extends _i1.Mock implements _i8.InputConverter {
-  MockInputConverter() {
+class MockSubscribeItems extends _i1.Mock implements _i9.SubscribeItems {
+  MockSubscribeItems() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Either<_i6.Failure, _i9.NumberRange> stringsToNumberRange(
-          String? min, String? max) =>
-      (super.noSuchMethod(Invocation.method(#stringsToNumberRange, [min, max]),
-              returnValue: _FakeEither_1<_i6.Failure, _i9.NumberRange>())
-          as _i3.Either<_i6.Failure, _i9.NumberRange>);
+  _i2.RandomListRepository get repository => (super.noSuchMethod(
+      Invocation.getter(#repository),
+      returnValue: _FakeRandomListRepository_0()) as _i2.RandomListRepository);
   @override
-  List<_i10.Item> stringsToItemPool(List<String>? itemPool) =>
-      (super.noSuchMethod(Invocation.method(#stringsToItemPool, [itemPool]),
-          returnValue: <_i10.Item>[]) as List<_i10.Item>);
+  _i5.Future<_i3.Either<_i6.Failure, _i5.Stream<List<_i10.Item>>>> call(
+          _i8.NoParams? noParams) =>
+      (super.noSuchMethod(Invocation.method(#call, [noParams]),
+          returnValue: Future<
+                  _i3.Either<_i6.Failure, _i5.Stream<List<_i10.Item>>>>.value(
+              _FakeEither_1<_i6.Failure, _i5.Stream<List<_i10.Item>>>())) as _i5
+          .Future<_i3.Either<_i6.Failure, _i5.Stream<List<_i10.Item>>>>);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, void>> addItemToPool(_i9.Params? params) =>
+      (super.noSuchMethod(Invocation.method(#addItemToPool, [params]),
+              returnValue: Future<_i3.Either<_i6.Failure, void>>.value(
+                  _FakeEither_1<_i6.Failure, void>()))
+          as _i5.Future<_i3.Either<_i6.Failure, void>>);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, void>> removeItemFromPool(
+          _i9.Params? params) =>
+      (super.noSuchMethod(Invocation.method(#removeItemFromPool, [params]),
+              returnValue: Future<_i3.Either<_i6.Failure, void>>.value(
+                  _FakeEither_1<_i6.Failure, void>()))
+          as _i5.Future<_i3.Either<_i6.Failure, void>>);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, void>> clearItemPool() =>
+      (super.noSuchMethod(Invocation.method(#clearItemPool, []),
+              returnValue: Future<_i3.Either<_i6.Failure, void>>.value(
+                  _FakeEither_1<_i6.Failure, void>()))
+          as _i5.Future<_i3.Either<_i6.Failure, void>>);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, void>> updateItemPool(
+          _i9.ListParams? listParams) =>
+      (super.noSuchMethod(Invocation.method(#updateItemPool, [listParams]),
+              returnValue: Future<_i3.Either<_i6.Failure, void>>.value(
+                  _FakeEither_1<_i6.Failure, void>()))
+          as _i5.Future<_i3.Either<_i6.Failure, void>>);
 }

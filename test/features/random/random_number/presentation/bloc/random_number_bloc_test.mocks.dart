@@ -8,8 +8,6 @@ import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:random_pick/core/error/failures.dart' as _i6;
 import 'package:random_pick/core/utils/input_converter.dart' as _i8;
-import 'package:random_pick/features/random/random_list/domain/entities/item.dart'
-    as _i10;
 import 'package:random_pick/features/random/random_number/domain/entities/number_range.dart'
     as _i9;
 import 'package:random_pick/features/random/random_number/domain/entities/random_number_picked.dart'
@@ -71,8 +69,4 @@ class MockInputConverter extends _i1.Mock implements _i8.InputConverter {
       (super.noSuchMethod(Invocation.method(#stringsToNumberRange, [min, max]),
               returnValue: _FakeEither_1<_i6.Failure, _i9.NumberRange>())
           as _i3.Either<_i6.Failure, _i9.NumberRange>);
-  @override
-  List<_i10.Item> stringsToItemPool(List<String>? itemPool) =>
-      (super.noSuchMethod(Invocation.method(#stringsToItemPool, [itemPool]),
-          returnValue: <_i10.Item>[]) as List<_i10.Item>);
 }

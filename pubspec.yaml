@@ -40,9 +40,13 @@ dependencies:
   dartz: ^0.10.1
   # equatable for entities
   equatable: ^2.0.3
+  # unique id's
+  uuid: ^3.0.6
   # bloc
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1
+  # rxdart for streams
+  rxdart: ^0.27.3
 
 dev_dependencies:
   flutter_test:
