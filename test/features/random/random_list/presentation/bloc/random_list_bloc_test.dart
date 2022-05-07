@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:random_pick/core/error/failures.dart';
 import 'package:random_pick/core/usecases/usecase.dart';
 import 'package:random_pick/features/random/random_list/data/repositories/random_list_repository_impl.dart';
 import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
@@ -11,6 +12,7 @@ import 'package:random_pick/features/random/random_list/domain/entities/random_i
 import 'package:random_pick/features/random/random_list/domain/usecases/get_random_item.dart';
 import 'package:random_pick/features/random/random_list/domain/usecases/subscribe_items.dart';
 import 'package:random_pick/features/random/random_list/presentation/bloc/random_list_bloc.dart';
+import 'package:rxdart/subjects.dart';
 
 import 'random_list_bloc_test.mocks.dart';
 
@@ -140,20 +142,36 @@ void main() {
       'should load and subscribe items',
       () async {
         // arrange
-        StreamController<List<Item>> tController =
-            StreamController<List<Item>>();
-        Stream<List<Item>> tStream = tController.stream;
+        final tController = BehaviorSubject<List<Item>>.seeded(const []);
+        Stream<List<Item>> tStream = tController.asBroadcastStream();
         when(mockSubscribeItems(any)).thenAnswer((_) async => Right(tStream));
         // assert later
-        // TODO: test when loaded
         final expected = [
           tRandomListState.copyWith(
             status: () => ItemsSubscriptionStatus.loading,
           ),
-          // tRandomListState.copyWith(
-          //   status: () => ItemsSubscriptionStatus.loaded,
-          //   itemPool: () => tItemPool,
-          // ),
+          tRandomListState.copyWith(
+            status: () => ItemsSubscriptionStatus.loaded,
+          ),
+        ];
+        expectLater(bloc.stream, emitsInOrder(expected));
+        // act
+        bloc.add(const ItemsSubscriptionRequested());
+      },
+    );
+
+    test(
+      'should fail when subscribe items',
+      () async {
+        // arrange
+        when(mockSubscribeItems(any))
+            .thenAnswer((_) async => const Left(UnknownFailure()));
+        // assert later
+        final expected = [
+          tRandomListState.copyWith(
+            status: () => ItemsSubscriptionStatus.loading,
+          ),
+          const RandomListError(errorMessage: 'Unexpected error'),
         ];
         expectLater(bloc.stream, emitsInOrder(expected));
         // act
