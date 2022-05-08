@@ -1,12 +1,13 @@
 import 'package:get_it/get_it.dart';
-import 'package:random_pick/features/random/random_list/domain/usecases/subscribe_items.dart';
 
+import 'core/navigation/random_pick_navigation.dart';
 import 'core/utils/input_converter.dart';
 import 'features/random/presentation/cubit/random_page_cubit.dart';
 import 'features/random/random_list/data/datasources/random_list_data_source.dart';
 import 'features/random/random_list/data/repositories/random_list_repository_impl.dart';
 import 'features/random/random_list/domain/repositories/random_list_repository.dart';
 import 'features/random/random_list/domain/usecases/get_random_item.dart';
+import 'features/random/random_list/domain/usecases/subscribe_items.dart';
 import 'features/random/random_list/presentation/bloc/random_list_bloc.dart';
 import 'features/random/random_number/data/datasources/random_number_data_source.dart';
 import 'features/random/random_number/data/repositories/random_number_repository_impl.dart';
@@ -67,6 +68,8 @@ void init() {
 
   // ! Core
   getIt.registerLazySingleton(() => InputConverter());
+
+  getIt.registerLazySingleton(() => RandomPickNavigation());
 
   // // ! External
 }

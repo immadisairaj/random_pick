@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:random_pick/core/navigation/random_pick_navigation.dart';
 
 import '../../../../injection_container.dart';
 import '../../random_list/presentation/pages/random_list_page.dart';
@@ -33,14 +34,33 @@ class RandomPageView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Random Pick'),
       ),
-      body: IndexedStack(
-        index: selectedTab.index,
-        children: const [
-          // first tab to display the random number pick
-          RandomNumberPage(),
-          // second tab to display the random list pick
-          RandomListPage(),
-        ],
+      body: WillPopScope(
+        onWillPop: () async => !await Navigator.maybePop(
+            getIt<RandomPickNavigation>()
+                .navigatorKeys[selectedTab.index]!
+                .currentState!
+                .context),
+        child: IndexedStack(
+          index: selectedTab.index,
+          children: [
+            // first tab to display the random number pick
+            Navigator(
+              // add navigation key for nested navigation
+              key: getIt<RandomPickNavigation>().navigatorKeys[0],
+              onGenerateRoute: (_) => MaterialPageRoute(
+                builder: (_) => const RandomNumberPage(),
+              ),
+            ),
+            // second tab to display the random list pick
+            Navigator(
+              // add navigation key for nested navigation
+              key: getIt<RandomPickNavigation>().navigatorKeys[1],
+              onGenerateRoute: (_) => MaterialPageRoute(
+                builder: (_) => const RandomListPage(),
+              ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedTab.index,
