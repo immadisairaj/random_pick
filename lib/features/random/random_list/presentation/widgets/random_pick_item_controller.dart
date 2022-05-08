@@ -112,48 +112,45 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
             children: [
               Scrollbar(
                 controller: _scrollController,
-                child: SingleChildScrollView(
+                child: CustomScrollView(
                   controller: _scrollController,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FocusTraversalGroup(
-                          // TODO: use Slivers instead of listview
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            primary: false,
-                            itemCount: items.length,
-                            itemBuilder: (context, index) {
-                              if (items.isEmpty) return Container();
-                              return _singleTextField(items, index);
-                            },
+                  slivers: [
+                    FocusTraversalGroup(
+                      child: SliverPadding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 8),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) => _singleTextField(items, index),
+                            childCount: items.length,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextButton(
-                            onPressed: () {
-                              BlocProvider.of<RandomListBloc>(context)
-                                  .add(ItemAddRequested(item: Item(text: '')));
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.add),
-                                Text('Add Item'),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 60,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextButton(
+                          onPressed: () {
+                            BlocProvider.of<RandomListBloc>(context)
+                                .add(ItemAddRequested(item: Item(text: '')));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.add),
+                              Text('Add Item'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 60,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Align(
