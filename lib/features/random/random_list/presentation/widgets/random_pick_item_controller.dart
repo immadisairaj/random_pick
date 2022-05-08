@@ -74,9 +74,17 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                       item: items[index].copyWith(
                 text: value,
               ))),
-              onEditingComplete: () => index != (items.length - 1)
-                  ? FocusScope.of(context).nextFocus()
-                  : FocusScope.of(context).unfocus(),
+              onEditingComplete: () {
+                if (index != (items.length - 1)) {
+                  // focus next 3 times because of
+                  // the current cross button and the next check box
+                  FocusScope.of(context).nextFocus();
+                  FocusScope.of(context).nextFocus();
+                  FocusScope.of(context).nextFocus();
+                } else {
+                  FocusScope.of(context).unfocus();
+                }
+              },
             ),
           ),
         ],
@@ -88,12 +96,12 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
   Widget build(BuildContext context) {
     return BlocBuilder<RandomListBloc, RandomListState>(
       builder: (context, state) {
-        if (state.status == ItemsSubscriptionStatus.loading) {
+        if (state.status == ItemsSubscriptionStatus.itemsLoading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state.status == ItemsSubscriptionStatus.loaded ||
-            state is RandomListError ||
-            state is RandomListPickLoaded ||
-            state is RandomListPickLoading) {
+        } else if (state.status == ItemsSubscriptionStatus.itemsLoaded ||
+            state.status == ItemsSubscriptionStatus.randomPickLoading ||
+            state.status == ItemsSubscriptionStatus.randomPickLoaded ||
+            state.status == ItemsSubscriptionStatus.error) {
           var items = state.itemPool;
           return Stack(
             children: [

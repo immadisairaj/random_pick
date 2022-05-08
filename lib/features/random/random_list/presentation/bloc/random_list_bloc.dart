@@ -38,16 +38,25 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
     GetRandomItemEvent event,
     Emitter<RandomListState> emit,
   ) async {
-    emit(RandomListPickLoading());
+    emit(state.copyWith(
+      status: () => ItemsSubscriptionStatus.randomPickLoading,
+    ));
     final failureOrResult = await getRandomItem(NoParams());
 
     await failureOrResult.fold(
-      (failure) async =>
-          emit(RandomListError(errorMessage: _mapFailureToMessage(failure))),
+      (failure) async => emit(
+        state.copyWith(
+          status: () => ItemsSubscriptionStatus.error,
+          errorMessage: () => _mapFailureToMessage(failure),
+        ),
+      ),
       (randomItemPicked) async {
         await subscribeItems.clearItemPool();
         emit(
-          RandomListPickLoaded(randomItemPicked: randomItemPicked),
+          state.copyWith(
+            status: () => ItemsSubscriptionStatus.randomPickLoaded,
+            randomItemPicked: () => randomItemPicked,
+          ),
         );
       },
     );
@@ -57,21 +66,27 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
     ItemsSubscriptionRequested event,
     Emitter<RandomListState> emit,
   ) async {
-    emit(state.copyWith(status: () => ItemsSubscriptionStatus.loading));
+    emit(state.copyWith(status: () => ItemsSubscriptionStatus.itemsLoading));
 
     final failureOrItems = await subscribeItems(NoParams());
     await failureOrItems.fold(
-      (failure) async =>
-          emit(RandomListError(errorMessage: _mapFailureToMessage(failure))),
+      (failure) async => emit(
+        state.copyWith(
+          status: () => ItemsSubscriptionStatus.error,
+          errorMessage: () => _mapFailureToMessage(failure),
+        ),
+      ),
       (items) async => {
         await emit.forEach<List<Item>>(
           items,
           onData: (items) => state.copyWith(
-            status: () => ItemsSubscriptionStatus.loaded,
+            status: () => ItemsSubscriptionStatus.itemsLoaded,
             itemPool: () => items,
           ),
-          onError: (_, __) => RandomListError(
-              errorMessage: _mapFailureToMessage(const UnknownFailure())),
+          onError: (_, __) => state.copyWith(
+            status: () => ItemsSubscriptionStatus.error,
+            errorMessage: () => _mapFailureToMessage(const UnknownFailure()),
+          ),
         )
       },
     );
@@ -91,8 +106,12 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
     final failureOrItems =
         await subscribeItems.removeItemFromPool(Params(item: event.item));
     await failureOrItems.fold(
-        (failure) async =>
-            emit(RandomListError(errorMessage: _mapFailureToMessage(failure))),
+        (failure) async => emit(
+              state.copyWith(
+                status: () => ItemsSubscriptionStatus.error,
+                errorMessage: () => _mapFailureToMessage(failure),
+              ),
+            ),
         ((_) {}));
   }
 

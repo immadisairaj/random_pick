@@ -21,22 +21,26 @@ class RandomListPage extends StatelessWidget {
             Center(
               child: BlocBuilder<RandomListBloc, RandomListState>(
                 builder: (context, state) {
-                  if (state.status == ItemsSubscriptionStatus.loading ||
-                      state is RandomListPickLoading) {
+                  if (state.status == ItemsSubscriptionStatus.itemsLoading ||
+                      state.status ==
+                          ItemsSubscriptionStatus.randomPickLoading) {
                     return const CircularProgressIndicator();
-                  } else if (state.status == ItemsSubscriptionStatus.loaded) {
+                  } else if (state.status ==
+                      ItemsSubscriptionStatus.itemsLoaded) {
                     return const MessageDisplay(
                       message: 'Input items to the list',
                     );
-                  } else if (state is RandomListPickLoaded) {
+                  } else if (state.status ==
+                      ItemsSubscriptionStatus.randomPickLoaded) {
+                    // TODO: show the items from which it is picked
                     return MessageDisplay(
-                      randomPicked: state.randomItemPicked.itemPicked.text,
+                      randomPicked: state.randomItemPicked?.itemPicked.text,
                       message: 'is the random item picked from the list',
                     );
-                  } else if (state is RandomListError) {
+                  } else if (state.status == ItemsSubscriptionStatus.error) {
                     return MessageDisplay(
                       isError: true,
-                      message: state.errorMessage,
+                      message: state.errorMessage!,
                     );
                   }
                   return const Placeholder();

@@ -35,6 +35,8 @@ void main() {
     return;
   }
 
+  const RandomListState tRandomListState = RandomListState();
+
   test('initial state should be RandomList with default status', () {
     expect(bloc.state, equals(const RandomListState()));
   });
@@ -81,8 +83,12 @@ void main() {
         successClearItems();
         // assert later
         final expected = [
-          RandomListPickLoading(),
-          RandomListPickLoaded(randomItemPicked: tRandomItemPicked),
+          tRandomListState.copyWith(
+              status: () => ItemsSubscriptionStatus.randomPickLoading),
+          tRandomListState.copyWith(
+            randomItemPicked: () => tRandomItemPicked,
+            status: () => ItemsSubscriptionStatus.randomPickLoaded,
+          ),
         ];
         expectLater(bloc.stream, emitsInOrder(expected));
         // act
@@ -99,11 +105,14 @@ void main() {
         successClearItems();
         // assert later
         final expected = [
-          RandomListPickLoading(),
-          const RandomListError(
-              errorMessage:
-                  'Invalid length - Please provide at least one item to at '
-                  'most 2^32-1 items'),
+          tRandomListState.copyWith(
+              status: () => ItemsSubscriptionStatus.randomPickLoading),
+          tRandomListState.copyWith(
+            status: () => ItemsSubscriptionStatus.error,
+            errorMessage: () =>
+                'Invalid length - Please provide at least one item to at '
+                'most 2^32-1 items',
+          ),
         ];
         expectLater(bloc.stream, emitsInOrder(expected));
         // act
@@ -120,10 +129,13 @@ void main() {
         successClearItems();
         // assert later
         final expected = [
-          RandomListPickLoading(),
-          const RandomListError(
-              errorMessage:
-                  'No item selected - Please, select at least one item'),
+          tRandomListState.copyWith(
+              status: () => ItemsSubscriptionStatus.randomPickLoading),
+          tRandomListState.copyWith(
+            status: () => ItemsSubscriptionStatus.error,
+            errorMessage: () =>
+                'No item selected - Please, select at least one item',
+          ),
         ];
         expectLater(bloc.stream, emitsInOrder(expected));
         // act
@@ -133,7 +145,6 @@ void main() {
   });
 
   group('subscribe items', () {
-    const RandomListState tRandomListState = RandomListState();
     final tItemPool = <Item>[
       Item(text: 'item1'),
     ];
@@ -148,10 +159,10 @@ void main() {
         // assert later
         final expected = [
           tRandomListState.copyWith(
-            status: () => ItemsSubscriptionStatus.loading,
+            status: () => ItemsSubscriptionStatus.itemsLoading,
           ),
           tRandomListState.copyWith(
-            status: () => ItemsSubscriptionStatus.loaded,
+            status: () => ItemsSubscriptionStatus.itemsLoaded,
           ),
         ];
         expectLater(bloc.stream, emitsInOrder(expected));
@@ -169,9 +180,37 @@ void main() {
         // assert later
         final expected = [
           tRandomListState.copyWith(
-            status: () => ItemsSubscriptionStatus.loading,
+            status: () => ItemsSubscriptionStatus.itemsLoading,
           ),
-          const RandomListError(errorMessage: 'Unexpected error'),
+          tRandomListState.copyWith(
+            status: () => ItemsSubscriptionStatus.error,
+            errorMessage: () => 'Unexpected error',
+          ),
+        ];
+        expectLater(bloc.stream, emitsInOrder(expected));
+        // act
+        bloc.add(const ItemsSubscriptionRequested());
+      },
+    );
+
+    test(
+      'should fail when subscribe items in right',
+      () async {
+        // arrange
+        final tController = BehaviorSubject<List<Item>>.seeded(const []);
+        // add error to stream
+        tController.addError(const UnknownFailure());
+        Stream<List<Item>> tStream = tController.asBroadcastStream();
+        when(mockSubscribeItems(any)).thenAnswer((_) async => Right(tStream));
+        // assert later
+        final expected = [
+          tRandomListState.copyWith(
+            status: () => ItemsSubscriptionStatus.itemsLoading,
+          ),
+          tRandomListState.copyWith(
+            status: () => ItemsSubscriptionStatus.error,
+            errorMessage: () => 'Unexpected error',
+          ),
         ];
         expectLater(bloc.stream, emitsInOrder(expected));
         // act
@@ -215,7 +254,10 @@ void main() {
             .thenAnswer((_) async => Left(ItemNotFoundFailure()));
         // assert later
         final expected = [
-          const RandomListError(errorMessage: 'Item not found to remove'),
+          tRandomListState.copyWith(
+            status: () => ItemsSubscriptionStatus.error,
+            errorMessage: () => 'Item not found to remove',
+          ),
         ];
         expectLater(bloc.stream, emitsInOrder(expected));
         // act
