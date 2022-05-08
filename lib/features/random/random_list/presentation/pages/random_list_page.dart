@@ -14,6 +14,7 @@ class RandomListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
+        // subscribe to items on init
         create: (_) =>
             getIt<RandomListBloc>()..add(const ItemsSubscriptionRequested()),
         child: Column(

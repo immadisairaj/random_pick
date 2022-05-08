@@ -36,7 +36,9 @@ class RandomPageView extends StatelessWidget {
       body: IndexedStack(
         index: selectedTab.index,
         children: const [
+          // first tab to display the random number pick
           RandomNumberPage(),
+          // second tab to display the random list pick
           RandomListPage(),
         ],
       ),

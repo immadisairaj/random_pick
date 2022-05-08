@@ -7,9 +7,12 @@ import '../bloc/random_list_bloc.dart';
 /// Controller widget for random list
 ///
 /// - contains dynamic list of items (text fields)
+/// - adds new items to the list
+/// - removes items from the list
+/// - edits items from the list
 /// - dispatches the random item pick event
 class RandomPickItemController extends StatefulWidget {
-  /// creates a contrommer for random list
+  /// creates a controller for random list
   const RandomPickItemController({
     Key? key,
   }) : super(key: key);
@@ -24,9 +27,8 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
 
   @override
   void initState() {
-    _scrollController = ScrollController();
-
     super.initState();
+    _scrollController = ScrollController();
   }
 
   @override
@@ -44,6 +46,7 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
             flex: 0,
             child: Checkbox(
               value: items[index].selected,
+              // edit the item using add event to select/deselect
               onChanged: (value) =>
                   BlocProvider.of<RandomListBloc>(context).add(ItemAddRequested(
                       item: items[index].copyWith(
@@ -60,6 +63,7 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: () {
+                    // remove the item using remove event
                     BlocProvider.of<RandomListBloc>(context)
                         .add(ItemRemoveRequested(item: items[index]));
                   },
@@ -69,6 +73,7 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
               textInputAction: index != (items.length - 1)
                   ? TextInputAction.next
                   : TextInputAction.done,
+              // edit the item using add event to change text on go
               onChanged: (value) =>
                   BlocProvider.of<RandomListBloc>(context).add(ItemAddRequested(
                       item: items[index].copyWith(
@@ -116,6 +121,7 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FocusTraversalGroup(
+                          // TODO: use Slivers instead of listview
                           child: ListView.builder(
                             shrinkWrap: true,
                             primary: false,

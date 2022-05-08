@@ -17,12 +17,41 @@ enum ItemsSubscriptionStatus {
   randomPickLoaded,
 }
 
+/// The state of the bloc
+///
+/// initial [status] is [ItemsSubscriptionStatus.initial]
+/// and [itemPool] is empty array
+///
+/// all the states are distinguished by the [status] field
+///
+/// always use the [copyWith] method to create a new state
+///
+/// Note:
+/// - [itemPool] and [status] are mandatory
+/// - make sure to provide [errorMessage] when
+/// [status] is [ItemsSubscriptionStatus.error]
+/// - make sure to provide [randomItemPicked] when
+/// [status] is [ItemsSubscriptionStatus.randomPickLoaded]
 class RandomListState extends Equatable {
+  /// itemPool at the given point of state
+  ///
+  /// defaults to empty array
   final List<Item> itemPool;
+
+  /// status of the event present in the state
+  ///
+  /// defaults to [ItemsSubscriptionStatus.initial]
   final ItemsSubscriptionStatus status;
+
+  /// to display an error message when
+  /// [status] is [ItemsSubscriptionStatus.error]
   final String? errorMessage;
+
+  /// the random item picked when
+  /// [status] is [ItemsSubscriptionStatus.randomPickLoaded]
   final RandomItemPicked? randomItemPicked;
 
+  /// creates a random list state object
   const RandomListState({
     this.itemPool = const [],
     this.status = ItemsSubscriptionStatus.initial,
@@ -30,6 +59,9 @@ class RandomListState extends Equatable {
     this.randomItemPicked,
   });
 
+  /// creates a new state with the copying the values from previous state
+  ///
+  /// provide the new values using functions
   RandomListState copyWith({
     List<Item> Function()? itemPool,
     ItemsSubscriptionStatus Function()? status,

@@ -62,6 +62,8 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
     );
   }
 
+  /// logic of what to do when the [ItemsSubscriptionRequested] event is
+  /// dispatched
   Future<void> _onItemsSubscriptionRequested(
     ItemsSubscriptionRequested event,
     Emitter<RandomListState> emit,
@@ -92,6 +94,7 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
     );
   }
 
+  /// logic of what to do when the [ItemAddRequested] event is dispatched
   Future<void> _onItemAddRequested(
     ItemAddRequested event,
     Emitter<RandomListState> emit,
@@ -99,6 +102,7 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
     await subscribeItems.addItemToPool(Params(item: event.item));
   }
 
+  /// logic of what to do when the [ItemRemoveRequested] event is dispatched
   Future<void> _onItemRemoveRequested(
     ItemRemoveRequested event,
     Emitter<RandomListState> emit,
@@ -115,6 +119,7 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
         ((_) {}));
   }
 
+  /// maps the failure to a message using the failure type
   String _mapFailureToMessage(Failure failure) {
     switch (failure.runtimeType) {
       case LengthFailure:
