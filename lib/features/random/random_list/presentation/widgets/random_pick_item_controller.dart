@@ -38,29 +38,48 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
   Widget _singleTextField(List<Item> items, int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: TextField(
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          hintText: 'Input Item',
-          suffixIcon: IconButton(
-            icon: const Icon(Icons.clear),
-            onPressed: () {
-              BlocProvider.of<RandomListBloc>(context)
-                  .add(ItemRemoveRequested(item: items[index]));
-            },
+      child: Row(
+        children: [
+          Expanded(
+            flex: 0,
+            child: Checkbox(
+              value: items[index].selected,
+              onChanged: (value) =>
+                  BlocProvider.of<RandomListBloc>(context).add(ItemAddRequested(
+                      item: items[index].copyWith(
+                selected: value,
+              ))),
+            ),
           ),
-        ),
-        textInputAction: index != (items.length - 1)
-            ? TextInputAction.next
-            : TextInputAction.done,
-        onChanged: (value) =>
-            BlocProvider.of<RandomListBloc>(context).add(ItemAddRequested(
-                item: items[index].copyWith(
-          text: value,
-        ))),
-        onSubmitted: (_) => index != (items.length - 1)
-            ? FocusScope.of(context).nextFocus()
-            : FocusScope.of(context).unfocus(),
+          Expanded(
+            flex: 1,
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText: 'Input Item',
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    BlocProvider.of<RandomListBloc>(context)
+                        .add(ItemRemoveRequested(item: items[index]));
+                  },
+                ),
+              ),
+              initialValue: items[index].text,
+              textInputAction: index != (items.length - 1)
+                  ? TextInputAction.next
+                  : TextInputAction.done,
+              onChanged: (value) =>
+                  BlocProvider.of<RandomListBloc>(context).add(ItemAddRequested(
+                      item: items[index].copyWith(
+                text: value,
+              ))),
+              onEditingComplete: () => index != (items.length - 1)
+                  ? FocusScope.of(context).nextFocus()
+                  : FocusScope.of(context).unfocus(),
+            ),
+          ),
+        ],
       ),
     );
   }
