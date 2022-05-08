@@ -120,6 +120,7 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
   }
 
   void _dispatchRandomNumber() {
+    FocusScope.of(context).unfocus();
     BlocProvider.of<RandomNumberBloc>(context).add(GetRandomNumberForRange(
         min: _minController.text, max: _maxController.text));
   }

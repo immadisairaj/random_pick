@@ -162,6 +162,7 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                   padding: const EdgeInsets.all(20.0),
                   child: ElevatedButton(
                     onPressed: () {
+                      FocusScope.of(context).unfocus();
                       BlocProvider.of<RandomListBloc>(context)
                           .add(const GetRandomItemEvent());
                     },
