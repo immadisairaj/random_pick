@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.immadisairaj.random_pick">
    <application
-        android:label="random_pick"
+        android:label="Random Pick"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

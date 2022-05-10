@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:random_pick/core/navigation/random_pick_navigation.dart';
 
+import '../../../../core/navigation/random_pick_navigation.dart';
 import '../../../../injection_container.dart';
 import '../../random_list/presentation/pages/random_list_page.dart';
 import '../../random_number/presentation/pages/random_number_page.dart';
