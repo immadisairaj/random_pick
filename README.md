@@ -1,6 +1,6 @@
 # Random Pick
 
-an application which decides/picks an item from the given pool.
+an application which decides/picks an item from the given pool
 
 <img src="./random_pick_logo.png" height="150">
 
@@ -31,9 +31,9 @@ This application uses a clean architecture (feature first) with the help of bloc
 
 Thanks to the Open Source community for providing many great libraries which improve the application performance in many great ways.
 
-<!-- ## Privacy Policy
+## Privacy Policy
 
-The Privacy Policy of the app is in the site: [immadisairaj.github.io/random_pick/privacy_policy.html](https://immadisairaj.github.io/random_pick/privacy_policy.html) -->
+The Privacy Policy of the app is in the site: [immadisairaj.github.io/random_pick/privacy_policy.html](https://immadisairaj.github.io/random_pick/privacy_policy.html)
 
 ## License
 
