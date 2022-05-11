@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../../core/navigation/random_pick_navigation.dart';
 import '../../../../injection_container.dart';
@@ -33,6 +34,22 @@ class RandomPageView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Random Pick'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              PackageInfo packageInfo = await PackageInfo.fromPlatform();
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => LicensePage(
+                  applicationIcon:
+                      Image.asset('assets/app_icon_foreground.png'),
+                  applicationName: packageInfo.appName,
+                  applicationVersion: packageInfo.version,
+                ),
+              ));
+            },
+            icon: const Icon(CupertinoIcons.info),
+          ),
+        ],
       ),
       body: WillPopScope(
         onWillPop: () async => !await Navigator.maybePop(
