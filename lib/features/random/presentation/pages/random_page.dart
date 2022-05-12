@@ -79,18 +79,18 @@ class RandomPageView extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedTab.index,
-        onTap: (index) =>
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: selectedTab.index,
+        onDestinationSelected: (index) =>
             context.read<RandomPageCubit>().setTab(RandomPageTab.values[index]),
-        items: const [
-          BottomNavigationBarItem(
-            activeIcon: Icon(CupertinoIcons.number_square_fill),
+        destinations: const [
+          NavigationDestination(
+            selectedIcon: Icon(CupertinoIcons.number_square_fill),
             icon: Icon(CupertinoIcons.number_square),
             label: 'Numbers',
           ),
-          BottomNavigationBarItem(
-            activeIcon: Icon(CupertinoIcons.square_list_fill),
+          NavigationDestination(
+            selectedIcon: Icon(CupertinoIcons.square_list_fill),
             icon: Icon(CupertinoIcons.square_list),
             label: 'List',
           ),

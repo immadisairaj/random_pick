@@ -34,9 +34,10 @@ class MessageDisplay extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: Text(
                 randomPicked!,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
                 ),
               ),
             ),
@@ -47,7 +48,7 @@ class MessageDisplay extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18,
-                color: isError ? Colors.red : null,
+                color: isError ? Theme.of(context).colorScheme.error : null,
               ),
             ),
           ),
