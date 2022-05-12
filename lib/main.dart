@@ -19,7 +19,13 @@ class MyApp extends StatelessWidget {
       title: 'Random Pick',
       // debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        useMaterial3: true,
+        colorSchemeSeed: Colors.purple,
+      ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.purple,
+        brightness: Brightness.dark,
       ),
       home: const RandomPage(),
     );

@@ -30,30 +30,38 @@ class RandomListPage extends StatelessWidget {
                     return const CircularProgressIndicator();
                   } else if (state.status ==
                       ItemsSubscriptionStatus.itemsLoaded) {
-                    return const MessageDisplay(
-                      message: 'Input items to the list',
+                    return const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: MessageDisplay(
+                        message: 'Input items to the list',
+                      ),
                     );
                   } else if (state.status ==
                       ItemsSubscriptionStatus.randomPickLoaded) {
-                    // TODO: show the items from which it is picked
                     return Column(
                       children: [
                         MessageDisplay(
                           randomPicked: state.randomItemPicked?.itemPicked.text,
                           message: 'is the random item picked from the list',
                         ),
-                        TextButton(
-                          onPressed: () {
-                            getIt<RandomPickNavigation>()
-                                .navigatorKeys[1]!
-                                .currentState!
-                                .push(MaterialPageRoute(
-                                    builder: (_) => RandomListPickedPage(
-                                          randomItemPicked:
-                                              state.randomItemPicked!,
-                                        )));
-                          },
-                          child: const Text('View the list'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextButton(
+                            onPressed: () {
+                              getIt<RandomPickNavigation>()
+                                  .navigatorKeys[1]!
+                                  .currentState!
+                                  .push(MaterialPageRoute(
+                                      builder: (_) => RandomListPickedPage(
+                                            randomItemPicked:
+                                                state.randomItemPicked!,
+                                          )));
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text('View the list'),
+                            ),
+                          ),
                         ),
                       ],
                     );
@@ -67,9 +75,12 @@ class RandomListPage extends StatelessWidget {
                 },
               ),
             ),
-            const Divider(
-              height: 5,
-              thickness: 5,
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Divider(
+                height: 3,
+                thickness: 2,
+              ),
             ),
             const Expanded(
               child: RandomPickItemController(),
