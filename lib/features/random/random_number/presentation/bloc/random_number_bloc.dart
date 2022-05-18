@@ -11,7 +11,7 @@ part 'random_number_state.dart';
 
 // constants to show in RandomNumberError
 const String invalidNumberRangeError =
-    'Invalid range - Please, provide a range';
+    'Invalid range - Please, provide a valid range under 2^32';
 const String invalidInputError =
     'Invalid input - Please, provide a valid input of numbers';
 
