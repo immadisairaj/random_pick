@@ -27,6 +27,8 @@ class MyApp extends StatelessWidget {
         colorSchemeSeed: Colors.purple,
         brightness: Brightness.dark,
       ),
+      // TODO: add theme change option
+      themeMode: ThemeMode.light,
       home: const RandomPage(),
     );
   }
