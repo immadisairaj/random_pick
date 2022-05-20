@@ -2,10 +2,10 @@ import '../../domain/entities/item.dart';
 
 class ItemModel extends Item {
   ItemModel({
-    String? id,
-    required String text,
-    bool selected = true,
-  }) : super(id: id, text: text, selected: selected);
+    super.id,
+    required super.text,
+    super.selected = true,
+  });
 
   @override
   ItemModel copyWith({

@@ -17,11 +17,11 @@ class MessageDisplay extends StatelessWidget {
 
   /// creates a message display widget
   const MessageDisplay({
-    Key? key,
+    super.key,
     this.randomPicked,
     required this.message,
     this.isError = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

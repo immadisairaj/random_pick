@@ -10,8 +10,8 @@ import '../bloc/random_number_bloc.dart';
 class RandomNumberController extends StatefulWidget {
   /// creates a random number controller
   const RandomNumberController({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<RandomNumberController> createState() => _RandomNumberControllerState();

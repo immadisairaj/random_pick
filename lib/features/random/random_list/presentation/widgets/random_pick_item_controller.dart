@@ -14,8 +14,8 @@ import '../bloc/random_list_bloc.dart';
 class RandomPickItemController extends StatefulWidget {
   /// creates a controller for random list
   const RandomPickItemController({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<RandomPickItemController> createState() =>

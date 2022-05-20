@@ -6,9 +6,9 @@ import '../../domain/entities/random_item_picked.dart';
 
 class RandomListPickedPage extends StatelessWidget {
   const RandomListPickedPage({
-    Key? key,
+    super.key,
     required this.randomItemPicked,
-  }) : super(key: key);
+  });
 
   final RandomItemPicked randomItemPicked;
 

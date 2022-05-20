@@ -4,9 +4,9 @@ import 'item_model.dart';
 
 class RandomItemPickedModel extends RandomItemPicked {
   const RandomItemPickedModel({
-    required ItemModel itemPicked,
-    required List<ItemModel> itemPool,
-  }) : super(itemPicked: itemPicked, itemPool: itemPool);
+    required super.itemPicked,
+    required super.itemPool,
+  });
 
   factory RandomItemPickedModel.fromJson(Map<String, dynamic> json) {
     return RandomItemPickedModel(

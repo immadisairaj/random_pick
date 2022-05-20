@@ -12,7 +12,7 @@ import '../cubit/random_page_cubit.dart';
 /// Random Page - the main dashboard which contains two tabs
 class RandomPage extends StatelessWidget {
   /// creates a random page screen
-  const RandomPage({Key? key}) : super(key: key);
+  const RandomPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class RandomPage extends StatelessWidget {
 }
 
 class RandomPageView extends StatelessWidget {
-  const RandomPageView({Key? key}) : super(key: key);
+  const RandomPageView({super.key});
 
   @override
   Widget build(BuildContext context) {

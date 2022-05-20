@@ -8,7 +8,7 @@ import '../widgets/random_number_controller.dart';
 
 /// Widget or Page that displays the random number pick
 class RandomNumberPage extends StatelessWidget {
-  const RandomNumberPage({Key? key}) : super(key: key);
+  const RandomNumberPage({super.key});
 
   @override
   Widget build(BuildContext context) {

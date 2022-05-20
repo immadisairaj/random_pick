@@ -10,7 +10,7 @@ import 'random_list_picked_page.dart';
 
 /// Widget or Page that displays the random item pick
 class RandomListPage extends StatelessWidget {
-  const RandomListPage({Key? key}) : super(key: key);
+  const RandomListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
