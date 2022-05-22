@@ -1,18 +1,21 @@
 import 'package:dartz/dartz.dart';
+import 'package:random_pick/core/error/failures.dart';
+import 'package:random_pick/features/random/random_list/data/datasources/random_list_data_source.dart';
+import 'package:random_pick/features/random/random_list/data/models/item_model.dart';
+import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
+import 'package:random_pick/features/random/random_list/domain/entities/random_item_picked.dart';
+import 'package:random_pick/features/random/random_list/domain/repositories/random_list_repository.dart';
 
-import '../../../../../core/error/failures.dart';
-import '../../domain/entities/item.dart';
-import '../../domain/entities/random_item_picked.dart';
-import '../../domain/repositories/random_list_repository.dart';
-import '../datasources/random_list_data_source.dart';
-import '../models/item_model.dart';
-
+/// Implementation of [RandomListRepository]
 class RandomListRepositoryImpl implements RandomListRepository {
-  final RandomListDataSource dataSource;
-
+  /// constructor for [RandomListRepository] implementation which provides
+  /// functions for the use of Random List
   RandomListRepositoryImpl({
     required this.dataSource,
   });
+
+  /// data source from where the data is fetched
+  final RandomListDataSource dataSource;
 
   @override
   Future<Either<Failure, RandomItemPicked>> getRandomItem() async {
@@ -46,7 +49,8 @@ class RandomListRepositoryImpl implements RandomListRepository {
   Future<Either<Failure, void>> removeItemFromPool(Item item) async {
     try {
       return Right(
-          await dataSource.removeItemFromPool(_convertItemToModel(item)));
+        await dataSource.removeItemFromPool(_convertItemToModel(item)),
+      );
     } on ItemNotFoundException {
       return Left(ItemNotFoundFailure());
     }
@@ -54,8 +58,11 @@ class RandomListRepositoryImpl implements RandomListRepository {
 
   @override
   Future<Either<Failure, void>> updateItemPool(List<Item> items) async {
-    return Right(await dataSource.updateItemPool(
-        items.map((item) => _convertItemToModel(item)).toList()));
+    return Right(
+      await dataSource.updateItemPool(
+        items.map(_convertItemToModel).toList(),
+      ),
+    );
   }
 }
 

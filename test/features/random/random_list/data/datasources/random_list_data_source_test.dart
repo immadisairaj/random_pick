@@ -49,7 +49,7 @@ void main() {
       // act
       final call = dataSource.getRandomItem;
       // assert
-      expect(() => call(), throwsA(const TypeMatcher<LengthException>()));
+      expect(call, throwsA(const TypeMatcher<LengthException>()));
     },
   );
 
@@ -64,7 +64,7 @@ void main() {
       // act
       final call = dataSource.getRandomItem;
       // assert
-      expect(() => call(), throwsA(const TypeMatcher<NoSelectionException>()));
+      expect(call, throwsA(const TypeMatcher<NoSelectionException>()));
     },
   );
 
@@ -125,7 +125,11 @@ void main() {
     final call = dataSource.removeItemFromPool;
     // assert
     expect(
-        () => call(tItem), throwsA(const TypeMatcher<ItemNotFoundException>()));
+      () => call(tItem),
+      throwsA(
+        const TypeMatcher<ItemNotFoundException>(),
+      ),
+    );
   });
 
   test('should check if add items to pool', () async {

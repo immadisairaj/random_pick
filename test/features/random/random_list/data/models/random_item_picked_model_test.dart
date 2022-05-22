@@ -24,8 +24,8 @@ void main() {
   group('dealing with JSON', () {
     test('should return a valid model from JSON', () {
       // arange
-      final Map<String, dynamic> jsonMap =
-          json.decode(fixture('random_item_picked.json'));
+      final jsonMap = json.decode(fixture('random_item_picked.json'))
+          as Map<String, dynamic>;
       // act
       final result = RandomItemPickedModel.fromJson(jsonMap);
       // assert

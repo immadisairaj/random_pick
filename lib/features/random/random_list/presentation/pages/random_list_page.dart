@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../../core/navigation/random_pick_navigation.dart';
-import '../../../../../injection_container.dart';
-import '../../../presentation/widgets/message_display.dart';
-import '../bloc/random_list_bloc.dart';
-import '../widgets/random_pick_item_controller.dart';
-import 'random_list_picked_page.dart';
+import 'package:random_pick/core/navigation/random_pick_navigation.dart';
+import 'package:random_pick/features/random/presentation/widgets/message_display.dart';
+import 'package:random_pick/features/random/random_list/presentation/bloc/random_list_bloc.dart';
+import 'package:random_pick/features/random/random_list/presentation/pages/random_list_picked_page.dart';
+import 'package:random_pick/features/random/random_list/presentation/widgets/random_pick_item_controller.dart';
+import 'package:random_pick/injection_container.dart';
 
 /// Widget or Page that displays the random item pick
 class RandomListPage extends StatelessWidget {
+  /// creates a random list page
   const RandomListPage({super.key});
 
   @override
@@ -31,7 +31,7 @@ class RandomListPage extends StatelessWidget {
                   } else if (state.status ==
                       ItemsSubscriptionStatus.itemsLoaded) {
                     return const Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8),
                       child: MessageDisplay(
                         message: 'Input items to the list',
                       ),
@@ -45,20 +45,23 @@ class RandomListPage extends StatelessWidget {
                           message: 'is the random item picked from the list',
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8),
                           child: TextButton(
                             onPressed: () {
                               getIt<RandomPickNavigation>()
                                   .navigatorKeys[1]!
                                   .currentState!
-                                  .push(MaterialPageRoute(
+                                  .push(
+                                    MaterialPageRoute<Widget>(
                                       builder: (_) => RandomListPickedPage(
-                                            randomItemPicked:
-                                                state.randomItemPicked!,
-                                          )));
+                                        randomItemPicked:
+                                            state.randomItemPicked!,
+                                      ),
+                                    ),
+                                  );
                             },
                             child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                              padding: EdgeInsets.symmetric(horizontal: 8),
                               child: Text('View the list'),
                             ),
                           ),

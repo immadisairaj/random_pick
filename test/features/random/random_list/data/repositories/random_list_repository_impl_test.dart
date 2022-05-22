@@ -44,7 +44,12 @@ void main() {
       final result = await repository.getRandomItem();
       // assert
       verify(mockDataSource.getRandomItem());
-      expect(result, equals(Right(tRandomItemPicked)));
+      expect(
+        result,
+        equals(
+          Right<dynamic, RandomItemPickedModel>(tRandomItemPicked),
+        ),
+      );
     },
   );
 
@@ -57,7 +62,7 @@ void main() {
       final result = await repository.getRandomItem();
       // assert
       verify(mockDataSource.getRandomItem());
-      expect(result, equals(Left(LengthFailure())));
+      expect(result, equals(Left<LengthFailure, dynamic>(LengthFailure())));
     },
   );
 
@@ -70,7 +75,12 @@ void main() {
       final result = await repository.getRandomItem();
       // assert
       verify(mockDataSource.getRandomItem());
-      expect(result, equals(Left(NoSelectionFailure())));
+      expect(
+        result,
+        equals(
+          Left<NoSelectionFailure, dynamic>(NoSelectionFailure()),
+        ),
+      );
     },
   );
 
@@ -82,16 +92,15 @@ void main() {
     'should return stream from getItemPool',
     () async {
       // arrange
-      StreamController<List<ItemModel>> tController =
-          StreamController<List<ItemModel>>();
-      Stream<List<ItemModel>> tStream = tController.stream;
+      final tController = StreamController<List<ItemModel>>();
+      final tStream = tController.stream;
 
       when(mockDataSource.getItemPool()).thenAnswer((_) async => tStream);
       // act
       final result = await repository.getItemPool();
       // assert
       verify(mockDataSource.getItemPool());
-      expect(result, equals(Right(tStream)));
+      expect(result, equals(Right<dynamic, Stream<List<ItemModel>>>(tStream)));
     },
   );
 
@@ -107,7 +116,7 @@ void main() {
       final result = await repository.addItemToPool(tItem);
       // assert
       verify(mockDataSource.addItemToPool(tItem));
-      expect(result, equals(Right(returnVoid())));
+      expect(result, equals(Right<dynamic, void>(returnVoid())));
     },
   );
 
@@ -121,7 +130,7 @@ void main() {
       final result = await repository.clearItemPool();
       // assert
       verify(mockDataSource.clearItemPool());
-      expect(result, equals(Right(returnVoid())));
+      expect(result, equals(Right<dynamic, void>(returnVoid())));
     },
   );
 
@@ -141,7 +150,7 @@ void main() {
       final result = await repository.updateItemPool(tItemPool);
       // assert
       verify(mockDataSource.updateItemPool(tItemPool));
-      expect(result, equals(Right(returnVoid())));
+      expect(result, equals(Right<dynamic, void>(returnVoid())));
     },
   );
 
@@ -157,7 +166,7 @@ void main() {
       final result = await repository.removeItemFromPool(tItem);
       // assert
       verify(mockDataSource.removeItemFromPool(tItem));
-      expect(result, equals(Right(returnVoid())));
+      expect(result, equals(Right<dynamic, void>(returnVoid())));
     },
   );
 
@@ -173,7 +182,12 @@ void main() {
       final result = await repository.removeItemFromPool(tItem);
       // assert
       verify(mockDataSource.removeItemFromPool(tItem));
-      expect(result, equals(Left(ItemNotFoundFailure())));
+      expect(
+        result,
+        equals(
+          Left<ItemNotFoundFailure, dynamic>(ItemNotFoundFailure()),
+        ),
+      );
     },
   );
 }

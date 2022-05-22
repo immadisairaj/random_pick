@@ -23,7 +23,7 @@ void main() {
   group('dealing with JSON', () {
     test('should return a valid model from JSON', () {
       // arange
-      final Map<String, dynamic> jsonMap = json.decode(fixture('item.json'));
+      final jsonMap = json.decode(fixture('item.json')) as Map<String, dynamic>;
       // act
       final result = ItemModel.fromJson(jsonMap);
       // assert

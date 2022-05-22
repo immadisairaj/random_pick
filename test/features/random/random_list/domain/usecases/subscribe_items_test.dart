@@ -21,8 +21,8 @@ void main() {
     usecase = SubscribeItems(mockRandomListRepository);
   });
 
-  StreamController<List<Item>> tController = StreamController<List<Item>>();
-  Stream<List<Item>> tStream = tController.stream;
+  final tController = StreamController<List<Item>>();
+  final tStream = tController.stream;
   final tItemPool = [
     Item(text: 'item1'),
     Item(text: 'item2'),
@@ -37,7 +37,7 @@ void main() {
       // act
       final result = await usecase(NoParams());
       // assert
-      expect(result, Right(tStream));
+      expect(result, Right<dynamic, Stream<List<Item>>>(tStream));
       verify(mockRandomListRepository.getItemPool());
       verifyNoMoreInteractions(mockRandomListRepository);
     },
@@ -57,7 +57,7 @@ void main() {
         // act
         final result = await usecase.addItemToPool(Params(item: tItemPool[0]));
         // assert
-        expect(result, Right(returnVoid()));
+        expect(result, Right<dynamic, void>(returnVoid()));
         verify(mockRandomListRepository.addItemToPool(tItemPool[0]));
         verifyNoMoreInteractions(mockRandomListRepository);
       },
@@ -73,7 +73,7 @@ void main() {
         final result =
             await usecase.removeItemFromPool(Params(item: tItemPool[0]));
         // assert
-        expect(result, Right(returnVoid()));
+        expect(result, Right<dynamic, void>(returnVoid()));
         verify(mockRandomListRepository.removeItemFromPool(tItemPool[0]));
         verifyNoMoreInteractions(mockRandomListRepository);
       },
@@ -88,7 +88,7 @@ void main() {
         // act
         final result = await usecase.clearItemPool();
         // assert
-        expect(result, Right(returnVoid()));
+        expect(result, Right<dynamic, void>(returnVoid()));
         verify(mockRandomListRepository.clearItemPool());
         verifyNoMoreInteractions(mockRandomListRepository);
       },
@@ -101,7 +101,7 @@ void main() {
       // act
       final result = await usecase.updateItemPool(ListParams(items: tItemPool));
       // assert
-      expect(result, Right(returnVoid()));
+      expect(result, Right<dynamic, void>(returnVoid()));
       verify(mockRandomListRepository.updateItemPool(tItemPool));
       verifyNoMoreInteractions(mockRandomListRepository);
     });

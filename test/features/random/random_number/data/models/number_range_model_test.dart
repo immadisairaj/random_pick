@@ -18,8 +18,8 @@ void main() {
   group('dealing with JSON', () {
     test('should return a valid model from JSON', () {
       // arange
-      final Map<String, dynamic> jsonMap =
-          json.decode(fixture('number_range.json'));
+      final jsonMap =
+          json.decode(fixture('number_range.json')) as Map<String, dynamic>;
       // act
       final result = NumberRangeModel.fromJson(jsonMap);
       // assert

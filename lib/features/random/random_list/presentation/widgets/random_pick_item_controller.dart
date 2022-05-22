@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../domain/entities/item.dart';
-import '../bloc/random_list_bloc.dart';
+import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
+import 'package:random_pick/features/random/random_list/presentation/bloc/random_list_bloc.dart';
 
 /// Controller widget for random list
 ///
@@ -39,7 +38,7 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
 
   Widget _singleTextField(List<Item> items, int index) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: Row(
         children: [
           Expanded(
@@ -48,14 +47,16 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
               value: items[index].selected,
               // edit the item using add event to select/deselect
               onChanged: (value) =>
-                  BlocProvider.of<RandomListBloc>(context).add(ItemAddRequested(
-                      item: items[index].copyWith(
-                selected: value,
-              ))),
+                  BlocProvider.of<RandomListBloc>(context).add(
+                ItemAddRequested(
+                  item: items[index].copyWith(
+                    selected: value,
+                  ),
+                ),
+              ),
             ),
           ),
           Expanded(
-            flex: 1,
             child: TextFormField(
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
@@ -75,10 +76,13 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                   : TextInputAction.done,
               // edit the item using add event to change text on go
               onChanged: (value) =>
-                  BlocProvider.of<RandomListBloc>(context).add(ItemAddRequested(
-                      item: items[index].copyWith(
-                text: value,
-              ))),
+                  BlocProvider.of<RandomListBloc>(context).add(
+                ItemAddRequested(
+                  item: items[index].copyWith(
+                    text: value,
+                  ),
+                ),
+              ),
               onEditingComplete: () {
                 if (index != (items.length - 1)) {
                   // focus next 3 times because of
@@ -107,7 +111,7 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
             state.status == ItemsSubscriptionStatus.randomPickLoading ||
             state.status == ItemsSubscriptionStatus.randomPickLoaded ||
             state.status == ItemsSubscriptionStatus.error) {
-          var items = state.itemPool;
+          final items = state.itemPool;
           return Stack(
             children: [
               Scrollbar(
@@ -118,7 +122,9 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                     FocusTraversalGroup(
                       child: SliverPadding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 8),
+                          horizontal: 20,
+                          vertical: 8,
+                        ),
                         sliver: SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) => _singleTextField(items, index),
@@ -129,7 +135,7 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8),
                         child: TextButton(
                           onPressed: () {
                             BlocProvider.of<RandomListBloc>(context)
@@ -156,7 +162,7 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(20),
                   child: ElevatedButton(
                     onPressed: () {
                       FocusScope.of(context).unfocus();

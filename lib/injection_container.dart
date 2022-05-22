@@ -1,75 +1,77 @@
 import 'package:get_it/get_it.dart';
+import 'package:random_pick/core/navigation/random_pick_navigation.dart';
+import 'package:random_pick/core/utils/input_converter.dart';
+import 'package:random_pick/features/random/presentation/cubit/random_page_cubit.dart';
+import 'package:random_pick/features/random/random_list/data/datasources/random_list_data_source.dart';
+import 'package:random_pick/features/random/random_list/data/repositories/random_list_repository_impl.dart';
+import 'package:random_pick/features/random/random_list/domain/repositories/random_list_repository.dart';
+import 'package:random_pick/features/random/random_list/domain/usecases/get_random_item.dart';
+import 'package:random_pick/features/random/random_list/domain/usecases/subscribe_items.dart';
+import 'package:random_pick/features/random/random_list/presentation/bloc/random_list_bloc.dart';
+import 'package:random_pick/features/random/random_number/data/datasources/random_number_data_source.dart';
+import 'package:random_pick/features/random/random_number/data/repositories/random_number_repository_impl.dart';
+import 'package:random_pick/features/random/random_number/domain/repositories/random_number_repository.dart';
+import 'package:random_pick/features/random/random_number/domain/usecases/get_random_number.dart';
+import 'package:random_pick/features/random/random_number/presentation/bloc/random_number_bloc.dart';
 
-import 'core/navigation/random_pick_navigation.dart';
-import 'core/utils/input_converter.dart';
-import 'features/random/presentation/cubit/random_page_cubit.dart';
-import 'features/random/random_list/data/datasources/random_list_data_source.dart';
-import 'features/random/random_list/data/repositories/random_list_repository_impl.dart';
-import 'features/random/random_list/domain/repositories/random_list_repository.dart';
-import 'features/random/random_list/domain/usecases/get_random_item.dart';
-import 'features/random/random_list/domain/usecases/subscribe_items.dart';
-import 'features/random/random_list/presentation/bloc/random_list_bloc.dart';
-import 'features/random/random_number/data/datasources/random_number_data_source.dart';
-import 'features/random/random_number/data/repositories/random_number_repository_impl.dart';
-import 'features/random/random_number/domain/repositories/random_number_repository.dart';
-import 'features/random/random_number/domain/usecases/get_random_number.dart';
-import 'features/random/random_number/presentation/bloc/random_number_bloc.dart';
-
+/// get all registered injection containers
 final getIt = GetIt.instance;
 
 /// Register all the dependencies
 void init() {
   // ! Features - Random
   // Cubit
-  getIt.registerFactory(
-    () => RandomPageCubit(),
-  );
+  getIt
+    ..registerFactory(
+      RandomPageCubit.new,
+    )
 
-  // ! Random Features - Random Number
-  // Bloc
-  getIt.registerFactory(
-    () => RandomNumberBloc(
-      getRandomNumber: getIt(),
-      inputConverter: getIt(),
-    ),
-  );
+    // ! Random Features - Random Number
+    // Bloc
+    ..registerFactory(
+      () => RandomNumberBloc(
+        getRandomNumber: getIt(),
+        inputConverter: getIt(),
+      ),
+    )
 
-  // Use cases
-  getIt.registerLazySingleton(() => GetRandomNumber(getIt()));
+    // Use cases
+    ..registerLazySingleton(() => GetRandomNumber(getIt()))
 
-  // Repository
-  getIt.registerLazySingleton<RandomNumberRepository>(
-      () => RandomNumberRepositoryImpl(dataSource: getIt()));
+    // Repository
+    ..registerLazySingleton<RandomNumberRepository>(
+      () => RandomNumberRepositoryImpl(dataSource: getIt()),
+    )
 
-  // Data sources
-  getIt.registerLazySingleton<RandomNumberDataSource>(
-      () => RandomNumberDataSourceImpl());
+    // Data sources
+    ..registerLazySingleton<RandomNumberDataSource>(
+      RandomNumberDataSourceImpl.new,
+    )
 
-  // ! Random Features - Random List
-  // Bloc
-  getIt.registerFactory(
-    () => RandomListBloc(
-      getRandomItem: getIt(),
-      subscribeItems: getIt(),
-    ),
-  );
+    // ! Random Features - Random List
+    // Bloc
+    ..registerFactory(
+      () => RandomListBloc(
+        getRandomItem: getIt(),
+        subscribeItems: getIt(),
+      ),
+    )
 
-  // Use cases
-  getIt.registerLazySingleton(() => GetRandomItem(getIt()));
-  getIt.registerLazySingleton(() => SubscribeItems(getIt()));
+    // Use cases
+    ..registerLazySingleton(() => GetRandomItem(getIt()))
+    ..registerLazySingleton(() => SubscribeItems(getIt()))
 
-  // Repository
-  getIt.registerLazySingleton<RandomListRepository>(
-      () => RandomListRepositoryImpl(dataSource: getIt()));
+    // Repository
+    ..registerLazySingleton<RandomListRepository>(
+      () => RandomListRepositoryImpl(dataSource: getIt()),
+    )
 
-  // Data sources
-  getIt.registerLazySingleton<RandomListDataSource>(
-      () => RandomListDataSourceImpl());
+    // Data sources
+    ..registerLazySingleton<RandomListDataSource>(RandomListDataSourceImpl.new)
 
-  // ! Core
-  getIt.registerLazySingleton(() => InputConverter());
-
-  getIt.registerLazySingleton(() => RandomPickNavigation());
+    // ! Core
+    ..registerLazySingleton(InputConverter.new)
+    ..registerLazySingleton(RandomPickNavigation.new);
 
   // // ! External
 }

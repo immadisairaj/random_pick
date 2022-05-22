@@ -30,14 +30,16 @@ void main() {
   });
 
   group('get random number for number range', () {
-    const String tMinString = '9';
-    const String tMaxString = '10';
-    const int tMinInt = 9;
-    const int tMaxInt = 10;
-    final NumberRange tNumberRange = NumberRange(min: tMinInt, max: tMaxInt);
-    const int tRandomNumber = 9;
-    final RandomNumberPicked tRandomNumberPicked = RandomNumberPicked(
-        randomNumber: tRandomNumber, numberRange: tNumberRange);
+    const tMinString = '9';
+    const tMaxString = '10';
+    const tMinInt = 9;
+    const tMaxInt = 10;
+    final tNumberRange = NumberRange(min: tMinInt, max: tMaxInt);
+    const tRandomNumber = 9;
+    final tRandomNumberPicked = RandomNumberPicked(
+      randomNumber: tRandomNumber,
+      numberRange: tNumberRange,
+    );
 
     test('should emit [Error] state when no proper input', () {
       // arrage
@@ -50,10 +52,12 @@ void main() {
       ];
       expectLater(bloc.stream, emitsInOrder(expected));
       // act
-      bloc.add(const GetRandomNumberForRange(
-        min: tMinString,
-        max: tMaxString,
-      ));
+      bloc.add(
+        const GetRandomNumberForRange(
+          min: tMinString,
+          max: tMaxString,
+        ),
+      );
     });
 
     test('should emit [Error] state when no proper input range', () {
@@ -67,18 +71,21 @@ void main() {
       ];
       expectLater(bloc.stream, emitsInOrder(expected));
       // act
-      bloc.add(const GetRandomNumberForRange(
-        min: tMaxString,
-        max: tMinString,
-      ));
+      bloc.add(
+        const GetRandomNumberForRange(
+          min: tMaxString,
+          max: tMinString,
+        ),
+      );
     });
 
-    setUpMockInputSuccess() {
+    void setUpMockInputSuccess() {
       when(mockInputConverter.stringsToNumberRange(any, any))
           .thenReturn(Right(tNumberRange));
     }
 
     test(
+      // ignore: missing_whitespace_between_adjacent_strings
       'should call input converter validate and convert strings to NumberRange'
       'and get random number from the usecase',
       () async {
@@ -87,10 +94,12 @@ void main() {
         when(mockGetRandomNumber(any))
             .thenAnswer((_) async => Right(tRandomNumberPicked));
         // act
-        bloc.add(const GetRandomNumberForRange(
-          min: tMinString,
-          max: tMaxString,
-        ));
+        bloc.add(
+          const GetRandomNumberForRange(
+            min: tMinString,
+            max: tMaxString,
+          ),
+        );
         await untilCalled(mockInputConverter.stringsToNumberRange(any, any));
         await untilCalled(mockGetRandomNumber(any));
         // assert
@@ -101,7 +110,7 @@ void main() {
 
     test(
       'should emit [Loading, Loaded] when data is gotten successfully',
-      () async {
+      () {
         // arrange
         setUpMockInputSuccess();
         when(mockGetRandomNumber(any))
@@ -114,10 +123,12 @@ void main() {
         ];
         expectLater(bloc.stream, emitsInOrder(expected));
         // act
-        bloc.add(const GetRandomNumberForRange(
-          min: tMinString,
-          max: tMaxString,
-        ));
+        bloc.add(
+          const GetRandomNumberForRange(
+            min: tMinString,
+            max: tMaxString,
+          ),
+        );
       },
     );
   });

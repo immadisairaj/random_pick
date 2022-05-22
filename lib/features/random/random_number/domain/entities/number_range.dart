@@ -1,14 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-// Number range entity with min and max values
+/// Number range entity with min and max values
 class NumberRange extends Equatable {
-  /// range in which min included,
-  /// defaults to 0
-  final int min;
-
-  /// range in which max is included
-  final int max;
-
   /// create a new [NumberRange] where
   /// [min] and [max] are included
   ///
@@ -31,10 +24,19 @@ class NumberRange extends Equatable {
     if (min > max) {
       throw ArgumentError('min must be less than or equal to max');
     } else if ((max - min + 1) >= (1 << 32)) {
-      throw ArgumentError('the total list size must be less than (2^32)-1,'
-          ' i.e. 4,294,967,295');
+      throw ArgumentError(
+        'the total list size must be less than (2^32)-1,'
+        ' i.e. 4,294,967,295',
+      );
     }
   }
+
+  /// range in which min included,
+  /// defaults to 0
+  final int min;
+
+  /// range in which max is included
+  final int max;
 
   @override
   List<Object?> get props => [min, max];

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:random_pick/features/random/presentation/widgets/message_display.dart';
+import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
+import 'package:random_pick/features/random/random_list/domain/entities/random_item_picked.dart';
 
-import '../../../presentation/widgets/message_display.dart';
-import '../../domain/entities/item.dart';
-import '../../domain/entities/random_item_picked.dart';
-
+/// page to display the [randomItemPicked]
 class RandomListPickedPage extends StatelessWidget {
+  /// creates a page to show [randomItemPicked]
   const RandomListPickedPage({
     super.key,
     required this.randomItemPicked,
   });
 
+  /// the [randomItemPicked] to show
   final RandomItemPicked randomItemPicked;
 
   Widget _listItem(BuildContext context, Item currentItem) {

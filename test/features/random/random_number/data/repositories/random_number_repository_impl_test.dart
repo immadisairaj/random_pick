@@ -41,26 +41,12 @@ void main() {
       final result = await repository.getRandomNumber(tNumberRange);
       // assert
       verify(mockNumberDataSource.getRandomNumber(tNumberRange));
-      expect(result, equals(Right(tRandomNumberPicked)));
+      expect(
+        result,
+        equals(
+          Right<dynamic, RandomNumberPickedModel>(tRandomNumberPicked),
+        ),
+      );
     },
   );
-
-  // below test is commented as the error handling is already done in the entity
-  // test(
-  //   'should return argument error if not in proper range',
-  //   () async {
-  //     // arrange
-  //     const tMin = 5;
-  //     const tMax = 1;
-  //     when(mockNumberDataSource.getRandomNumber(any))
-  //         .thenThrow(ArgumentError());
-  //     // act
-  //     final result = await repository
-  //         .getRandomNumber(NumberRangeModel(min: tMin, max: tMax));
-  //     // assert
-  //     verify(mockNumberDataSource
-  //         .getRandomNumber(NumberRangeModel(min: tMin, max: tMax)));
-  //     expect(result, equals(Left(ArgumentFailure())));
-  //   },
-  // );
 }

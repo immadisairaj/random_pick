@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
+import 'package:random_pick/core/error/failures.dart';
+import 'package:random_pick/features/random/random_number/domain/entities/number_range.dart';
 
-import '../../features/random/random_number/domain/entities/number_range.dart';
-import '../error/failures.dart';
-
+/// input converter for converting the inputs to desired outputs
 class InputConverter {
   /// converts the given string [min] and [max] to [NumberRange]
   Either<Failure, NumberRange> stringsToNumberRange(String min, String max) {
@@ -12,6 +12,7 @@ class InputConverter {
       return Right(NumberRange(min: returnMin, max: returnMax));
     } on FormatException {
       return Left(InvalidInputFailure());
+      // ignore: avoid_catching_errors
     } on ArgumentError {
       return Left(InvalidNumberRangeFailure());
     }

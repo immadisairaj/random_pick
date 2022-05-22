@@ -2,14 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:random_pick/core/navigation/random_pick_navigation.dart';
+import 'package:random_pick/features/random/presentation/cubit/random_page_cubit.dart';
+import 'package:random_pick/features/random/random_list/presentation/pages/random_list_page.dart';
+import 'package:random_pick/features/random/random_number/presentation/pages/random_number_page.dart';
+import 'package:random_pick/injection_container.dart';
 
-import '../../../../core/navigation/random_pick_navigation.dart';
-import '../../../../injection_container.dart';
-import '../../random_list/presentation/pages/random_list_page.dart';
-import '../../random_number/presentation/pages/random_number_page.dart';
-import '../cubit/random_page_cubit.dart';
-
-/// Random Page - the main dashboard which contains two tabs
+/// the main dashboard which contains two tabs
 class RandomPage extends StatelessWidget {
   /// creates a random page screen
   const RandomPage({super.key});
@@ -23,7 +22,9 @@ class RandomPage extends StatelessWidget {
   }
 }
 
+/// the main dashboard widget/page which is the main page of [RandomPage]
 class RandomPageView extends StatelessWidget {
+  /// builds the main page view with tabs for random page
   const RandomPageView({super.key});
 
   @override
@@ -37,15 +38,18 @@ class RandomPageView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () async {
-              PackageInfo packageInfo = await PackageInfo.fromPlatform();
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => LicensePage(
-                  applicationIcon:
-                      Image.asset('assets/app_icon_foreground.png'),
-                  applicationName: packageInfo.appName,
-                  applicationVersion: packageInfo.version,
+              await PackageInfo.fromPlatform().then(
+                (packageInfo) => Navigator.of(context).push(
+                  MaterialPageRoute<Widget>(
+                    builder: (context) => LicensePage(
+                      applicationIcon:
+                          Image.asset('assets/app_icon_foreground.png'),
+                      applicationName: packageInfo.appName,
+                      applicationVersion: packageInfo.version,
+                    ),
+                  ),
                 ),
-              ));
+              );
             },
             icon: const Icon(CupertinoIcons.info),
           ),
@@ -53,10 +57,11 @@ class RandomPageView extends StatelessWidget {
       ),
       body: WillPopScope(
         onWillPop: () async => !await Navigator.maybePop(
-            getIt<RandomPickNavigation>()
-                .navigatorKeys[selectedTab.index]!
-                .currentState!
-                .context),
+          getIt<RandomPickNavigation>()
+              .navigatorKeys[selectedTab.index]!
+              .currentState!
+              .context,
+        ),
         child: IndexedStack(
           index: selectedTab.index,
           children: [
@@ -64,7 +69,7 @@ class RandomPageView extends StatelessWidget {
             Navigator(
               // add navigation key for nested navigation
               key: getIt<RandomPickNavigation>().navigatorKeys[0],
-              onGenerateRoute: (_) => MaterialPageRoute(
+              onGenerateRoute: (_) => MaterialPageRoute<Widget>(
                 builder: (_) => const RandomNumberPage(),
               ),
             ),
@@ -72,7 +77,7 @@ class RandomPageView extends StatelessWidget {
             Navigator(
               // add navigation key for nested navigation
               key: getIt<RandomPickNavigation>().navigatorKeys[1],
-              onGenerateRoute: (_) => MaterialPageRoute(
+              onGenerateRoute: (_) => MaterialPageRoute<Widget>(
                 builder: (_) => const RandomListPage(),
               ),
             ),

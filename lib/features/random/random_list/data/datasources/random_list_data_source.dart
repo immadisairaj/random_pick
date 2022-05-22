@@ -1,11 +1,10 @@
 import 'dart:math';
-
+import 'package:random_pick/features/random/random_list/data/models/item_model.dart';
+import 'package:random_pick/features/random/random_list/data/models/random_item_picked_model.dart';
+import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
 import 'package:rxdart/subjects.dart';
 
-import '../../domain/entities/item.dart';
-import '../models/item_model.dart';
-import '../models/random_item_picked_model.dart';
-
+/// data source which can be extended to implement data sources functions
 abstract class RandomListDataSource {
   /// returns items from the pool
   Future<Stream<List<ItemModel>>> getItemPool();
@@ -30,6 +29,7 @@ abstract class RandomListDataSource {
   Future<void> updateItemPool(List<ItemModel> items);
 }
 
+/// implementation of the [RandomListDataSource]
 class RandomListDataSourceImpl implements RandomListDataSource {
   final _itemsStreamController =
       BehaviorSubject<List<ItemModel>>.seeded(const []);
@@ -48,10 +48,12 @@ class RandomListDataSourceImpl implements RandomListDataSource {
     if (filteredItemPool.isEmpty) {
       throw NoSelectionException();
     }
-    return Future.value(RandomItemPickedModel(
-      itemPicked: filteredItemPool[Random().nextInt(filteredItemPool.length)],
-      itemPool: itemPool,
-    ));
+    return Future.value(
+      RandomItemPickedModel(
+        itemPicked: filteredItemPool[Random().nextInt(filteredItemPool.length)],
+        itemPool: itemPool,
+      ),
+    );
   }
 
   @override

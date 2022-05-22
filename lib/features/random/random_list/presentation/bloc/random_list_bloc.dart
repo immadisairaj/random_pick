@@ -1,28 +1,27 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-
-import '../../../../../core/error/failures.dart';
-import '../../../../../core/usecases/usecase.dart';
-import '../../data/repositories/random_list_repository_impl.dart';
-import '../../domain/entities/item.dart';
-import '../../domain/entities/random_item_picked.dart';
-import '../../domain/usecases/get_random_item.dart';
-import '../../domain/usecases/subscribe_items.dart';
+import 'package:random_pick/core/error/failures.dart';
+import 'package:random_pick/core/usecases/usecase.dart';
+import 'package:random_pick/features/random/random_list/data/repositories/random_list_repository_impl.dart';
+import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
+import 'package:random_pick/features/random/random_list/domain/entities/random_item_picked.dart';
+import 'package:random_pick/features/random/random_list/domain/usecases/get_random_item.dart';
+import 'package:random_pick/features/random/random_list/domain/usecases/subscribe_items.dart';
 
 part 'random_list_event.dart';
 part 'random_list_state.dart';
 
 // constants to show in RandomNumberError
-const String lengthError =
+const String _lengthError =
     'Invalid length - Please provide at least one item to at most 2^32-1 items';
-const String selectionError =
+const String _selectionError =
     'No item selected - Please, select at least one item';
-const String itemNotFoundError = 'Item not found to remove';
+const String _itemNotFoundError = 'Item not found to remove';
 
+/// business logic for random list
 class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
-  final GetRandomItem getRandomItem;
-  final SubscribeItems subscribeItems;
-
+  /// Random list bloc which handles the subscribing to items
+  /// and picking a random item from the item pool
   RandomListBloc({
     required this.getRandomItem,
     required this.subscribeItems,
@@ -33,14 +32,22 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
     on<GetRandomItemEvent>(_getRandomItemEvent);
   }
 
+  /// usecase to get random item
+  final GetRandomItem getRandomItem;
+
+  /// usecase to subscribe to items
+  final SubscribeItems subscribeItems;
+
   /// logic of what to do when the [GetRandomItemEvent] event is dispatched
   Future<void> _getRandomItemEvent(
     GetRandomItemEvent event,
     Emitter<RandomListState> emit,
   ) async {
-    emit(state.copyWith(
-      status: () => ItemsSubscriptionStatus.randomPickLoading,
-    ));
+    emit(
+      state.copyWith(
+        status: () => ItemsSubscriptionStatus.randomPickLoading,
+      ),
+    );
     final failureOrResult = await getRandomItem(NoParams());
 
     await failureOrResult.fold(
@@ -110,24 +117,25 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
     final failureOrItems =
         await subscribeItems.removeItemFromPool(Params(item: event.item));
     await failureOrItems.fold(
-        (failure) async => emit(
-              state.copyWith(
-                status: () => ItemsSubscriptionStatus.error,
-                errorMessage: () => _mapFailureToMessage(failure),
-              ),
-            ),
-        ((_) {}));
+      (failure) async => emit(
+        state.copyWith(
+          status: () => ItemsSubscriptionStatus.error,
+          errorMessage: () => _mapFailureToMessage(failure),
+        ),
+      ),
+      (_) {},
+    );
   }
 
   /// maps the failure to a message using the failure type
   String _mapFailureToMessage(Failure failure) {
     switch (failure.runtimeType) {
       case LengthFailure:
-        return lengthError;
+        return _lengthError;
       case NoSelectionFailure:
-        return selectionError;
+        return _selectionError;
       case ItemNotFoundFailure:
-        return itemNotFoundError;
+        return _itemNotFoundError;
       default:
         return 'Unexpected error';
     }

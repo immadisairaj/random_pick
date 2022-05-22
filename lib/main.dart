@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'features/random/presentation/pages/random_page.dart';
-import 'injection_container.dart' as di;
+import 'package:random_pick/features/random/presentation/pages/random_page.dart';
+import 'package:random_pick/injection_container.dart' as di;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,7 +8,9 @@ void main() {
   runApp(const MyApp());
 }
 
+/// main application widget
 class MyApp extends StatelessWidget {
+  /// create the main application
   const MyApp({super.key});
 
   // This widget is the root of the application.
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         colorSchemeSeed: Colors.purple,
         brightness: Brightness.dark,
       ),
-      // TODO: add theme change option
+      // TODO(immadisairaj): add theme change option
       themeMode: ThemeMode.light,
       home: const RandomPage(),
     );

@@ -6,6 +6,14 @@ import 'package:flutter/material.dart';
 /// [message] displays in normal size
 /// when [isError] is true, [message] is displayed in red
 class MessageDisplay extends StatelessWidget {
+  /// creates a message display widget
+  const MessageDisplay({
+    super.key,
+    this.randomPicked,
+    required this.message,
+    this.isError = false,
+  });
+
   /// The picked number/item to display in bold and large size
   final String? randomPicked;
 
@@ -14,14 +22,6 @@ class MessageDisplay extends StatelessWidget {
 
   /// set to true to display [message] in red
   final bool isError;
-
-  /// creates a message display widget
-  const MessageDisplay({
-    super.key,
-    this.randomPicked,
-    required this.message,
-    this.isError = false,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class MessageDisplay extends StatelessWidget {
               ),
             ),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10),
             child: Text(
               message,
               textAlign: TextAlign.center,

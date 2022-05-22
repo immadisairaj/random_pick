@@ -38,7 +38,7 @@ void main() {
       // act
       final result = await usecase(NoParams());
       // assert
-      expect(result, Right(tRandomItemPicked));
+      expect(result, Right<dynamic, RandomItemPicked>(tRandomItemPicked));
       verify(mockRandomListRepository.getRandomItem());
       verifyNoMoreInteractions(mockRandomListRepository);
     },

@@ -1,8 +1,7 @@
 import 'package:dartz/dartz.dart';
-
-import '../../../../../core/error/failures.dart';
-import '../entities/item.dart';
-import '../entities/random_item_picked.dart';
+import 'package:random_pick/core/error/failures.dart';
+import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
+import 'package:random_pick/features/random/random_list/domain/entities/random_item_picked.dart';
 
 /// random list repository which contains the methods for random list
 abstract class RandomListRepository {

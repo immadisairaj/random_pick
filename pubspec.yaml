@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 # versioning style <major>.<feature>.<fixes>+<commits>
-version: 0.2.1+38
+version: 0.2.2+39
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -31,7 +31,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -64,10 +63,13 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
 
-  # Mock things
-  mockito: ^5.1.0
+  # Very good analysis
+  very_good_analysis: ^3.0.0
+
   # Build runner which is helpful for mockito
   build_runner: ^2.1.8
+  # Mock things
+  mockito: ^5.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

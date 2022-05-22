@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -35,7 +33,7 @@ void main() {
     return;
   }
 
-  const RandomListState tRandomListState = RandomListState();
+  const tRandomListState = RandomListState();
 
   test('initial state should be RandomList with default status', () {
     expect(bloc.state, equals(const RandomListState()));
@@ -51,7 +49,7 @@ void main() {
       itemPool: tItemPool,
     );
 
-    successClearItems() {
+    void successClearItems() {
       when(mockSubscribeItems.clearItemPool())
           .thenAnswer((_) async => Right(returnVoid()));
     }
@@ -76,7 +74,7 @@ void main() {
 
     test(
       'should emit [Loading, Loaded] when data is gotten successfully',
-      () async {
+      () {
         // arrange
         when(mockGetRandomItem(any))
             .thenAnswer((_) async => Right(tRandomItemPicked));
@@ -84,7 +82,8 @@ void main() {
         // assert later
         final expected = [
           tRandomListState.copyWith(
-              status: () => ItemsSubscriptionStatus.randomPickLoading),
+            status: () => ItemsSubscriptionStatus.randomPickLoading,
+          ),
           tRandomListState.copyWith(
             randomItemPicked: () => tRandomItemPicked,
             status: () => ItemsSubscriptionStatus.randomPickLoaded,
@@ -98,7 +97,7 @@ void main() {
 
     test(
       'should emit [Loading, Error] when get random item is length failed',
-      () async {
+      () {
         // arrange
         when(mockGetRandomItem(any))
             .thenAnswer((_) async => Left(LengthFailure()));
@@ -106,7 +105,8 @@ void main() {
         // assert later
         final expected = [
           tRandomListState.copyWith(
-              status: () => ItemsSubscriptionStatus.randomPickLoading),
+            status: () => ItemsSubscriptionStatus.randomPickLoading,
+          ),
           tRandomListState.copyWith(
             status: () => ItemsSubscriptionStatus.error,
             errorMessage: () =>
@@ -122,7 +122,7 @@ void main() {
 
     test(
       'should emit [Loading, Error] when get random item is selection failed',
-      () async {
+      () {
         // arrange
         when(mockGetRandomItem(any))
             .thenAnswer((_) async => Left(NoSelectionFailure()));
@@ -130,7 +130,8 @@ void main() {
         // assert later
         final expected = [
           tRandomListState.copyWith(
-              status: () => ItemsSubscriptionStatus.randomPickLoading),
+            status: () => ItemsSubscriptionStatus.randomPickLoading,
+          ),
           tRandomListState.copyWith(
             status: () => ItemsSubscriptionStatus.error,
             errorMessage: () =>
@@ -151,10 +152,10 @@ void main() {
 
     test(
       'should load and subscribe items',
-      () async {
+      () {
         // arrange
         final tController = BehaviorSubject<List<Item>>.seeded(const []);
-        Stream<List<Item>> tStream = tController.asBroadcastStream();
+        final tStream = tController.asBroadcastStream();
         when(mockSubscribeItems(any)).thenAnswer((_) async => Right(tStream));
         // assert later
         final expected = [
@@ -173,7 +174,7 @@ void main() {
 
     test(
       'should fail when subscribe items',
-      () async {
+      () {
         // arrange
         when(mockSubscribeItems(any))
             .thenAnswer((_) async => const Left(UnknownFailure()));
@@ -195,12 +196,12 @@ void main() {
 
     test(
       'should fail when subscribe items in right',
-      () async {
+      () {
         // arrange
-        final tController = BehaviorSubject<List<Item>>.seeded(const []);
-        // add error to stream
-        tController.addError(const UnknownFailure());
-        Stream<List<Item>> tStream = tController.asBroadcastStream();
+        final tController = BehaviorSubject<List<Item>>.seeded(const [])
+          // add error to stream
+          ..addError(const UnknownFailure());
+        final tStream = tController.asBroadcastStream();
         when(mockSubscribeItems(any)).thenAnswer((_) async => Right(tStream));
         // assert later
         final expected = [
@@ -220,12 +221,12 @@ void main() {
 
     test(
       'should not emit on item added',
-      () async {
+      () {
         // act
         when(mockSubscribeItems.addItemToPool(Params(item: tItemPool[0])))
             .thenAnswer((_) async => Right(returnVoid()));
         // assert later
-        final expected = [];
+        final expected = <dynamic>[];
         expectLater(bloc.stream, emitsInOrder(expected));
         // act
         bloc.add(ItemAddRequested(item: tItemPool[0]));
@@ -234,12 +235,12 @@ void main() {
 
     test(
       'should not emit on item removed',
-      () async {
+      () {
         // act
         when(mockSubscribeItems.removeItemFromPool(Params(item: tItemPool[0])))
             .thenAnswer((_) async => Right(returnVoid()));
         // assert later
-        final expected = [];
+        final expected = <dynamic>[];
         expectLater(bloc.stream, emitsInOrder(expected));
         // act
         bloc.add(ItemRemoveRequested(item: tItemPool[0]));
@@ -248,7 +249,7 @@ void main() {
 
     test(
       'should emit error on item removed failed',
-      () async {
+      () {
         // act
         when(mockSubscribeItems.removeItemFromPool(Params(item: tItemPool[0])))
             .thenAnswer((_) async => Left(ItemNotFoundFailure()));

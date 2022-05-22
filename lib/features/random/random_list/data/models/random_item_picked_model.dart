@@ -1,30 +1,36 @@
-import '../../domain/entities/item.dart';
-import '../../domain/entities/random_item_picked.dart';
-import 'item_model.dart';
+import 'package:random_pick/features/random/random_list/data/models/item_model.dart';
+import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
+import 'package:random_pick/features/random/random_list/domain/entities/random_item_picked.dart';
 
+/// model for the [RandomItemPicked]
 class RandomItemPickedModel extends RandomItemPicked {
+  /// creates a [RandomItemPickedModel] which contains
+  /// the functions for json conversions
   const RandomItemPickedModel({
     required super.itemPicked,
     required super.itemPool,
   });
 
+  /// converts the json map to [RandomItemPickedModel]
   factory RandomItemPickedModel.fromJson(Map<String, dynamic> json) {
     return RandomItemPickedModel(
-      itemPicked: ItemModel.fromJson(json['itemPicked']),
-      itemPool: (json['itemPool'] as List)
-          .map((item) => ItemModel.fromJson(item))
+      itemPicked:
+          ItemModel.fromJson(json['itemPicked'] as Map<String, dynamic>),
+      itemPool: List<Map<String, dynamic>>.from(json['itemPool'] as List)
+          .map<ItemModel>(ItemModel.fromJson)
           .toList(),
     );
   }
 
+  /// converts the [RandomItemPickedModel] to json map
   Map<String, dynamic> toJson() {
-    return {
-      'itemPicked': toItemModel(itemPicked).toJson(),
-      'itemPool': itemPool.map((item) => toItemModel(item).toJson()).toList(),
+    return <String, dynamic>{
+      'itemPicked': _toItemModel(itemPicked).toJson(),
+      'itemPool': itemPool.map((item) => _toItemModel(item).toJson()).toList(),
     };
   }
 
-  ItemModel toItemModel(Item item) {
+  ItemModel _toItemModel(Item item) {
     return ItemModel(
       id: item.id,
       text: item.text,

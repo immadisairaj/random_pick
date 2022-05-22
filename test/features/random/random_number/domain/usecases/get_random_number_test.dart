@@ -35,7 +35,7 @@ void main() {
       // act
       final result = await usecase(Params(numberRange: tNumberRange));
       // assert
-      expect(result, Right(tRandomNumberPicked));
+      expect(result, Right<dynamic, RandomNumberPicked>(tRandomNumberPicked));
       verify(mockNumberRangeRepository.getRandomNumber(tNumberRange));
       verifyNoMoreInteractions(mockNumberRangeRepository);
     },

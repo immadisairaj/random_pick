@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../bloc/random_number_bloc.dart';
+import 'package:random_pick/features/random/random_number/presentation/bloc/random_number_bloc.dart';
 
 /// Widget that controlls the [RandomNumberBloc]
 ///
@@ -56,7 +55,7 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10),
                     child: TextField(
                       controller: _minController,
                       textAlign: TextAlign.center,
@@ -72,7 +71,7 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10),
                     child: TextField(
                       controller: _maxController,
                       textAlign: TextAlign.center,
@@ -94,20 +93,20 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
               children: const [
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(10),
                     child: Center(child: Text('Min (inclusive)')),
                   ),
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(10),
                     child: Center(child: Text('Max (inclusive)')),
                   ),
                 ),
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20),
               child: ElevatedButton(
                 onPressed: _dispatchRandomNumber,
                 child: const Text('Pick Random Number'),
@@ -121,7 +120,11 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
 
   void _dispatchRandomNumber() {
     FocusScope.of(context).unfocus();
-    BlocProvider.of<RandomNumberBloc>(context).add(GetRandomNumberForRange(
-        min: _minController.text, max: _maxController.text));
+    BlocProvider.of<RandomNumberBloc>(context).add(
+      GetRandomNumberForRange(
+        min: _minController.text,
+        max: _maxController.text,
+      ),
+    );
   }
 }

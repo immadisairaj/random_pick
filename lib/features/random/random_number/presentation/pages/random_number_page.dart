@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../../injection_container.dart';
-import '../../../presentation/widgets/message_display.dart';
-import '../bloc/random_number_bloc.dart';
-import '../widgets/random_number_controller.dart';
+import 'package:random_pick/features/random/presentation/widgets/message_display.dart';
+import 'package:random_pick/features/random/random_number/presentation/bloc/random_number_bloc.dart';
+import 'package:random_pick/features/random/random_number/presentation/widgets/random_number_controller.dart';
+import 'package:random_pick/injection_container.dart';
 
 /// Widget or Page that displays the random number pick
 class RandomNumberPage extends StatelessWidget {
+  /// creates a random number page
   const RandomNumberPage({super.key});
 
   @override
@@ -31,13 +31,13 @@ class RandomNumberPage extends StatelessWidget {
                       child: CircularProgressIndicator(),
                     );
                   } else if (state is RandomNumberLoaded) {
+                    final picked = state.randomNumberPicked;
                     return MessageDisplay(
-                      randomPicked:
-                          state.randomNumberPicked.randomNumber.toString(),
+                      randomPicked: picked.randomNumber.toString(),
                       message: 'is the random number picked from\n'
-                          '${state.randomNumberPicked.numberRange.min.toString()}'
+                          '${picked.numberRange.min.toString()}'
                           ' to '
-                          '${state.randomNumberPicked.numberRange.max.toString()}',
+                          '${picked.numberRange.max.toString()}',
                     );
                   } else if (state is RandomNumberError) {
                     return MessageDisplay(
