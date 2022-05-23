@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:random_pick/core/error/failures.dart';
 import 'package:random_pick/core/usecases/usecase.dart';
 import 'package:random_pick/features/random/random_list/data/repositories/random_list_repository_impl.dart';
@@ -12,9 +11,10 @@ import 'package:random_pick/features/random/random_list/domain/usecases/subscrib
 import 'package:random_pick/features/random/random_list/presentation/bloc/random_list_bloc.dart';
 import 'package:rxdart/subjects.dart';
 
-import 'random_list_bloc_test.mocks.dart';
+class MockGetRandomItem extends Mock implements GetRandomItem {}
 
-@GenerateMocks([GetRandomItem, SubscribeItems])
+class MockSubscribeItems extends Mock implements SubscribeItems {}
+
 void main() {
   late RandomListBloc bloc;
   late MockGetRandomItem mockGetRandomItem;
@@ -27,6 +27,10 @@ void main() {
       getRandomItem: mockGetRandomItem,
       subscribeItems: mockSubscribeItems,
     );
+  });
+
+  setUpAll(() {
+    registerFallbackValue(NoParams());
   });
 
   void returnVoid() {
@@ -50,7 +54,7 @@ void main() {
     );
 
     void successClearItems() {
-      when(mockSubscribeItems.clearItemPool())
+      when(() => mockSubscribeItems.clearItemPool())
           .thenAnswer((_) async => Right(returnVoid()));
     }
 
@@ -59,16 +63,16 @@ void main() {
       ' along with clear item pool',
       () async {
         // arrange
-        when(mockGetRandomItem(any))
+        when(() => mockGetRandomItem(any()))
             .thenAnswer((_) async => Right(tRandomItemPicked));
         successClearItems();
         // act
         bloc.add(const GetRandomItemEvent());
-        await untilCalled(mockGetRandomItem(any));
-        await untilCalled(mockSubscribeItems.clearItemPool());
+        await untilCalled(() => mockGetRandomItem(any()));
+        await untilCalled(() => mockSubscribeItems.clearItemPool());
         // assert
-        verify(mockGetRandomItem(NoParams()));
-        verify(mockSubscribeItems.clearItemPool());
+        verify(() => mockGetRandomItem(NoParams()));
+        verify(() => mockSubscribeItems.clearItemPool());
       },
     );
 
@@ -76,7 +80,7 @@ void main() {
       'should emit [Loading, Loaded] when data is gotten successfully',
       () {
         // arrange
-        when(mockGetRandomItem(any))
+        when(() => mockGetRandomItem(any()))
             .thenAnswer((_) async => Right(tRandomItemPicked));
         successClearItems();
         // assert later
@@ -99,7 +103,7 @@ void main() {
       'should emit [Loading, Error] when get random item is length failed',
       () {
         // arrange
-        when(mockGetRandomItem(any))
+        when(() => mockGetRandomItem(any()))
             .thenAnswer((_) async => Left(LengthFailure()));
         successClearItems();
         // assert later
@@ -124,7 +128,7 @@ void main() {
       'should emit [Loading, Error] when get random item is selection failed',
       () {
         // arrange
-        when(mockGetRandomItem(any))
+        when(() => mockGetRandomItem(any()))
             .thenAnswer((_) async => Left(NoSelectionFailure()));
         successClearItems();
         // assert later
@@ -156,7 +160,8 @@ void main() {
         // arrange
         final tController = BehaviorSubject<List<Item>>.seeded(const []);
         final tStream = tController.asBroadcastStream();
-        when(mockSubscribeItems(any)).thenAnswer((_) async => Right(tStream));
+        when(() => mockSubscribeItems(any()))
+            .thenAnswer((_) async => Right(tStream));
         // assert later
         final expected = [
           tRandomListState.copyWith(
@@ -176,7 +181,7 @@ void main() {
       'should fail when subscribe items',
       () {
         // arrange
-        when(mockSubscribeItems(any))
+        when(() => mockSubscribeItems(any()))
             .thenAnswer((_) async => const Left(UnknownFailure()));
         // assert later
         final expected = [
@@ -202,7 +207,8 @@ void main() {
           // add error to stream
           ..addError(const UnknownFailure());
         final tStream = tController.asBroadcastStream();
-        when(mockSubscribeItems(any)).thenAnswer((_) async => Right(tStream));
+        when(() => mockSubscribeItems(any()))
+            .thenAnswer((_) async => Right(tStream));
         // assert later
         final expected = [
           tRandomListState.copyWith(
@@ -223,7 +229,7 @@ void main() {
       'should not emit on item added',
       () {
         // act
-        when(mockSubscribeItems.addItemToPool(Params(item: tItemPool[0])))
+        when(() => mockSubscribeItems.addItemToPool(Params(item: tItemPool[0])))
             .thenAnswer((_) async => Right(returnVoid()));
         // assert later
         final expected = <dynamic>[];
@@ -237,7 +243,8 @@ void main() {
       'should not emit on item removed',
       () {
         // act
-        when(mockSubscribeItems.removeItemFromPool(Params(item: tItemPool[0])))
+        when(() => mockSubscribeItems
+                .removeItemFromPool(Params(item: tItemPool[0])))
             .thenAnswer((_) async => Right(returnVoid()));
         // assert later
         final expected = <dynamic>[];
@@ -251,7 +258,8 @@ void main() {
       'should emit error on item removed failed',
       () {
         // act
-        when(mockSubscribeItems.removeItemFromPool(Params(item: tItemPool[0])))
+        when(() => mockSubscribeItems
+                .removeItemFromPool(Params(item: tItemPool[0])))
             .thenAnswer((_) async => Left(ItemNotFoundFailure()));
         // assert later
         final expected = [

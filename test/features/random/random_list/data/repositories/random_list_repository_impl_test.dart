@@ -2,16 +2,14 @@ import 'dart:async';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:random_pick/features/random/random_list/data/datasources/random_list_data_source.dart';
 import 'package:random_pick/features/random/random_list/data/models/item_model.dart';
 import 'package:random_pick/features/random/random_list/data/models/random_item_picked_model.dart';
 import 'package:random_pick/features/random/random_list/data/repositories/random_list_repository_impl.dart';
 
-import 'random_list_repository_impl_test.mocks.dart';
+class MockRandomListDataSource extends Mock implements RandomListDataSource {}
 
-@GenerateMocks([RandomListDataSource])
 void main() {
   late RandomListRepositoryImpl repository;
   late MockRandomListDataSource mockDataSource;
@@ -21,6 +19,10 @@ void main() {
     repository = RandomListRepositoryImpl(
       dataSource: mockDataSource,
     );
+  });
+
+  setUpAll(() {
+    registerFallbackValue(ItemModel(text: 'text'));
   });
 
   test(
@@ -38,12 +40,12 @@ void main() {
         itemPool: tItemPool,
       );
 
-      when(mockDataSource.getRandomItem())
+      when(() => mockDataSource.getRandomItem())
           .thenAnswer((_) async => tRandomItemPicked);
       // act
       final result = await repository.getRandomItem();
       // assert
-      verify(mockDataSource.getRandomItem());
+      verify(() => mockDataSource.getRandomItem());
       expect(
         result,
         equals(
@@ -57,11 +59,11 @@ void main() {
     'should return length failure if length of list is not valid',
     () async {
       // arrange
-      when(mockDataSource.getRandomItem()).thenThrow(LengthException());
+      when(() => mockDataSource.getRandomItem()).thenThrow(LengthException());
       // act
       final result = await repository.getRandomItem();
       // assert
-      verify(mockDataSource.getRandomItem());
+      verify(() => mockDataSource.getRandomItem());
       expect(result, equals(Left<LengthFailure, dynamic>(LengthFailure())));
     },
   );
@@ -70,11 +72,12 @@ void main() {
     'should return no selection failure if none of list is selected',
     () async {
       // arrange
-      when(mockDataSource.getRandomItem()).thenThrow(NoSelectionException());
+      when(() => mockDataSource.getRandomItem())
+          .thenThrow(NoSelectionException());
       // act
       final result = await repository.getRandomItem();
       // assert
-      verify(mockDataSource.getRandomItem());
+      verify(() => mockDataSource.getRandomItem());
       expect(
         result,
         equals(
@@ -95,11 +98,11 @@ void main() {
       final tController = StreamController<List<ItemModel>>();
       final tStream = tController.stream;
 
-      when(mockDataSource.getItemPool()).thenAnswer((_) async => tStream);
+      when(() => mockDataSource.getItemPool()).thenAnswer((_) async => tStream);
       // act
       final result = await repository.getItemPool();
       // assert
-      verify(mockDataSource.getItemPool());
+      verify(() => mockDataSource.getItemPool());
       expect(result, equals(Right<dynamic, Stream<List<ItemModel>>>(tStream)));
     },
   );
@@ -110,12 +113,12 @@ void main() {
       // arrange
       final tItem = ItemModel(text: 'Item 1');
 
-      when(mockDataSource.addItemToPool(any))
+      when(() => mockDataSource.addItemToPool(any()))
           .thenAnswer((_) async => returnVoid());
       // act
       final result = await repository.addItemToPool(tItem);
       // assert
-      verify(mockDataSource.addItemToPool(tItem));
+      verify(() => mockDataSource.addItemToPool(tItem));
       expect(result, equals(Right<dynamic, void>(returnVoid())));
     },
   );
@@ -124,12 +127,12 @@ void main() {
     'should verify if add item to pool',
     () async {
       // arrange
-      when(mockDataSource.clearItemPool())
+      when(() => mockDataSource.clearItemPool())
           .thenAnswer((_) async => returnVoid());
       // act
       final result = await repository.clearItemPool();
       // assert
-      verify(mockDataSource.clearItemPool());
+      verify(() => mockDataSource.clearItemPool());
       expect(result, equals(Right<dynamic, void>(returnVoid())));
     },
   );
@@ -144,12 +147,12 @@ void main() {
         ItemModel(text: 'Item 3'),
       ];
 
-      when(mockDataSource.updateItemPool(any))
+      when(() => mockDataSource.updateItemPool(any()))
           .thenAnswer((_) async => returnVoid());
       // act
       final result = await repository.updateItemPool(tItemPool);
       // assert
-      verify(mockDataSource.updateItemPool(tItemPool));
+      verify(() => mockDataSource.updateItemPool(tItemPool));
       expect(result, equals(Right<dynamic, void>(returnVoid())));
     },
   );
@@ -160,12 +163,12 @@ void main() {
       // arrange
       final tItem = ItemModel(text: 'Item 1');
 
-      when(mockDataSource.removeItemFromPool(any))
+      when(() => mockDataSource.removeItemFromPool(any()))
           .thenAnswer((_) async => returnVoid());
       // act
       final result = await repository.removeItemFromPool(tItem);
       // assert
-      verify(mockDataSource.removeItemFromPool(tItem));
+      verify(() => mockDataSource.removeItemFromPool(tItem));
       expect(result, equals(Right<dynamic, void>(returnVoid())));
     },
   );
@@ -176,12 +179,12 @@ void main() {
       // arrange
       final tItem = ItemModel(text: 'Item 1');
 
-      when(mockDataSource.removeItemFromPool(any))
+      when(() => mockDataSource.removeItemFromPool(any()))
           .thenThrow(ItemNotFoundException());
       // act
       final result = await repository.removeItemFromPool(tItem);
       // assert
-      verify(mockDataSource.removeItemFromPool(tItem));
+      verify(() => mockDataSource.removeItemFromPool(tItem));
       expect(
         result,
         equals(

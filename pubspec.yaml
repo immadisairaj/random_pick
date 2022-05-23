@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 # versioning style <major>.<feature>.<fixes>+<commits>
-version: 0.2.2+39
+version: 0.2.2+40
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -49,6 +49,9 @@ dependencies:
   # rxdart for streams
   rxdart: ^0.27.3
 
+  # Mock things
+  mocktail: ^0.3.0
+
   # package information
   package_info_plus: ^1.4.2
 
@@ -65,11 +68,6 @@ dev_dependencies:
 
   # Very good analysis
   very_good_analysis: ^3.0.0
-
-  # Build runner which is helpful for mockito
-  build_runner: ^2.1.8
-  # Mock things
-  mockito: ^5.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

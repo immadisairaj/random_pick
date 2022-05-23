@@ -1,16 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:random_pick/core/utils/input_converter.dart';
 import 'package:random_pick/features/random/random_number/domain/entities/number_range.dart';
 import 'package:random_pick/features/random/random_number/domain/entities/random_number_picked.dart';
 import 'package:random_pick/features/random/random_number/domain/usecases/get_random_number.dart';
 import 'package:random_pick/features/random/random_number/presentation/bloc/random_number_bloc.dart';
 
-import 'random_number_bloc_test.mocks.dart';
+class MockGetRandomNumber extends Mock implements GetRandomNumber {}
 
-@GenerateMocks([GetRandomNumber, InputConverter])
+class MockInputConverter extends Mock implements InputConverter {}
+
 void main() {
   late RandomNumberBloc bloc;
   late MockGetRandomNumber mockGetRandomNumber;
@@ -23,6 +23,10 @@ void main() {
       getRandomNumber: mockGetRandomNumber,
       inputConverter: mockInputConverter,
     );
+  });
+
+  setUpAll(() {
+    registerFallbackValue(Params(numberRange: NumberRange(max: 1)));
   });
 
   test('initial state should be RandomNumberEmpty', () {
@@ -43,7 +47,7 @@ void main() {
 
     test('should emit [Error] state when no proper input', () {
       // arrage
-      when(mockInputConverter.stringsToNumberRange(any, any))
+      when(() => mockInputConverter.stringsToNumberRange(any(), any()))
           .thenReturn(Left(InvalidInputFailure()));
       // assert later
       final expected = [
@@ -62,7 +66,7 @@ void main() {
 
     test('should emit [Error] state when no proper input range', () {
       // arrage
-      when(mockInputConverter.stringsToNumberRange(any, any))
+      when(() => mockInputConverter.stringsToNumberRange(any(), any()))
           .thenReturn(Left(InvalidNumberRangeFailure()));
       // assert later
       final expected = [
@@ -80,7 +84,7 @@ void main() {
     });
 
     void setUpMockInputSuccess() {
-      when(mockInputConverter.stringsToNumberRange(any, any))
+      when(() => mockInputConverter.stringsToNumberRange(any(), any()))
           .thenReturn(Right(tNumberRange));
     }
 
@@ -91,7 +95,7 @@ void main() {
       () async {
         // arrange
         setUpMockInputSuccess();
-        when(mockGetRandomNumber(any))
+        when(() => mockGetRandomNumber(any()))
             .thenAnswer((_) async => Right(tRandomNumberPicked));
         // act
         bloc.add(
@@ -100,11 +104,13 @@ void main() {
             max: tMaxString,
           ),
         );
-        await untilCalled(mockInputConverter.stringsToNumberRange(any, any));
-        await untilCalled(mockGetRandomNumber(any));
+        await untilCalled(
+            () => mockInputConverter.stringsToNumberRange(any(), any()));
+        await untilCalled(() => mockGetRandomNumber(any()));
         // assert
-        verify(mockInputConverter.stringsToNumberRange(tMinString, tMaxString));
-        verify(mockGetRandomNumber(Params(numberRange: tNumberRange)));
+        verify(() =>
+            mockInputConverter.stringsToNumberRange(tMinString, tMaxString));
+        verify(() => mockGetRandomNumber(Params(numberRange: tNumberRange)));
       },
     );
 
@@ -113,7 +119,7 @@ void main() {
       () {
         // arrange
         setUpMockInputSuccess();
-        when(mockGetRandomNumber(any))
+        when(() => mockGetRandomNumber(any()))
             .thenAnswer((_) async => Right(tRandomNumberPicked));
         // assert later
         final expected = [
