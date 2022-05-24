@@ -243,9 +243,10 @@ void main() {
       'should not emit on item removed',
       () {
         // act
-        when(() => mockSubscribeItems
-                .removeItemFromPool(Params(item: tItemPool[0])))
-            .thenAnswer((_) async => Right(returnVoid()));
+        when(
+          () =>
+              mockSubscribeItems.removeItemFromPool(Params(item: tItemPool[0])),
+        ).thenAnswer((_) async => Right(returnVoid()));
         // assert later
         final expected = <dynamic>[];
         expectLater(bloc.stream, emitsInOrder(expected));
@@ -258,9 +259,10 @@ void main() {
       'should emit error on item removed failed',
       () {
         // act
-        when(() => mockSubscribeItems
-                .removeItemFromPool(Params(item: tItemPool[0])))
-            .thenAnswer((_) async => Left(ItemNotFoundFailure()));
+        when(
+          () =>
+              mockSubscribeItems.removeItemFromPool(Params(item: tItemPool[0])),
+        ).thenAnswer((_) async => Left(ItemNotFoundFailure()));
         // assert later
         final expected = [
           tRandomListState.copyWith(

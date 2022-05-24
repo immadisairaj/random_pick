@@ -105,11 +105,13 @@ void main() {
           ),
         );
         await untilCalled(
-            () => mockInputConverter.stringsToNumberRange(any(), any()));
+          () => mockInputConverter.stringsToNumberRange(any(), any()),
+        );
         await untilCalled(() => mockGetRandomNumber(any()));
         // assert
-        verify(() =>
-            mockInputConverter.stringsToNumberRange(tMinString, tMaxString));
+        verify(
+          () => mockInputConverter.stringsToNumberRange(tMinString, tMaxString),
+        );
         verify(() => mockGetRandomNumber(Params(numberRange: tNumberRange)));
       },
     );
