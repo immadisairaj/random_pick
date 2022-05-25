@@ -9,11 +9,14 @@
  <!-- <a href="https://immadisairaj.github.io/random_pick">
     <img src="https://img.shields.io/badge/Visit-Website-e91e62" alt="website"></img>
   </a> -->
+  <a href="https://pub.dev/packages/very_good_analysis">
+    <img src="https://img.shields.io/badge/style-very_good_analysis-B22C89.svg" alt="style">
+  </a>
   <a href="https://github.com/immadisairaj/random_pick/blob/main/LICENSE.md">
-    <img src="https://img.shields.io/github/license/immadisairaj/random_pick" alt="license">
+    <img src="https://img.shields.io/github/license/immadisairaj/random_pick.svg" alt="license">
   </a>
   <a href="https://immadisairaj.github.io/random_pick/privacy_policy.html">
-    <img src="https://img.shields.io/badge/Privacy-Policy-ea4ca0" alt="privacy policy">
+    <img src="https://img.shields.io/badge/privacy-policy-ea4ca0.svg" alt="privacy policy">
   </a>
 </p>
 <p align="center">
