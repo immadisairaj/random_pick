@@ -25,16 +25,8 @@ class RandomItemPickedModel extends RandomItemPicked {
   /// converts the [RandomItemPickedModel] to json map
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'itemPicked': _toItemModel(itemPicked).toJson(),
-      'itemPool': itemPool.map((item) => _toItemModel(item).toJson()).toList(),
+      'itemPicked': (itemPicked as ItemModel).toJson(),
+      'itemPool': itemPool.map((item) => (item as ItemModel).toJson()).toList(),
     };
-  }
-
-  ItemModel _toItemModel(Item item) {
-    return ItemModel(
-      id: item.id,
-      text: item.text,
-      selected: item.selected,
-    );
   }
 }

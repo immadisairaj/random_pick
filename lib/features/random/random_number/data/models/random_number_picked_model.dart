@@ -22,13 +22,9 @@ class RandomNumberPickedModel extends RandomNumberPicked {
 
   /// converts the [RandomNumberPickedModel] to json map
   Map<String, dynamic> toJson() {
-    final numberRangeModel = NumberRangeModel(
-      min: numberRange.min,
-      max: numberRange.max,
-    );
     return <String, dynamic>{
       'randomNumber': randomNumber,
-      'numberRange': numberRangeModel.toJson(),
+      'numberRange': (numberRange as NumberRangeModel).toJson(),
     };
   }
 }
