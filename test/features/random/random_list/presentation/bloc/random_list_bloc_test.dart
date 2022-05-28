@@ -3,6 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:random_pick/core/error/failures.dart';
 import 'package:random_pick/core/usecases/usecase.dart';
+import 'package:random_pick/features/random/random_history/data/repositories/random_history_repository_impl.dart';
+import 'package:random_pick/features/random/random_history/domain/entities/pick_history.dart';
+import 'package:random_pick/features/random/random_history/domain/usecases/subscribe_random_history.dart';
 import 'package:random_pick/features/random/random_list/data/repositories/random_list_repository_impl.dart';
 import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
 import 'package:random_pick/features/random/random_list/domain/entities/random_item_picked.dart';
@@ -15,22 +18,24 @@ class MockGetRandomItem extends Mock implements GetRandomItem {}
 
 class MockSubscribeItems extends Mock implements SubscribeItems {}
 
+class MockSubscribeRandomHistory extends Mock
+    implements SubscribeRandomHistory {}
+
 void main() {
   late RandomListBloc bloc;
   late MockGetRandomItem mockGetRandomItem;
   late MockSubscribeItems mockSubscribeItems;
+  late MockSubscribeRandomHistory mockSubscribeRandomHistory;
 
   setUp(() {
     mockGetRandomItem = MockGetRandomItem();
     mockSubscribeItems = MockSubscribeItems();
+    mockSubscribeRandomHistory = MockSubscribeRandomHistory();
     bloc = RandomListBloc(
       getRandomItem: mockGetRandomItem,
       subscribeItems: mockSubscribeItems,
+      subscribeRandomHistory: mockSubscribeRandomHistory,
     );
-  });
-
-  setUpAll(() {
-    registerFallbackValue(NoParams());
   });
 
   void returnVoid() {
@@ -52,9 +57,23 @@ void main() {
       itemPicked: tItemPicked,
       itemPool: tItemPool,
     );
+    final tRandomPickHistory = PickHistory(
+      dateTime: DateTime.now(),
+      picked: tRandomItemPicked,
+    );
+
+    setUpAll(() {
+      registerFallbackValue(NoParams());
+      registerFallbackValue(HistoryParams(pickHistory: tRandomPickHistory));
+    });
 
     void successClearItems() {
       when(() => mockSubscribeItems.clearItemPool())
+          .thenAnswer((_) async => Right(returnVoid()));
+    }
+
+    void setUpMockHistorySuccess() {
+      when(() => mockSubscribeRandomHistory.putRandomHistory(any()))
           .thenAnswer((_) async => Right(returnVoid()));
     }
 
@@ -66,6 +85,7 @@ void main() {
         when(() => mockGetRandomItem(any()))
             .thenAnswer((_) async => Right(tRandomItemPicked));
         successClearItems();
+        setUpMockHistorySuccess();
         // act
         bloc.add(const GetRandomItemEvent());
         await untilCalled(() => mockGetRandomItem(any()));
@@ -83,6 +103,7 @@ void main() {
         when(() => mockGetRandomItem(any()))
             .thenAnswer((_) async => Right(tRandomItemPicked));
         successClearItems();
+        setUpMockHistorySuccess();
         // assert later
         final expected = [
           tRandomListState.copyWith(
@@ -106,6 +127,7 @@ void main() {
         when(() => mockGetRandomItem(any()))
             .thenAnswer((_) async => Left(LengthFailure()));
         successClearItems();
+        setUpMockHistorySuccess();
         // assert later
         final expected = [
           tRandomListState.copyWith(
@@ -131,6 +153,7 @@ void main() {
         when(() => mockGetRandomItem(any()))
             .thenAnswer((_) async => Left(NoSelectionFailure()));
         successClearItems();
+        setUpMockHistorySuccess();
         // assert later
         final expected = [
           tRandomListState.copyWith(
@@ -140,6 +163,33 @@ void main() {
             status: () => ItemsSubscriptionStatus.error,
             errorMessage: () =>
                 'No item selected - Please, select at least one item',
+          ),
+        ];
+        expectLater(bloc.stream, emitsInOrder(expected));
+        // act
+        bloc.add(const GetRandomItemEvent());
+      },
+    );
+
+    test(
+      // ignore: missing_whitespace_between_adjacent_strings
+      'should emit [Loading, Error] when data is gotten successfully'
+      'but, history is not saved',
+      () {
+        // arrange
+        when(() => mockGetRandomItem(any()))
+            .thenAnswer((_) async => Right(tRandomItemPicked));
+        successClearItems();
+        when(() => mockSubscribeRandomHistory.putRandomHistory(any()))
+            .thenAnswer((_) async => Left(HistoryAlreadyExistsFailure()));
+        // assert later
+        final expected = [
+          tRandomListState.copyWith(
+            status: () => ItemsSubscriptionStatus.randomPickLoading,
+          ),
+          tRandomListState.copyWith(
+            status: () => ItemsSubscriptionStatus.error,
+            errorMessage: () => historyAlreadyExists,
           ),
         ];
         expectLater(bloc.stream, emitsInOrder(expected));

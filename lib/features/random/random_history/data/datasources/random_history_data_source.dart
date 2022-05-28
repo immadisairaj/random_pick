@@ -63,7 +63,8 @@ class RandomHistoryDataSourceImpl implements RandomHistoryDataSource {
     if (historyIndex >= 0) {
       throw HistoryAlreadyExistsException();
     } else {
-      history.add(pickHistory);
+      // always add a history to the top of the list
+      history.insert(0, pickHistory);
     }
 
     _randomHistoryStreamController.add(history);

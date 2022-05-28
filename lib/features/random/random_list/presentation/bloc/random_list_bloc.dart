@@ -2,6 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:random_pick/core/error/failures.dart';
 import 'package:random_pick/core/usecases/usecase.dart';
+import 'package:random_pick/features/random/random_history/data/repositories/random_history_repository_impl.dart';
+import 'package:random_pick/features/random/random_history/domain/entities/pick_history.dart';
+import 'package:random_pick/features/random/random_history/domain/usecases/subscribe_random_history.dart';
 import 'package:random_pick/features/random/random_list/data/repositories/random_list_repository_impl.dart';
 import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
 import 'package:random_pick/features/random/random_list/domain/entities/random_item_picked.dart';
@@ -18,6 +21,10 @@ const String _selectionError =
     'No item selected - Please, select at least one item';
 const String _itemNotFoundError = 'Item not found to remove';
 
+/// error message on add a pick history and the history already exists
+const String historyAlreadyExists =
+    'History already exists to save - please use another id';
+
 /// business logic for random list
 class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
   /// Random list bloc which handles the subscribing to items
@@ -25,6 +32,7 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
   RandomListBloc({
     required this.getRandomItem,
     required this.subscribeItems,
+    required this.subscribeRandomHistory,
   }) : super(const RandomListState()) {
     on<ItemsSubscriptionRequested>(_onItemsSubscriptionRequested);
     on<ItemAddRequested>(_onItemAddRequested);
@@ -37,6 +45,9 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
 
   /// usecase to subscribe to items
   final SubscribeItems subscribeItems;
+
+  /// usecase to subscribe to history and put the history into database
+  final SubscribeRandomHistory subscribeRandomHistory;
 
   /// logic of what to do when the [GetRandomItemEvent] event is dispatched
   Future<void> _getRandomItemEvent(
@@ -59,11 +70,28 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
       ),
       (randomItemPicked) async {
         await subscribeItems.clearItemPool();
-        emit(
-          state.copyWith(
-            status: () => ItemsSubscriptionStatus.randomPickLoaded,
-            randomItemPicked: () => randomItemPicked,
+        final dateTime = DateTime.now();
+        final failureOrResult = await subscribeRandomHistory.putRandomHistory(
+          HistoryParams(
+            pickHistory:
+                PickHistory(dateTime: dateTime, picked: randomItemPicked),
           ),
+        );
+        await failureOrResult.fold(
+          (failure) async => emit(
+            state.copyWith(
+              status: () => ItemsSubscriptionStatus.error,
+              errorMessage: () => _mapFailureToMessage(failure),
+            ),
+          ),
+          (right) {
+            emit(
+              state.copyWith(
+                status: () => ItemsSubscriptionStatus.randomPickLoaded,
+                randomItemPicked: () => randomItemPicked,
+              ),
+            );
+          },
         );
       },
     );
@@ -136,6 +164,8 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
         return _selectionError;
       case ItemNotFoundFailure:
         return _itemNotFoundError;
+      case HistoryAlreadyExistsFailure:
+        return historyAlreadyExists;
       default:
         return 'Unexpected error';
     }

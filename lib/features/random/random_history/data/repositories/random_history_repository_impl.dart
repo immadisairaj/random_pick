@@ -28,7 +28,8 @@ class RandomHistoryRepositoryImpl implements RandomHistoryRepository {
   ) async {
     try {
       return Right(
-        await dataSource.addRandomHistory(pickHistory as PickHistoryModel),
+        await dataSource
+            .addRandomHistory(_convertPickHistoryToModel(pickHistory)),
       );
     } on HistoryAlreadyExistsException {
       return Left(HistoryAlreadyExistsFailure());
@@ -43,6 +44,14 @@ class RandomHistoryRepositoryImpl implements RandomHistoryRepository {
       return Left(HistoryNotFoundFailure());
     }
   }
+}
+
+PickHistoryModel _convertPickHistoryToModel(PickHistory pickHistory) {
+  return PickHistoryModel(
+    id: pickHistory.id,
+    dateTime: pickHistory.dateTime,
+    picked: pickHistory.picked,
+  );
 }
 
 /// history with the same id already exists
