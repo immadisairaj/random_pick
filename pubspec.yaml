@@ -49,6 +49,10 @@ dependencies:
   # rxdart for streams
   rxdart: ^0.27.3
 
+  # database storage
+  hive: ^2.2.1
+  hive_flutter: ^1.0.0
+
   # Mock things
   mocktail: ^0.3.0
 
