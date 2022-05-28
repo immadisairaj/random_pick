@@ -38,6 +38,7 @@ Future<void> init() async {
       () => RandomNumberBloc(
         getRandomNumber: getIt(),
         inputConverter: getIt(),
+        subscribeRandomHistory: getIt(),
       ),
     )
 
@@ -60,6 +61,7 @@ Future<void> init() async {
       () => RandomListBloc(
         getRandomItem: getIt(),
         subscribeItems: getIt(),
+        subscribeRandomHistory: getIt(),
       ),
     )
 

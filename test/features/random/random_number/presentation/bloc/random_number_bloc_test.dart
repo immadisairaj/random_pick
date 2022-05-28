@@ -1,7 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:random_pick/core/error/failures.dart';
 import 'package:random_pick/core/utils/input_converter.dart';
+import 'package:random_pick/features/random/random_history/data/repositories/random_history_repository_impl.dart';
+import 'package:random_pick/features/random/random_history/domain/entities/pick_history.dart';
+import 'package:random_pick/features/random/random_history/domain/usecases/subscribe_random_history.dart';
 import 'package:random_pick/features/random/random_number/domain/entities/number_range.dart';
 import 'package:random_pick/features/random/random_number/domain/entities/random_number_picked.dart';
 import 'package:random_pick/features/random/random_number/domain/usecases/get_random_number.dart';
@@ -11,17 +15,23 @@ class MockGetRandomNumber extends Mock implements GetRandomNumber {}
 
 class MockInputConverter extends Mock implements InputConverter {}
 
+class MockSubscribeRandomHistory extends Mock
+    implements SubscribeRandomHistory {}
+
 void main() {
   late RandomNumberBloc bloc;
   late MockGetRandomNumber mockGetRandomNumber;
   late MockInputConverter mockInputConverter;
+  late MockSubscribeRandomHistory mockSubscribeRandomHistory;
 
   setUp(() {
     mockGetRandomNumber = MockGetRandomNumber();
     mockInputConverter = MockInputConverter();
+    mockSubscribeRandomHistory = MockSubscribeRandomHistory();
     bloc = RandomNumberBloc(
       getRandomNumber: mockGetRandomNumber,
       inputConverter: mockInputConverter,
+      subscribeRandomHistory: mockSubscribeRandomHistory,
     );
   });
 
@@ -43,6 +53,10 @@ void main() {
     final tRandomNumberPicked = RandomNumberPicked(
       randomNumber: tRandomNumber,
       numberRange: tNumberRange,
+    );
+    final tRandomPickHistory = PickHistory(
+      dateTime: DateTime.now(),
+      picked: tRandomNumberPicked,
     );
 
     test('should emit [Error] state when no proper input', () {
@@ -88,6 +102,19 @@ void main() {
           .thenReturn(Right(tNumberRange));
     }
 
+    void returnVoid() {
+      return;
+    }
+
+    setUpAll(() {
+      registerFallbackValue(HistoryParams(pickHistory: tRandomPickHistory));
+    });
+
+    void setUpMockHistorySuccess() {
+      when(() => mockSubscribeRandomHistory.putRandomHistory(any()))
+          .thenAnswer((_) async => Right(returnVoid()));
+    }
+
     test(
       // ignore: missing_whitespace_between_adjacent_strings
       'should call input converter validate and convert strings to NumberRange'
@@ -95,6 +122,7 @@ void main() {
       () async {
         // arrange
         setUpMockInputSuccess();
+        setUpMockHistorySuccess();
         when(() => mockGetRandomNumber(any()))
             .thenAnswer((_) async => Right(tRandomNumberPicked));
         // act
@@ -107,7 +135,10 @@ void main() {
         await untilCalled(
           () => mockInputConverter.stringsToNumberRange(any(), any()),
         );
-        await untilCalled(() => mockGetRandomNumber(any()));
+        // await untilCalled(() => mockGetRandomNumber(any()));
+        await untilCalled(
+          () => mockSubscribeRandomHistory.putRandomHistory(any()),
+        );
         // assert
         verify(
           () => mockInputConverter.stringsToNumberRange(tMinString, tMaxString),
@@ -121,6 +152,7 @@ void main() {
       () {
         // arrange
         setUpMockInputSuccess();
+        setUpMockHistorySuccess();
         when(() => mockGetRandomNumber(any()))
             .thenAnswer((_) async => Right(tRandomNumberPicked));
         // assert later
@@ -128,6 +160,59 @@ void main() {
           // RandomNumberEmpty(),
           RandomNumberLoading(),
           RandomNumberLoaded(randomNumberPicked: tRandomNumberPicked),
+        ];
+        expectLater(bloc.stream, emitsInOrder(expected));
+        // act
+        bloc.add(
+          const GetRandomNumberForRange(
+            min: tMinString,
+            max: tMaxString,
+          ),
+        );
+      },
+    );
+
+    test(
+      'should emit [Loading, Error] when data is not gotten successfully',
+      () {
+        // arrange
+        setUpMockInputSuccess();
+        setUpMockHistorySuccess();
+        when(() => mockGetRandomNumber(any()))
+            .thenAnswer((_) async => const Left(UnknownFailure()));
+        // assert later
+        final expected = [
+          // RandomNumberEmpty(),
+          RandomNumberLoading(),
+          const RandomNumberError(errorMessage: 'Unexpected error'),
+        ];
+        expectLater(bloc.stream, emitsInOrder(expected));
+        // act
+        bloc.add(
+          const GetRandomNumberForRange(
+            min: tMinString,
+            max: tMaxString,
+          ),
+        );
+      },
+    );
+
+    test(
+      // ignore: missing_whitespace_between_adjacent_strings
+      'should emit [Loading, Error] when data is gotten successfully'
+      'but, the history is not saved',
+      () {
+        // arrange
+        setUpMockInputSuccess();
+        when(() => mockGetRandomNumber(any()))
+            .thenAnswer((_) async => Right(tRandomNumberPicked));
+        when(() => mockSubscribeRandomHistory.putRandomHistory(any()))
+            .thenAnswer((_) async => Left(HistoryAlreadyExistsFailure()));
+        // assert later
+        final expected = [
+          // RandomNumberEmpty(),
+          RandomNumberLoading(),
+          const RandomNumberError(errorMessage: historyAlreadyExists),
         ];
         expectLater(bloc.stream, emitsInOrder(expected));
         // act
