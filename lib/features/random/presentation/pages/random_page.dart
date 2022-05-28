@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:random_pick/core/navigation/random_pick_navigation.dart';
 import 'package:random_pick/features/random/presentation/cubit/random_page_cubit.dart';
+import 'package:random_pick/features/random/random_history/presentation/pages/random_history_page.dart';
 import 'package:random_pick/features/random/random_list/presentation/pages/random_list_page.dart';
 import 'package:random_pick/features/random/random_number/presentation/pages/random_number_page.dart';
 import 'package:random_pick/injection_container.dart';
@@ -36,6 +37,18 @@ class RandomPageView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Random Pick'),
         actions: [
+          IconButton(
+            onPressed: () async {
+              await PackageInfo.fromPlatform().then(
+                (packageInfo) => Navigator.of(context).push(
+                  MaterialPageRoute<Widget>(
+                    builder: (context) => const RandomHistoryPage(),
+                  ),
+                ),
+              );
+            },
+            icon: const Icon(Icons.history),
+          ),
           IconButton(
             onPressed: () async {
               await PackageInfo.fromPlatform().then(
