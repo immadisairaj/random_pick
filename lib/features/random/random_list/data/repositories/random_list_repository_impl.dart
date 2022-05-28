@@ -31,7 +31,7 @@ class RandomListRepositoryImpl implements RandomListRepository {
 
   @override
   Future<Either<Failure, void>> addItemToPool(Item item) async {
-    return Right(await dataSource.addItemToPool(_convertItemToModel(item)));
+    return Right(await dataSource.addItemToPool(item as ItemModel));
   }
 
   @override
@@ -49,7 +49,7 @@ class RandomListRepositoryImpl implements RandomListRepository {
   Future<Either<Failure, void>> removeItemFromPool(Item item) async {
     try {
       return Right(
-        await dataSource.removeItemFromPool(_convertItemToModel(item)),
+        await dataSource.removeItemFromPool(item as ItemModel),
       );
     } on ItemNotFoundException {
       return Left(ItemNotFoundFailure());
@@ -59,19 +59,9 @@ class RandomListRepositoryImpl implements RandomListRepository {
   @override
   Future<Either<Failure, void>> updateItemPool(List<Item> items) async {
     return Right(
-      await dataSource.updateItemPool(
-        items.map(_convertItemToModel).toList(),
-      ),
+      await dataSource.updateItemPool(items as List<ItemModel>),
     );
   }
-}
-
-ItemModel _convertItemToModel(Item item) {
-  return ItemModel(
-    id: item.id,
-    text: item.text,
-    selected: item.selected,
-  );
 }
 
 /// failure when the length of the item pool is 0 or too long

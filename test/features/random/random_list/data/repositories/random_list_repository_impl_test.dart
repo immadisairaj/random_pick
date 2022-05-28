@@ -124,7 +124,7 @@ void main() {
   );
 
   test(
-    'should verify if add item to pool',
+    'should verify if clear item to pool',
     () async {
       // arrange
       when(() => mockDataSource.clearItemPool())
