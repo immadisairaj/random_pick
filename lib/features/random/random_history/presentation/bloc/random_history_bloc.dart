@@ -92,7 +92,8 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
   //   GetHistoryByIdRequested event,
   //   Emitter<RandomHistoryState> emit,
   // ) async {
-  //   final failureOrResult = await subscribeRandomHistory.getRandomHistoryById(
+  //   final failureOrResult = await subscribeRandomHistory
+  //    .getRandomHistoryById(
   //     IdParams(
   //       id: event.id,
   //     ),

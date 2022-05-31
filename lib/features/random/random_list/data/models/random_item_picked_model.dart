@@ -1,5 +1,4 @@
 import 'package:random_pick/features/random/random_list/data/models/item_model.dart';
-import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
 import 'package:random_pick/features/random/random_list/domain/entities/random_item_picked.dart';
 
 /// model for the [RandomItemPicked]
