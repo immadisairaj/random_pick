@@ -153,4 +153,133 @@ void main() {
       ),
     );
   });
+
+  test('should check clear all history', () async {
+    // arrange
+    final tHistoryList = <PickHistoryModel>[
+      PickHistoryModel(
+        dateTime: DateTime.now(),
+        picked: RandomNumberPickedModel(
+          randomNumber: 0,
+          numberRange: NumberRangeModel(min: 0, max: 0),
+        ),
+      ),
+      PickHistoryModel(
+        dateTime: DateTime.now(),
+        picked: RandomNumberPickedModel(
+          randomNumber: 1,
+          numberRange: NumberRangeModel(min: 1, max: 1),
+        ),
+      ),
+    ];
+    when(() => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()))
+        .thenAnswer((_) async => returnVoid());
+    await dataSource.addRandomHistory(tHistoryList[0]);
+    await dataSource.addRandomHistory(tHistoryList[1]);
+    // act
+    await dataSource.clearAllHistory();
+    final result = await dataSource.getRandomHistory();
+    // assert
+    verify(
+      () => mockBox.put(
+        RandomHistoryDataSourceImpl.kHistoryKey,
+        json.encode(
+          <PickHistoryModel>[]
+              .map<dynamic>((history) => history.toJson())
+              .toList(),
+        ),
+      ),
+    );
+    result.listen((value) {
+      expect(value, isNot(contains(tHistoryList[0])));
+      expect(value, isNot(contains(tHistoryList[1])));
+    });
+  });
+
+  test('should check clear all history when no data is there', () async {
+    // arrange
+    final tHistoryList = <PickHistoryModel>[
+      PickHistoryModel(
+        dateTime: DateTime.now(),
+        picked: RandomNumberPickedModel(
+          randomNumber: 0,
+          numberRange: NumberRangeModel(min: 0, max: 0),
+        ),
+      ),
+    ];
+    when(() => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()))
+        .thenAnswer((_) async => returnVoid());
+    // act
+    await dataSource.clearAllHistory();
+    final result = await dataSource.getRandomHistory();
+    // assert
+    verify(
+      () => mockBox.put(
+        RandomHistoryDataSourceImpl.kHistoryKey,
+        json.encode(
+          <PickHistoryModel>[]
+              .map<dynamic>((history) => history.toJson())
+              .toList(),
+        ),
+      ),
+    );
+    result.listen((value) {
+      expect(value, isNot(contains(tHistoryList[0])));
+    });
+  });
+
+  test('should check clear history by id', () async {
+    // arrange
+    final tHistoryList = <PickHistoryModel>[
+      PickHistoryModel(
+        dateTime: DateTime.now(),
+        picked: RandomNumberPickedModel(
+          randomNumber: 0,
+          numberRange: NumberRangeModel(min: 0, max: 0),
+        ),
+      ),
+      PickHistoryModel(
+        dateTime: DateTime.now(),
+        picked: RandomNumberPickedModel(
+          randomNumber: 1,
+          numberRange: NumberRangeModel(min: 1, max: 1),
+        ),
+      ),
+    ];
+    final tHistoryResult = [
+      tHistoryList[1],
+    ];
+    when(() => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()))
+        .thenAnswer((_) async => returnVoid());
+    await dataSource.addRandomHistory(tHistoryList[0]);
+    await dataSource.addRandomHistory(tHistoryList[1]);
+    // act
+    await dataSource.clearHistoryById(tHistoryList[0].id);
+    final result = await dataSource.getRandomHistory();
+    // assert
+    verify(
+      () => mockBox.put(
+        RandomHistoryDataSourceImpl.kHistoryKey,
+        json.encode(
+          tHistoryResult.map<dynamic>((history) => history.toJson()).toList(),
+        ),
+      ),
+    );
+    result.listen((value) {
+      expect(value, isNot(contains(tHistoryList[0])));
+      expect(value, contains(tHistoryList[1]));
+    });
+  });
+
+  test('should check clear history by id failing', () async {
+    // arrange
+    final call = dataSource.clearHistoryById;
+    // assert
+    expect(
+      () => call('something'),
+      throwsA(
+        const TypeMatcher<HistoryNotFoundException>(),
+      ),
+    );
+  });
 }

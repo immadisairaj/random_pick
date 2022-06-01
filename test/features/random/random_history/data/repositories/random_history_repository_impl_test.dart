@@ -162,4 +162,70 @@ void main() {
       );
     },
   );
+
+  test(
+    'should verify if clear pick history',
+    () async {
+      // arrange
+      when(() => mockDataSource.clearAllHistory())
+          .thenAnswer((_) async => returnVoid());
+      // act
+      final result = await repository.clearAllHistory();
+      // assert
+      verify(() => mockDataSource.clearAllHistory());
+      expect(result, equals(Right<dynamic, void>(returnVoid())));
+    },
+  );
+
+  test(
+    'should verify if clear pick history by id',
+    () async {
+      // arrange
+      final tPickHistory = PickHistoryModel(
+        dateTime: DateTime.now(),
+        picked: RandomNumberPicked(
+          randomNumber: 0,
+          numberRange: NumberRange(max: 0),
+        ),
+      );
+
+      when(() => mockDataSource.clearHistoryById(any()))
+          .thenAnswer((_) async => returnVoid());
+      // act
+      final result = await repository.clearHistoryById(tPickHistory.id);
+      // assert
+      verify(() => mockDataSource.clearHistoryById(tPickHistory.id));
+      expect(result, equals(Right<dynamic, void>(returnVoid())));
+    },
+  );
+
+  test(
+    'should fail if clear pick history by id which does not exist',
+    () async {
+      // arrange
+      final tPickHistory = PickHistoryModel(
+        id: '1',
+        dateTime: DateTime.now(),
+        picked: RandomNumberPicked(
+          randomNumber: 0,
+          numberRange: NumberRange(max: 0),
+        ),
+      );
+
+      when(() => mockDataSource.clearHistoryById(any()))
+          .thenThrow(HistoryNotFoundException());
+      // act
+      final result = await repository.clearHistoryById(tPickHistory.id);
+      // assert
+      verify(() => mockDataSource.clearHistoryById(tPickHistory.id));
+      expect(
+        result,
+        equals(
+          Left<HistoryNotFoundFailure, dynamic>(
+            HistoryNotFoundFailure(),
+          ),
+        ),
+      );
+    },
+  );
 }

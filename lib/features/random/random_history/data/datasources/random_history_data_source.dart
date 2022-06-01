@@ -16,6 +16,12 @@ abstract class RandomHistoryDataSource {
 
   /// get random history by pick id
   Future<PickHistoryModel> getRandomHistoryById(String id);
+
+  /// clear the history by id
+  Future<void> clearHistoryById(String id);
+
+  /// clear all history
+  Future<void> clearAllHistory();
 }
 
 /// implimentation of the [RandomHistoryDataSource]
@@ -35,6 +41,18 @@ class RandomHistoryDataSourceImpl implements RandomHistoryDataSource {
   /// This is only exposed for testing and shouldn't be used by consumers of
   /// this library.
   static const kHistoryKey = '__random_history_list_key__';
+
+  Future<void> _setValue(String key, List<PickHistoryModel> history) =>
+      _box.put(
+        key,
+        json.encode(
+          history
+              .map<dynamic>(
+                (pickHistory) => pickHistory.toJson(),
+              )
+              .toList(),
+        ),
+      );
 
   void _init() {
     final historyJson = _box.get(kHistoryKey);
@@ -68,16 +86,7 @@ class RandomHistoryDataSourceImpl implements RandomHistoryDataSource {
     }
 
     _randomHistoryStreamController.add(history);
-    return _box.put(
-      kHistoryKey,
-      json.encode(
-        history
-            .map<dynamic>(
-              (pickHistory) => pickHistory.toJson(),
-            )
-            .toList(),
-      ),
-    );
+    return _setValue(kHistoryKey, history);
   }
 
   @override
@@ -87,6 +96,28 @@ class RandomHistoryDataSourceImpl implements RandomHistoryDataSource {
 
     if (historyIndex >= 0) {
       return history[historyIndex];
+    } else {
+      throw HistoryNotFoundException();
+    }
+  }
+
+  @override
+  Future<void> clearAllHistory() {
+    final history = <PickHistoryModel>[];
+    _randomHistoryStreamController.add(history);
+    return _setValue(kHistoryKey, history);
+  }
+
+  @override
+  Future<void> clearHistoryById(String id) {
+    final history = [..._randomHistoryStreamController.value];
+    final historyIndex = history.indexWhere((i) => i.id == id);
+
+    if (historyIndex >= 0) {
+      history.removeAt(historyIndex);
+
+      _randomHistoryStreamController.add(history);
+      return _setValue(kHistoryKey, history);
     } else {
       throw HistoryNotFoundException();
     }

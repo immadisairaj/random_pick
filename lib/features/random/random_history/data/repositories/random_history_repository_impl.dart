@@ -44,6 +44,20 @@ class RandomHistoryRepositoryImpl implements RandomHistoryRepository {
       return Left(HistoryNotFoundFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, void>> clearAllHistory() async {
+    return Right(await dataSource.clearAllHistory());
+  }
+
+  @override
+  Future<Either<Failure, void>> clearHistoryById(String id) async {
+    try {
+      return Right(await dataSource.clearHistoryById(id));
+    } on HistoryNotFoundException {
+      return Left(HistoryNotFoundFailure());
+    }
+  }
 }
 
 PickHistoryModel _convertPickHistoryToModel(PickHistory pickHistory) {
