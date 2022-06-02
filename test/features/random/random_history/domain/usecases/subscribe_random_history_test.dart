@@ -99,5 +99,33 @@ void main() {
       );
       verifyNoMoreInteractions(mockRandomHistoryRepository);
     });
+
+    test('for clearHistory', () async {
+      // arrange
+      when(() => mockRandomHistoryRepository.clearAllHistory())
+          .thenAnswer((_) async => Right(returnVoid()));
+      // act
+      final result = await usecase.clearHistory(NoParams());
+      // assert
+      expect(result, Right<dynamic, void>(returnVoid()));
+      verify(() => mockRandomHistoryRepository.clearAllHistory());
+      verifyNoMoreInteractions(mockRandomHistoryRepository);
+    });
+
+    test('for clearHistoryById', () async {
+      // arrange
+      when(() => mockRandomHistoryRepository.clearHistoryById(any()))
+          .thenAnswer((_) async => Right(returnVoid()));
+      // act
+      final result = await usecase.clearHistoryById(
+        IdParams(id: tPickHistory.id),
+      );
+      // assert
+      expect(result, Right<dynamic, void>(returnVoid()));
+      verify(
+        () => mockRandomHistoryRepository.clearHistoryById(tPickHistory.id),
+      );
+      verifyNoMoreInteractions(mockRandomHistoryRepository);
+    });
   });
 }

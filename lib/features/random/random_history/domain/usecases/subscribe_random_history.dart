@@ -30,6 +30,16 @@ class SubscribeRandomHistory
   Future<Either<Failure, void>> putRandomHistory(HistoryParams params) {
     return repository.putRandomHistory(params.pickHistory);
   }
+
+  /// clear all history from repository
+  Future<Either<Failure, void>> clearHistory(NoParams params) {
+    return repository.clearAllHistory();
+  }
+
+  /// clear history by id from repository
+  Future<Either<Failure, void>> clearHistoryById(IdParams params) {
+    return repository.clearHistoryById(params.id);
+  }
 }
 
 /// Params which contains pick history

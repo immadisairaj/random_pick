@@ -9,6 +9,9 @@
  <!-- <a href="https://immadisairaj.github.io/random_pick">
     <img src="https://img.shields.io/badge/Visit-Website-e91e62" alt="website"></img>
   </a> -->
+  <a href="https://github.com/immadisairaj/random_pick/actions/workflows/random_pick.yaml">
+    <img src="https://github.com/immadisairaj/random_pick/actions/workflows/random_pick.yaml/badge.svg" alt="tests">
+  </a>
   <a href="https://pub.dev/packages/very_good_analysis">
     <img src="https://img.shields.io/badge/style-very_good_analysis-B22C89.svg" alt="style">
   </a>
@@ -41,7 +44,7 @@ Many people across the globe use the similar concept of picking randomly to deci
 
 ## Screenshots
 
-<img src="./screenshots/screenshot_1.png" height="500"> <img src="./screenshots/screenshot_2.png" height="500"> <img src="./screenshots/screenshot_3.png" height="500"> <img src="./screenshots/screenshot_4.png" height="500"> <img src="./screenshots/screenshot_5.png" height="500"> <img src="./screenshots/screenshot_6.png" height="500"> <img src="./screenshots/screenshot_7.png" height="500">
+<img src="./screenshots/screenshot_1.png" height="500"> <img src="./screenshots/screenshot_2.png" height="500"> <img src="./screenshots/screenshot_3.png" height="500"> <img src="./screenshots/screenshot_4.png" height="500"> <img src="./screenshots/screenshot_5.png" height="500"> <img src="./screenshots/screenshot_6.png" height="500"> <img src="./screenshots/screenshot_7.png" height="500"> <img src="./screenshots/screenshot_8.png" height="500">
 
 ## Architecture
 

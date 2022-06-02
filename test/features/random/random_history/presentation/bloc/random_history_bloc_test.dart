@@ -27,6 +27,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(NoParams());
+    registerFallbackValue(const IdParams(id: 'test'));
   });
 
   void returnVoid() {
@@ -157,5 +158,63 @@ void main() {
         bloc.add(HistoryAddRequested(pickHistory: tHistoryList[0]));
       },
     );
+
+    test('should not emit on clearHistory', () {
+      // act
+      when(
+        () => mockSubscribeRandomHistory.clearHistory(any()),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      // assert later
+      final expected = <dynamic>[];
+      expectLater(bloc.stream, emitsInOrder(expected));
+      // act
+      bloc.add(const ClearHistoryRequested());
+    });
+
+    test('should fail on clearHistory', () {
+      // act
+      when(
+        () => mockSubscribeRandomHistory.clearHistory(any()),
+      ).thenAnswer((_) async => const Left(UnknownFailure()));
+      // assert later
+      final expected = <dynamic>[
+        tRandomHistoryState.copyWith(
+          status: () => RandomHistoryStatus.error,
+          errorMessage: () => 'Unexpected error',
+        ),
+      ];
+      expectLater(bloc.stream, emitsInOrder(expected));
+      // act
+      bloc.add(const ClearHistoryRequested());
+    });
+
+    test('should not emit on clearHistoryById', () {
+      // act
+      when(
+        () => mockSubscribeRandomHistory.clearHistoryById(any()),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      // assert later
+      final expected = <dynamic>[];
+      expectLater(bloc.stream, emitsInOrder(expected));
+      // act
+      bloc.add(const ClearHistoryByIdRequested(id: 'id'));
+    });
+
+    test('should fail HistoryNotFoundFailure when clearHistoryById', () {
+      // act
+      when(
+        () => mockSubscribeRandomHistory.clearHistoryById(any()),
+      ).thenAnswer((_) async => Left(HistoryNotFoundFailure()));
+      // assert later
+      final expected = <dynamic>[
+        tRandomHistoryState.copyWith(
+          status: () => RandomHistoryStatus.error,
+          errorMessage: () => historyNotFoundError,
+        ),
+      ];
+      expectLater(bloc.stream, emitsInOrder(expected));
+      // act
+      bloc.add(const ClearHistoryByIdRequested(id: 'id'));
+    });
   });
 }

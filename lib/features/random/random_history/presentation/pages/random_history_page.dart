@@ -14,7 +14,7 @@ class RandomHistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Random History'),
+        title: const Text('Pick History'),
       ),
       body: BlocProvider(
         create: (_) => getIt<RandomHistoryBloc>()

@@ -15,7 +15,9 @@ part 'random_history_state.dart';
 /// error message on add a pick history and the history already exists
 const String historyAlreadyExists =
     'History already exists to save - please use another id';
-// const String _historyNotFoundError = 'History not found';
+
+/// error message when the required history is not found
+const String historyNotFoundError = 'History not found';
 
 /// business logic for random history
 class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
@@ -25,6 +27,8 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
   }) : super(const RandomHistoryState()) {
     on<HistorySubscriptionRequested>(_onHistorySubscriptionRequested);
     on<HistoryAddRequested>(_onHistoryAddRequested);
+    on<ClearHistoryRequested>(_onClearHistoryRequested);
+    on<ClearHistoryByIdRequested>(_onClearHistoryByIdRequested);
     // on<GetHistoryByIdRequested>(_getHistoryByIdRequested);
   }
 
@@ -86,6 +90,50 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
     );
   }
 
+  /// logic of what to do when the [ClearHistoryRequested] event is dispatched
+  FutureOr<void> _onClearHistoryRequested(
+    ClearHistoryRequested event,
+    Emitter<RandomHistoryState> emit,
+  ) async {
+    final failureOrResult =
+        await subscribeRandomHistory.clearHistory(NoParams());
+    await failureOrResult.fold(
+      (failure) async => emit(
+        state.copyWith(
+          status: () => RandomHistoryStatus.error,
+          errorMessage: () => _mapFailureToMessage(failure),
+        ),
+      ),
+      (right) {
+        // do nothing
+      },
+    );
+  }
+
+  /// logic of what to do when the [ClearHistoryByIdRequested] event is
+  /// dispatched
+  FutureOr<void> _onClearHistoryByIdRequested(
+    ClearHistoryByIdRequested event,
+    Emitter<RandomHistoryState> emit,
+  ) async {
+    final failureOrResult = await subscribeRandomHistory.clearHistoryById(
+      IdParams(
+        id: event.id,
+      ),
+    );
+    await failureOrResult.fold(
+      (failure) async => emit(
+        state.copyWith(
+          status: () => RandomHistoryStatus.error,
+          errorMessage: () => _mapFailureToMessage(failure),
+        ),
+      ),
+      (right) {
+        // do nothing
+      },
+    );
+  }
+
   // implement it later when needed
   // /// logic of what to do when the [GetHistoryByIdRequested] event is dispatched
   // FutureOr<void> _getHistoryByIdRequested(
@@ -116,8 +164,8 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
     switch (failure.runtimeType) {
       case HistoryAlreadyExistsFailure:
         return historyAlreadyExists;
-      // case HistoryNotFoundFailure:
-      //   return _historyNotFoundError;
+      case HistoryNotFoundFailure:
+        return historyNotFoundError;
       default:
         return 'Unexpected error';
     }
