@@ -29,10 +29,11 @@
 
 ## What this app does
 
-The application has two functions as of now.
+The application has the following functions as of now.
 
 1. Numbers - It takes in two integer values __min__ _(inclusive)_ and __max__ _(inclusive)_, then returns a picked random number from the range.
 2. List - It takes a list of items<sup>[1]</sup>, then returns a random item (picked) from the pool. The items inside the list can be (un)checked to include in the item pool.
+3. History - All the picks are stored in the device, with an option to delete them when not needed.
 
 <sup>[1]</sup>item: The item can be any string - a number, a name, a place, an animal, a thing, an object, etc.
 
@@ -44,7 +45,7 @@ Many people across the globe use the similar concept of picking randomly to deci
 
 ## Screenshots
 
-<img src="./screenshots/screenshot_1.png" height="500"> <img src="./screenshots/screenshot_2.png" height="500"> <img src="./screenshots/screenshot_3.png" height="500"> <img src="./screenshots/screenshot_4.png" height="500"> <img src="./screenshots/screenshot_5.png" height="500"> <img src="./screenshots/screenshot_6.png" height="500"> <img src="./screenshots/screenshot_7.png" height="500"> <img src="./screenshots/screenshot_8.png" height="500">
+<img src="./screenshots/screenshot_1.png" height="500"> <img src="./screenshots/screenshot_2.png" height="500"> <img src="./screenshots/screenshot_3.png" height="500"> <img src="./screenshots/screenshot_4.png" height="500"> <img src="./screenshots/screenshot_5.png" height="500"> <img src="./screenshots/screenshot_6.png" height="500"> <img src="./screenshots/screenshot_7.png" height="500">
 
 ## Architecture
 
