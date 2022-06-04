@@ -68,7 +68,7 @@ void main() {
       return;
     }
 
-    test('for putRandomHistory', () async {
+    test('for putRandomHistory if index is null', () async {
       // arrange
       when(() => mockRandomHistoryRepository.putRandomHistory(any()))
           .thenAnswer((_) async => Right(returnVoid()));
@@ -80,6 +80,29 @@ void main() {
       expect(result, Right<dynamic, void>(returnVoid()));
       verify(
         () => mockRandomHistoryRepository.putRandomHistory(tPickHistory),
+      );
+      verifyNoMoreInteractions(mockRandomHistoryRepository);
+    });
+
+    test('for putRandomHistory if index is not null', () async {
+      // arrange
+      when(
+        () => mockRandomHistoryRepository.putRandomHistory(
+          any(),
+          index: any(named: 'index'),
+        ),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      // act
+      final result = await usecase.putRandomHistory(
+        HistoryParams(pickHistory: tPickHistory, index: 0),
+      );
+      // assert
+      expect(result, Right<dynamic, void>(returnVoid()));
+      verify(
+        () => mockRandomHistoryRepository.putRandomHistory(
+          tPickHistory,
+          index: 0,
+        ),
       );
       verifyNoMoreInteractions(mockRandomHistoryRepository);
     });
@@ -105,7 +128,7 @@ void main() {
       when(() => mockRandomHistoryRepository.clearAllHistory())
           .thenAnswer((_) async => Right(returnVoid()));
       // act
-      final result = await usecase.clearHistory(NoParams());
+      final result = await usecase.clearAllHistory(NoParams());
       // assert
       expect(result, Right<dynamic, void>(returnVoid()));
       verify(() => mockRandomHistoryRepository.clearAllHistory());
@@ -114,16 +137,16 @@ void main() {
 
     test('for clearHistoryById', () async {
       // arrange
-      when(() => mockRandomHistoryRepository.clearHistoryById(any()))
+      when(() => mockRandomHistoryRepository.clearHistory(any()))
           .thenAnswer((_) async => Right(returnVoid()));
       // act
-      final result = await usecase.clearHistoryById(
-        IdParams(id: tPickHistory.id),
+      final result = await usecase.clearHistory(
+        HistoryParams(pickHistory: tPickHistory),
       );
       // assert
       expect(result, Right<dynamic, void>(returnVoid()));
       verify(
-        () => mockRandomHistoryRepository.clearHistoryById(tPickHistory.id),
+        () => mockRandomHistoryRepository.clearHistory(tPickHistory),
       );
       verifyNoMoreInteractions(mockRandomHistoryRepository);
     });

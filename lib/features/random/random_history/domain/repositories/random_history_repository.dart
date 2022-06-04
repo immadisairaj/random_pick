@@ -10,11 +10,15 @@ abstract class RandomHistoryRepository {
   /// returns the random history of the given id
   Future<Either<Failure, PickHistory>> getRandomHistoryById(String id);
 
-  /// puts the given [pickHistory] in the database
-  Future<Either<Failure, void>> putRandomHistory(PickHistory pickHistory);
+  /// puts the given [pickHistory] in the database;
+  /// if [index] is specified, it will be put in the given index
+  Future<Either<Failure, void>> putRandomHistory(
+    PickHistory pickHistory, {
+    int? index,
+  });
 
-  /// deletes the random history of the given id
-  Future<Either<Failure, void>> clearHistoryById(String id);
+  /// deletes the random history of the given [pickHistory]
+  Future<Either<Failure, void>> clearHistory(PickHistory pickHistory);
 
   /// deletes all the random history
   Future<Either<Failure, void>> clearAllHistory();

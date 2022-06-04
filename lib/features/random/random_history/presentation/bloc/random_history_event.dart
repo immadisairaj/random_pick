@@ -6,7 +6,7 @@ abstract class RandomHistoryEvent extends Equatable {
   const RandomHistoryEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 /// dispatch this event to subscribe to the history
@@ -28,22 +28,33 @@ class HistoryAddRequested extends RandomHistoryEvent {
 }
 
 /// dispatch this event to clear history
-class ClearHistoryRequested extends RandomHistoryEvent {
-  /// create a new [ClearHistoryRequested]
-  const ClearHistoryRequested();
+class ClearAllHistoryRequested extends RandomHistoryEvent {
+  /// create a new [ClearAllHistoryRequested]
+  const ClearAllHistoryRequested();
 }
 
-/// dispatch this event to clear history by id
-class ClearHistoryByIdRequested extends RandomHistoryEvent {
-  /// create a new [ClearHistoryByIdRequested] with [id]
+/// dispatch this event to clear history using [pickHistory]
+class ClearHistoryRequested extends RandomHistoryEvent {
+  /// create a new [ClearHistoryRequested] with [pickHistory]
   /// of history to be removed
-  const ClearHistoryByIdRequested({required this.id});
+  ///
+  /// if [index] is passed, the undo operation can be done, else no
+  const ClearHistoryRequested({required this.pickHistory, this.index});
 
   /// the pick history to be added
-  final String id;
+  final PickHistory pickHistory;
+
+  /// the index of the history to be removed
+  final int? index;
 
   @override
-  List<Object> get props => [id];
+  List<Object?> get props => [pickHistory, index];
+}
+
+/// dispatch this event to undo clear history by id
+class ClearHistoryUndoRequested extends RandomHistoryEvent {
+  /// create a new [ClearHistoryUndoRequested]
+  const ClearHistoryUndoRequested();
 }
 
 // /// dispatch this event to get a pick in the history by [id]

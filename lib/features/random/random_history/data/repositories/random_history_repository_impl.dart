@@ -24,12 +24,15 @@ class RandomHistoryRepositoryImpl implements RandomHistoryRepository {
 
   @override
   Future<Either<Failure, void>> putRandomHistory(
-    PickHistory pickHistory,
-  ) async {
+    PickHistory pickHistory, {
+    int? index,
+  }) async {
     try {
       return Right(
-        await dataSource
-            .addRandomHistory(_convertPickHistoryToModel(pickHistory)),
+        await dataSource.addRandomHistory(
+          _convertPickHistoryToModel(pickHistory),
+          index: index,
+        ),
       );
     } on HistoryAlreadyExistsException {
       return Left(HistoryAlreadyExistsFailure());
@@ -51,9 +54,11 @@ class RandomHistoryRepositoryImpl implements RandomHistoryRepository {
   }
 
   @override
-  Future<Either<Failure, void>> clearHistoryById(String id) async {
+  Future<Either<Failure, void>> clearHistory(PickHistory pickHistory) async {
     try {
-      return Right(await dataSource.clearHistoryById(id));
+      return Right(
+        await dataSource.clearHistory(_convertPickHistoryToModel(pickHistory)),
+      );
     } on HistoryNotFoundException {
       return Left(HistoryNotFoundFailure());
     }

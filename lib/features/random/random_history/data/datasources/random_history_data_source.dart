@@ -11,14 +11,23 @@ abstract class RandomHistoryDataSource {
   /// the main data source of the history
   Future<Stream<List<PickHistoryModel>>> getRandomHistory();
 
-  /// add a pick to the history
-  Future<void> addRandomHistory(PickHistoryModel pickHistory);
+  /// add a pick to the history;
+  /// if [index] is mentioned, the history will be added at that position
+  ///
+  /// [index] should be no longer than length, and non-negative
+  ///
+  /// throws [HistoryAlreadyExistsException] if the history already exists
+  Future<void> addRandomHistory(PickHistoryModel pickHistory, {int? index});
 
   /// get random history by pick id
+  ///
+  /// throws [HistoryNotFoundException] if the history is not found
   Future<PickHistoryModel> getRandomHistoryById(String id);
 
-  /// clear the history by id
-  Future<void> clearHistoryById(String id);
+  /// clear the history using the history
+  ///
+  /// throws [HistoryNotFoundException] if the history is not found
+  Future<void> clearHistory(PickHistoryModel pickHistory);
 
   /// clear all history
   Future<void> clearAllHistory();
@@ -75,14 +84,19 @@ class RandomHistoryDataSourceImpl implements RandomHistoryDataSource {
       _randomHistoryStreamController.asBroadcastStream();
 
   @override
-  Future<void> addRandomHistory(PickHistoryModel pickHistory) async {
+  Future<void> addRandomHistory(
+    PickHistoryModel pickHistory, {
+    int? index,
+  }) async {
     final history = [..._randomHistoryStreamController.value];
     final historyIndex = history.indexWhere((i) => i.id == pickHistory.id);
+
     if (historyIndex >= 0) {
       throw HistoryAlreadyExistsException();
     } else {
-      // always add a history to the top of the list
-      history.insert(0, pickHistory);
+      // add a history to the top of the list;
+      // if [index] is mentioned, the history will be added at that position
+      history.insert(index ?? 0, pickHistory);
     }
 
     _randomHistoryStreamController.add(history);
@@ -109,9 +123,9 @@ class RandomHistoryDataSourceImpl implements RandomHistoryDataSource {
   }
 
   @override
-  Future<void> clearHistoryById(String id) {
+  Future<void> clearHistory(PickHistoryModel pickHistory) {
     final history = [..._randomHistoryStreamController.value];
-    final historyIndex = history.indexWhere((i) => i.id == id);
+    final historyIndex = history.indexWhere((i) => i.id == pickHistory.id);
 
     if (historyIndex >= 0) {
       history.removeAt(historyIndex);

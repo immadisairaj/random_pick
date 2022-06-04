@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:random_pick/features/random/presentation/widgets/message_display.dart';
 import 'package:random_pick/features/random/random_history/presentation/bloc/random_history_bloc.dart';
-import 'package:random_pick/features/random/random_history/presentation/pages/random_history_list_view.dart';
+import 'package:random_pick/features/random/random_history/presentation/widgets/random_history_list_view.dart';
 import 'package:random_pick/injection_container.dart';
 
 /// Page that displays the history of pick
@@ -29,6 +29,8 @@ class RandomHistoryPage extends StatelessWidget {
               } else if (state.status == RandomHistoryStatus.loading) {
                 return const CircularProgressIndicator();
               } else if (state.status == RandomHistoryStatus.error) {
+                // TODO(immadisairaj): also show the history list when error
+                // or put a snackbar to show error
                 return MessageDisplay(
                   isError: true,
                   message: state.errorMessage!,

@@ -31,7 +31,11 @@ class RandomHistoryListView extends StatelessWidget {
         'Time: ${dateTime.hour}:${dateTime.minute}';
   }
 
-  Widget _listItem(BuildContext context, PickHistory currentHistory) {
+  Widget _listItem(
+    BuildContext context,
+    PickHistory currentHistory,
+    int index,
+  ) {
     return ListTile(
       title: Text(_returnPickedByType(currentHistory.picked)),
       subtitle: Text(_formatDateTime(currentHistory.dateTime)),
@@ -39,8 +43,9 @@ class RandomHistoryListView extends StatelessWidget {
         icon: const Icon(CupertinoIcons.delete),
         onPressed: () {
           // delete history using id
-          BlocProvider.of<RandomHistoryBloc>(context)
-              .add(ClearHistoryByIdRequested(id: currentHistory.id));
+          BlocProvider.of<RandomHistoryBloc>(context).add(
+            ClearHistoryRequested(pickHistory: currentHistory, index: index),
+          );
         },
       ),
       onTap: () {
@@ -67,39 +72,65 @@ class RandomHistoryListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return history.isNotEmpty
-        ? Stack(
-            children: [
-              CustomScrollView(
-                slivers: [
-                  SliverPadding(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      top: 20,
-                    ),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) => _listItem(context, history[index]),
-                        childCount: history.length,
+    return BlocListener<RandomHistoryBloc, RandomHistoryState>(
+      listenWhen: (previous, current) =>
+          previous.lastDeletedHistory != current.lastDeletedHistory &&
+          current.lastDeletedHistory != null,
+      listener: (context, state) {
+        final messenger = ScaffoldMessenger.of(context);
+        messenger
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              content: const Text('Deleted History!'),
+              backgroundColor: Theme.of(context).colorScheme.onSurface,
+              action: SnackBarAction(
+                label: 'Undo',
+                onPressed: () {
+                  messenger.hideCurrentSnackBar();
+                  context
+                      .read<RandomHistoryBloc>()
+                      .add(const ClearHistoryUndoRequested());
+                },
+              ),
+            ),
+          );
+      },
+      child: history.isNotEmpty
+          ? Stack(
+              children: [
+                CustomScrollView(
+                  slivers: [
+                    SliverPadding(
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        top: 20,
+                      ),
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) =>
+                              _listItem(context, history[index], index),
+                          childCount: history.length,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 50),
-                  child: ElevatedButton(
-                    onPressed: () => _showMyDialog(context: context),
-                    child: const Text('Clear History'),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 50),
+                    child: ElevatedButton(
+                      onPressed: () => _showMyDialog(context: context),
+                      child: const Text('Clear History'),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          )
-        : const Text('No history to display');
+              ],
+            )
+          : const Text('No history to display'),
+    );
   }
 
   Future<void> _showMyDialog({required BuildContext context}) async {
@@ -131,7 +162,7 @@ class RandomHistoryListView extends StatelessWidget {
               onPressed: () {
                 // clear all history
                 BlocProvider.of<RandomHistoryBloc>(contextS)
-                    .add(const ClearHistoryRequested());
+                    .add(const ClearAllHistoryRequested());
 
                 Navigator.of(context).pop();
               },

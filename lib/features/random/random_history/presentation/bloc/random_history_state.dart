@@ -34,6 +34,7 @@ class RandomHistoryState extends Equatable {
     this.historyList = const [],
     this.status = RandomHistoryStatus.initial,
     this.errorMessage,
+    this.lastDeletedHistory,
   });
 
   /// history state at the given point of the state
@@ -50,6 +51,9 @@ class RandomHistoryState extends Equatable {
   /// [status] is [RandomHistoryStatus.error]
   final String? errorMessage;
 
+  /// store the previously deleted history item for undo
+  final DeletedHistory? lastDeletedHistory;
+
   /// creates a new state with the copying the values from previous state
   ///
   /// provide the new values using functions
@@ -57,17 +61,41 @@ class RandomHistoryState extends Equatable {
     List<PickHistory> Function()? historyList,
     RandomHistoryStatus Function()? status,
     String? Function()? errorMessage,
+    DeletedHistory? Function()? lastDeletedHistory,
   }) {
     return RandomHistoryState(
       historyList: historyList != null ? historyList() : this.historyList,
       status: status != null ? status() : this.status,
       errorMessage: errorMessage != null ? errorMessage() : this.errorMessage,
+      lastDeletedHistory: lastDeletedHistory != null
+          ? lastDeletedHistory()
+          : this.lastDeletedHistory,
     );
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         historyList,
         status,
+        errorMessage,
+        lastDeletedHistory,
       ];
+}
+
+/// deleted history to store previously deleted history
+class DeletedHistory extends Equatable {
+  /// creates a deleted history object
+  const DeletedHistory({
+    required this.index,
+    required this.pickHistory,
+  });
+
+  /// index from where it is deleted
+  final int index;
+
+  /// the pick history to be deleted
+  final PickHistory pickHistory;
+
+  @override
+  List<Object> get props => [index, pickHistory];
 }

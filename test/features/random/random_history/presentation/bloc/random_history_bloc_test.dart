@@ -28,6 +28,18 @@ void main() {
   setUpAll(() {
     registerFallbackValue(NoParams());
     registerFallbackValue(const IdParams(id: 'test'));
+    registerFallbackValue(
+      HistoryParams(
+        pickHistory: PickHistory(
+          dateTime: DateTime.now(),
+          picked: RandomNumberPicked(
+            randomNumber: 0,
+            numberRange: NumberRange(max: 0),
+          ),
+        ),
+        index: 0,
+      ),
+    );
   });
 
   void returnVoid() {
@@ -125,7 +137,7 @@ void main() {
     test(
       'should not emit on pick history added',
       () {
-        // act
+        // arrange
         when(
           () => mockSubscribeRandomHistory
               .putRandomHistory(HistoryParams(pickHistory: tHistoryList[0])),
@@ -141,7 +153,7 @@ void main() {
     test(
       'should fail on pick history added',
       () {
-        // act
+        // arrange
         when(
           () => mockSubscribeRandomHistory
               .putRandomHistory(HistoryParams(pickHistory: tHistoryList[0])),
@@ -159,22 +171,22 @@ void main() {
       },
     );
 
-    test('should not emit on clearHistory', () {
-      // act
+    test('should not emit on clearAllHistory', () {
+      // arrange
       when(
-        () => mockSubscribeRandomHistory.clearHistory(any()),
+        () => mockSubscribeRandomHistory.clearAllHistory(any()),
       ).thenAnswer((_) async => Right(returnVoid()));
       // assert later
       final expected = <dynamic>[];
       expectLater(bloc.stream, emitsInOrder(expected));
       // act
-      bloc.add(const ClearHistoryRequested());
+      bloc.add(const ClearAllHistoryRequested());
     });
 
-    test('should fail on clearHistory', () {
-      // act
+    test('should fail on clearAllHistory', () {
+      // arrange
       when(
-        () => mockSubscribeRandomHistory.clearHistory(any()),
+        () => mockSubscribeRandomHistory.clearAllHistory(any()),
       ).thenAnswer((_) async => const Left(UnknownFailure()));
       // assert later
       final expected = <dynamic>[
@@ -185,25 +197,42 @@ void main() {
       ];
       expectLater(bloc.stream, emitsInOrder(expected));
       // act
-      bloc.add(const ClearHistoryRequested());
+      bloc.add(const ClearAllHistoryRequested());
     });
 
-    test('should not emit on clearHistoryById', () {
-      // act
+    test('should not emit on clearHistory', () {
+      // arrange
       when(
-        () => mockSubscribeRandomHistory.clearHistoryById(any()),
+        () => mockSubscribeRandomHistory.clearHistory(any()),
       ).thenAnswer((_) async => Right(returnVoid()));
       // assert later
       final expected = <dynamic>[];
       expectLater(bloc.stream, emitsInOrder(expected));
       // act
-      bloc.add(const ClearHistoryByIdRequested(id: 'id'));
+      bloc.add(ClearHistoryRequested(pickHistory: tHistoryList[0]));
     });
 
-    test('should fail HistoryNotFoundFailure when clearHistoryById', () {
-      // act
+    test('should emit on clearHistory when index is specified', () {
+      // arrange
       when(
-        () => mockSubscribeRandomHistory.clearHistoryById(any()),
+        () => mockSubscribeRandomHistory.clearHistory(any()),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      // assert later
+      final expected = <dynamic>[
+        tRandomHistoryState.copyWith(
+          lastDeletedHistory: () =>
+              DeletedHistory(index: 0, pickHistory: tHistoryList[0]),
+        ),
+      ];
+      expectLater(bloc.stream, emitsInOrder(expected));
+      // act
+      bloc.add(ClearHistoryRequested(pickHistory: tHistoryList[0], index: 0));
+    });
+
+    test('should fail HistoryNotFoundFailure when clearHistory', () {
+      // arrange
+      when(
+        () => mockSubscribeRandomHistory.clearHistory(any()),
       ).thenAnswer((_) async => Left(HistoryNotFoundFailure()));
       // assert later
       final expected = <dynamic>[
@@ -214,7 +243,59 @@ void main() {
       ];
       expectLater(bloc.stream, emitsInOrder(expected));
       // act
-      bloc.add(const ClearHistoryByIdRequested(id: 'id'));
+      bloc.add(ClearHistoryRequested(pickHistory: tHistoryList[0]));
+    });
+
+    test('should emit on clearHistoryUndo when lastDeleted is not null', () {
+      // arrange
+      when(
+        () => mockSubscribeRandomHistory.clearHistory(any()),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      when(
+        () => mockSubscribeRandomHistory.putRandomHistory(any()),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      // assert later
+      final expected = <dynamic>[
+        tRandomHistoryState.copyWith(
+          lastDeletedHistory: () =>
+              DeletedHistory(index: 0, pickHistory: tHistoryList[0]),
+        ),
+        tRandomHistoryState.copyWith(
+          lastDeletedHistory: () => null,
+        ),
+      ];
+      expectLater(bloc.stream, emitsInOrder(expected));
+      // act
+      bloc
+        ..add(ClearHistoryRequested(pickHistory: tHistoryList[0], index: 0))
+        ..add(const ClearHistoryUndoRequested());
+    });
+
+    test('should fail clearHistoryUndo when lastDeleted', () {
+      // arrange
+      when(
+        () => mockSubscribeRandomHistory.clearHistory(any()),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      when(
+        () => mockSubscribeRandomHistory.putRandomHistory(any()),
+      ).thenAnswer((_) async => const Left(UnknownFailure()));
+      // assert later
+      final expected = <dynamic>[
+        tRandomHistoryState.copyWith(
+          lastDeletedHistory: () =>
+              DeletedHistory(index: 0, pickHistory: tHistoryList[0]),
+        ),
+        tRandomHistoryState.copyWith(
+          status: () => RandomHistoryStatus.error,
+          errorMessage: () => 'Unexpected error',
+          lastDeletedHistory: () => null,
+        ),
+      ];
+      expectLater(bloc.stream, emitsInOrder(expected));
+      // act
+      bloc
+        ..add(ClearHistoryRequested(pickHistory: tHistoryList[0], index: 0))
+        ..add(const ClearHistoryUndoRequested());
     });
   });
 }

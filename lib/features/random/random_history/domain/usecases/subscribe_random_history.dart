@@ -26,32 +26,36 @@ class SubscribeRandomHistory
     return repository.getRandomHistoryById(params.id);
   }
 
-  /// put history in the repository
+  /// put history in the repository;
+  /// put in index, if index is specified
   Future<Either<Failure, void>> putRandomHistory(HistoryParams params) {
-    return repository.putRandomHistory(params.pickHistory);
+    return repository.putRandomHistory(params.pickHistory, index: params.index);
   }
 
   /// clear all history from repository
-  Future<Either<Failure, void>> clearHistory(NoParams params) {
+  Future<Either<Failure, void>> clearAllHistory(NoParams params) {
     return repository.clearAllHistory();
   }
 
-  /// clear history by id from repository
-  Future<Either<Failure, void>> clearHistoryById(IdParams params) {
-    return repository.clearHistoryById(params.id);
+  /// clear history of the pick history from repository
+  Future<Either<Failure, void>> clearHistory(HistoryParams params) {
+    return repository.clearHistory(params.pickHistory);
   }
 }
 
-/// Params which contains pick history
+/// Params which contains [pickHistory] and optional [index]
 class HistoryParams extends Equatable {
   /// pick history to be passed as params into the functions
-  const HistoryParams({required this.pickHistory});
+  const HistoryParams({required this.pickHistory, this.index});
 
   /// pick history to pass in params
   final PickHistory pickHistory;
 
+  /// index to where the history should be inserted (if add)
+  final int? index;
+
   @override
-  List<Object> get props => [pickHistory];
+  List<Object?> get props => [pickHistory, index];
 }
 
 /// Params which contains id for pick history

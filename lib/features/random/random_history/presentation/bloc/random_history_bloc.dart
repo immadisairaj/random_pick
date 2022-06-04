@@ -27,8 +27,9 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
   }) : super(const RandomHistoryState()) {
     on<HistorySubscriptionRequested>(_onHistorySubscriptionRequested);
     on<HistoryAddRequested>(_onHistoryAddRequested);
+    on<ClearAllHistoryRequested>(_onClearAllHistoryRequested);
     on<ClearHistoryRequested>(_onClearHistoryRequested);
-    on<ClearHistoryByIdRequested>(_onClearHistoryByIdRequested);
+    on<ClearHistoryUndoRequested>(_onClearHistoryUndoRequested);
     // on<GetHistoryByIdRequested>(_getHistoryByIdRequested);
   }
 
@@ -90,13 +91,14 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
     );
   }
 
-  /// logic of what to do when the [ClearHistoryRequested] event is dispatched
-  FutureOr<void> _onClearHistoryRequested(
-    ClearHistoryRequested event,
+  /// logic of what to do when the [ClearAllHistoryRequested] event is
+  /// dispatched
+  FutureOr<void> _onClearAllHistoryRequested(
+    ClearAllHistoryRequested event,
     Emitter<RandomHistoryState> emit,
   ) async {
     final failureOrResult =
-        await subscribeRandomHistory.clearHistory(NoParams());
+        await subscribeRandomHistory.clearAllHistory(NoParams());
     await failureOrResult.fold(
       (failure) async => emit(
         state.copyWith(
@@ -110,15 +112,15 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
     );
   }
 
-  /// logic of what to do when the [ClearHistoryByIdRequested] event is
+  /// logic of what to do when the [ClearHistoryRequested] event is
   /// dispatched
-  FutureOr<void> _onClearHistoryByIdRequested(
-    ClearHistoryByIdRequested event,
+  FutureOr<void> _onClearHistoryRequested(
+    ClearHistoryRequested event,
     Emitter<RandomHistoryState> emit,
   ) async {
-    final failureOrResult = await subscribeRandomHistory.clearHistoryById(
-      IdParams(
-        id: event.id,
+    final failureOrResult = await subscribeRandomHistory.clearHistory(
+      HistoryParams(
+        pickHistory: event.pickHistory,
       ),
     );
     await failureOrResult.fold(
@@ -128,9 +130,53 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
           errorMessage: () => _mapFailureToMessage(failure),
         ),
       ),
-      (right) {
-        // do nothing
+      (right) async {
+        if (event.index != null) {
+          emit(
+            state.copyWith(
+              lastDeletedHistory: () => DeletedHistory(
+                index: event.index!,
+                pickHistory: event.pickHistory,
+              ),
+            ),
+          );
+        } else {
+          // do nothing
+        }
       },
+    );
+  }
+
+  /// logic of what to do when the [ClearHistoryUndoRequested] event is
+  /// dispatched
+  FutureOr<void> _onClearHistoryUndoRequested(
+    ClearHistoryUndoRequested event,
+    Emitter<RandomHistoryState> emit,
+  ) async {
+    assert(
+      state.lastDeletedHistory != null,
+      'Last deleted pick history can not be null.',
+    );
+
+    final failureOrResult = await subscribeRandomHistory.putRandomHistory(
+      HistoryParams(
+        pickHistory: state.lastDeletedHistory!.pickHistory,
+        index: state.lastDeletedHistory!.index,
+      ),
+    );
+    await failureOrResult.fold(
+      (failure) async => emit(
+        state.copyWith(
+          status: () => RandomHistoryStatus.error,
+          errorMessage: () => _mapFailureToMessage(failure),
+          lastDeletedHistory: () => null,
+        ),
+      ),
+      (right) async => emit(
+        state.copyWith(
+          lastDeletedHistory: () => null,
+        ),
+      ),
     );
   }
 

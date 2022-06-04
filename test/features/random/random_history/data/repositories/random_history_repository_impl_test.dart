@@ -112,6 +112,30 @@ void main() {
   );
 
   test(
+    'should verify if add pick to history at index',
+    () async {
+      // arrange
+      final tPickHistory = PickHistoryModel(
+        dateTime: DateTime.now(),
+        picked: RandomNumberPicked(
+          randomNumber: 0,
+          numberRange: NumberRange(max: 0),
+        ),
+      );
+
+      when(
+        () =>
+            mockDataSource.addRandomHistory(any(), index: any(named: 'index')),
+      ).thenAnswer((_) async => returnVoid());
+      // act
+      final result = await repository.putRandomHistory(tPickHistory, index: 0);
+      // assert
+      verify(() => mockDataSource.addRandomHistory(tPickHistory, index: 0));
+      expect(result, equals(Right<dynamic, void>(returnVoid())));
+    },
+  );
+
+  test(
     'should verify if get pick history by id',
     () async {
       // arrange
@@ -189,12 +213,12 @@ void main() {
         ),
       );
 
-      when(() => mockDataSource.clearHistoryById(any()))
+      when(() => mockDataSource.clearHistory(any()))
           .thenAnswer((_) async => returnVoid());
       // act
-      final result = await repository.clearHistoryById(tPickHistory.id);
+      final result = await repository.clearHistory(tPickHistory);
       // assert
-      verify(() => mockDataSource.clearHistoryById(tPickHistory.id));
+      verify(() => mockDataSource.clearHistory(tPickHistory));
       expect(result, equals(Right<dynamic, void>(returnVoid())));
     },
   );
@@ -212,12 +236,12 @@ void main() {
         ),
       );
 
-      when(() => mockDataSource.clearHistoryById(any()))
+      when(() => mockDataSource.clearHistory(any()))
           .thenThrow(HistoryNotFoundException());
       // act
-      final result = await repository.clearHistoryById(tPickHistory.id);
+      final result = await repository.clearHistory(tPickHistory);
       // assert
-      verify(() => mockDataSource.clearHistoryById(tPickHistory.id));
+      verify(() => mockDataSource.clearHistory(tPickHistory));
       expect(
         result,
         equals(

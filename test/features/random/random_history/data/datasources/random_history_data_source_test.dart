@@ -122,6 +122,44 @@ void main() {
     );
   });
 
+  test('should check add history at index', () async {
+    // arrange
+    final tHistoryList = <PickHistoryModel>[
+      PickHistoryModel(
+        dateTime: DateTime.now(),
+        picked: RandomNumberPickedModel(
+          randomNumber: 0,
+          numberRange: NumberRangeModel(min: 0, max: 0),
+        ),
+      ),
+      PickHistoryModel(
+        dateTime: DateTime.now(),
+        picked: RandomNumberPickedModel(
+          randomNumber: 1,
+          numberRange: NumberRangeModel(min: 1, max: 1),
+        ),
+      ),
+    ];
+    when(() => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()))
+        .thenAnswer((_) async => returnVoid());
+    await dataSource.addRandomHistory(tHistoryList[0]);
+    // act
+    await dataSource.addRandomHistory(tHistoryList[1], index: 1);
+    final result = await dataSource.getRandomHistory();
+    // assert
+    verify(
+      () => mockBox.put(
+        RandomHistoryDataSourceImpl.kHistoryKey,
+        json.encode(
+          tHistoryList.map<dynamic>((history) => history.toJson()).toList(),
+        ),
+      ),
+    );
+    result.listen((value) {
+      expect(value, equals(tHistoryList));
+    });
+  });
+
   test('should check get history by id', () async {
     // arrange
     final tHistoryList = <PickHistoryModel>[
@@ -254,7 +292,7 @@ void main() {
     await dataSource.addRandomHistory(tHistoryList[0]);
     await dataSource.addRandomHistory(tHistoryList[1]);
     // act
-    await dataSource.clearHistoryById(tHistoryList[0].id);
+    await dataSource.clearHistory(tHistoryList[0]);
     final result = await dataSource.getRandomHistory();
     // assert
     verify(
@@ -273,10 +311,18 @@ void main() {
 
   test('should check clear history by id failing', () async {
     // arrange
-    final call = dataSource.clearHistoryById;
+    final tHistory = PickHistoryModel(
+      id: 'something',
+      dateTime: DateTime.now(),
+      picked: RandomNumberPickedModel(
+        randomNumber: 0,
+        numberRange: NumberRangeModel(min: 0, max: 0),
+      ),
+    );
+    final call = dataSource.clearHistory;
     // assert
     expect(
-      () => call('something'),
+      () => call(tHistory),
       throwsA(
         const TypeMatcher<HistoryNotFoundException>(),
       ),
