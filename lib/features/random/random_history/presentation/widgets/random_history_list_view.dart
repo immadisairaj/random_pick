@@ -42,7 +42,7 @@ class RandomHistoryListView extends StatelessWidget {
       trailing: IconButton(
         icon: const Icon(CupertinoIcons.delete),
         onPressed: () {
-          // delete history using id
+          // delete history
           BlocProvider.of<RandomHistoryBloc>(context).add(
             ClearHistoryRequested(pickHistory: currentHistory, index: index),
           );
@@ -50,21 +50,47 @@ class RandomHistoryListView extends StatelessWidget {
       ),
       onTap: () {
         if (currentHistory.picked is RandomItemPicked) {
-          Navigator.of(context).push(
-            MaterialPageRoute<Widget>(
+          Navigator.of(context)
+              .push<bool>(
+            MaterialPageRoute(
               builder: (context) => RandomListPickedPage(
                 randomItemPicked: currentHistory.picked as RandomItemPicked,
+                isHistory: true,
               ),
             ),
-          );
+          )
+              .then((value) {
+            if (value != null && value) {
+              // delete history
+              BlocProvider.of<RandomHistoryBloc>(context).add(
+                ClearHistoryRequested(
+                  pickHistory: currentHistory,
+                  index: index,
+                ),
+              );
+            }
+          });
         } else if (currentHistory.picked is RandomNumberPicked) {
-          Navigator.of(context).push(
-            MaterialPageRoute<Widget>(
+          Navigator.of(context)
+              .push<bool>(
+            MaterialPageRoute(
               builder: (context) => RandomHistoryNumberPage(
                 randomNumberPicked: currentHistory.picked as RandomNumberPicked,
+                isHistory: true,
               ),
             ),
-          );
+          )
+              .then((value) {
+            if (value != null && value) {
+              // delete history
+              BlocProvider.of<RandomHistoryBloc>(context).add(
+                ClearHistoryRequested(
+                  pickHistory: currentHistory,
+                  index: index,
+                ),
+              );
+            }
+          });
         }
       },
     );

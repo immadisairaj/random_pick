@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:random_pick/features/random/presentation/widgets/message_display.dart';
 import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
@@ -6,13 +7,20 @@ import 'package:random_pick/features/random/random_list/domain/entities/random_i
 /// page to display the [randomItemPicked]
 class RandomListPickedPage extends StatelessWidget {
   /// creates a page to show [randomItemPicked]
+  ///
+  /// [isHistory] defaults to false; pass true to be able to delete from history
   const RandomListPickedPage({
     super.key,
     required this.randomItemPicked,
+    this.isHistory = false,
   });
 
   /// the [randomItemPicked] to show
   final RandomItemPicked randomItemPicked;
+
+  /// if the history is false, it's navigated from random list;
+  /// else it's navigated from pick history
+  final bool isHistory;
 
   Widget _listItem(BuildContext context, Item currentItem) {
     return CheckboxListTile(
@@ -32,6 +40,15 @@ class RandomListPickedPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Item list'),
+        actions: [
+          if (isHistory)
+            IconButton(
+              icon: const Icon(CupertinoIcons.delete),
+              onPressed: () {
+                Navigator.of(context).pop<bool>(true);
+              },
+            ),
+        ],
       ),
       body: Scrollbar(
         child: CustomScrollView(
