@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       // TODO(immadisairaj): add theme change option
-      themeMode: ThemeMode.light,
+      // themeMode: ThemeMode.light,
       home: const RandomPage(),
     );
   }

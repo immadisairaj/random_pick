@@ -9,8 +9,8 @@ class RandomHistoryNumberPage extends StatelessWidget {
   ///
   /// [isHistory] defaults to false; pass true to be able to delete from history
   const RandomHistoryNumberPage({
-    super.key,
     required this.randomNumberPicked,
+    super.key,
     this.isHistory = false,
   });
 
@@ -40,9 +40,9 @@ class RandomHistoryNumberPage extends StatelessWidget {
         child: MessageDisplay(
           randomPicked: randomNumberPicked.randomNumber.toString(),
           message: 'is the random number picked from\n'
-              '${randomNumberPicked.numberRange.min.toString()}'
+              '${randomNumberPicked.numberRange.min}'
               ' to '
-              '${randomNumberPicked.numberRange.max.toString()}',
+              '${randomNumberPicked.numberRange.max}',
         ),
       ),
     );

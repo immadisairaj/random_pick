@@ -58,6 +58,7 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
           ),
           Expanded(
             child: TextFormField(
+              key: Key(items[index].id),
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
                 hintText: 'Input Item',
@@ -141,9 +142,9 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                             BlocProvider.of<RandomListBloc>(context)
                                 .add(ItemAddRequested(item: Item(text: '')));
                           },
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
+                            children: [
                               Icon(Icons.add),
                               Text('Add Item'),
                             ],

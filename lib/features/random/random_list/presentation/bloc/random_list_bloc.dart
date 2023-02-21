@@ -113,19 +113,17 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
           errorMessage: () => _mapFailureToMessage(failure),
         ),
       ),
-      (items) async => {
-        await emit.forEach<List<Item>>(
-          items,
-          onData: (items) => state.copyWith(
-            status: () => ItemsSubscriptionStatus.itemsLoaded,
-            itemPool: () => items,
-          ),
-          onError: (_, __) => state.copyWith(
-            status: () => ItemsSubscriptionStatus.error,
-            errorMessage: () => _mapFailureToMessage(const UnknownFailure()),
-          ),
-        )
-      },
+      (items) async => emit.forEach<List<Item>>(
+        items,
+        onData: (items) => state.copyWith(
+          status: () => ItemsSubscriptionStatus.itemsLoaded,
+          itemPool: () => items,
+        ),
+        onError: (_, __) => state.copyWith(
+          status: () => ItemsSubscriptionStatus.error,
+          errorMessage: () => _mapFailureToMessage(const UnknownFailure()),
+        ),
+      ),
     );
   }
 

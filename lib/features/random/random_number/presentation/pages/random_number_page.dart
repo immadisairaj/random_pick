@@ -35,9 +35,9 @@ class RandomNumberPage extends StatelessWidget {
                     return MessageDisplay(
                       randomPicked: picked.randomNumber.toString(),
                       message: 'is the random number picked from\n'
-                          '${picked.numberRange.min.toString()}'
+                          '${picked.numberRange.min}'
                           ' to '
-                          '${picked.numberRange.max.toString()}',
+                          '${picked.numberRange.max}',
                     );
                   } else if (state is RandomNumberError) {
                     return MessageDisplay(

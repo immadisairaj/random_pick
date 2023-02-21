@@ -10,8 +10,7 @@ class RandomListPickedPage extends StatelessWidget {
   ///
   /// [isHistory] defaults to false; pass true to be able to delete from history
   const RandomListPickedPage({
-    super.key,
-    required this.randomItemPicked,
+    required this.randomItemPicked, super.key,
     this.isHistory = false,
   });
 

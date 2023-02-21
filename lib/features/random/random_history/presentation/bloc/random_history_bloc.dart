@@ -52,19 +52,17 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
           errorMessage: () => _mapFailureToMessage(failure),
         ),
       ),
-      (history) async => {
-        await emit.forEach<List<PickHistory>>(
-          history,
-          onData: (historyList) => state.copyWith(
-            status: () => RandomHistoryStatus.loaded,
-            historyList: () => historyList,
-          ),
-          onError: (_, __) => state.copyWith(
-            status: () => RandomHistoryStatus.error,
-            errorMessage: () => _mapFailureToMessage(const UnknownFailure()),
-          ),
-        )
-      },
+      (history) async => emit.forEach<List<PickHistory>>(
+        history,
+        onData: (historyList) => state.copyWith(
+          status: () => RandomHistoryStatus.loaded,
+          historyList: () => historyList,
+        ),
+        onError: (_, __) => state.copyWith(
+          status: () => RandomHistoryStatus.error,
+          errorMessage: () => _mapFailureToMessage(const UnknownFailure()),
+        ),
+      ),
     );
   }
 

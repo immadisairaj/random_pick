@@ -88,9 +88,9 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
                 ),
               ],
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
+              children: [
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.all(10),

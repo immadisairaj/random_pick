@@ -5,8 +5,7 @@ class ItemModel extends Item {
   /// creates a [ItemModel] which contains the copyWith function and also
   /// the functions for json conversions
   ItemModel({
-    super.id,
-    required super.text,
+    required super.text, super.id,
     super.selected = true,
   });
 

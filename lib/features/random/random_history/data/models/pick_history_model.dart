@@ -10,15 +10,15 @@ class PickHistoryModel extends PickHistory {
   /// the copyWith function and also
   /// the functions for json conversions
   PickHistoryModel({
-    super.id,
     required super.dateTime,
     required super.picked,
+    super.id,
   });
 
   /// converts the json map to [PickHistoryModel]
   factory PickHistoryModel.fromJson(Map<String, dynamic> json) {
     // method for converting the json map to it's picked model
-    dynamic _pickedFromJson(Map<String, dynamic> picked) {
+    dynamic pickedFromJson(Map<String, dynamic> picked) {
       if (picked['numberRange'] != null) {
         return RandomNumberPickedModel.fromJson(picked);
       } else if (picked['itemPool'] != null) {
@@ -31,7 +31,7 @@ class PickHistoryModel extends PickHistory {
       id: json['id'] as String,
       // date time is stored as string in the json, so we are parsing it
       dateTime: DateTime.parse(json['dateTime'] as String),
-      picked: _pickedFromJson(json['picked'] as Map<String, dynamic>),
+      picked: pickedFromJson(json['picked'] as Map<String, dynamic>),
     );
   }
 

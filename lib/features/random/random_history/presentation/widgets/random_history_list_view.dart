@@ -12,7 +12,7 @@ import 'package:random_pick/features/random/random_number/domain/entities/random
 /// [history]
 class RandomHistoryListView extends StatelessWidget {
   /// creates a random history list view
-  const RandomHistoryListView({super.key, required this.history});
+  const RandomHistoryListView({required this.history, super.key});
 
   /// the history to display
   final List<PickHistory> history;
@@ -168,9 +168,9 @@ class RandomHistoryListView extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Clear History'),
-          content: SingleChildScrollView(
+          content: const SingleChildScrollView(
             child: ListBody(
-              children: const <Widget>[
+              children: <Widget>[
                 Text('This will clear all the pick history.'),
                 Text('Would you like to clear?'),
               ],
