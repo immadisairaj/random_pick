@@ -9,7 +9,8 @@ class Item extends Equatable {
   /// - text - text to display
   /// - selected - indicate if the item is to be picked, defaults to true
   Item({
-    required this.text, String? id,
+    required this.text,
+    String? id,
     this.selected = true,
   })  : assert(
           id == null || id.isNotEmpty,

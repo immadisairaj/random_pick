@@ -11,7 +11,9 @@ class PickHistory extends Equatable {
   /// [RandomItemPicked] or [RandomNumberPicked]
   /// else, it throws an error
   PickHistory({
-    required this.dateTime, required this.picked, String? id,
+    required this.dateTime,
+    required this.picked,
+    String? id,
   })  : assert(
           id == null || id.isNotEmpty,
           'id cannot be empty',

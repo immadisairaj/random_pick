@@ -18,7 +18,8 @@ class NumberRange extends Equatable {
   /// throws an error if [min] is greater than [max]
   /// throws error if range is not within (2^32)-1
   NumberRange({
-    required this.max, this.min = 0,
+    required this.max,
+    this.min = 0,
   }) {
     if (min > max) {
       throw ArgumentError('min must be less than or equal to max');

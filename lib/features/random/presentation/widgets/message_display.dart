@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 class MessageDisplay extends StatelessWidget {
   /// creates a message display widget
   const MessageDisplay({
-    required this.message, super.key,
+    required this.message,
+    super.key,
     this.randomPicked,
     this.isError = false,
   });
