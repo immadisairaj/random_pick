@@ -6,7 +6,7 @@
     an application which decides/picks an item from the given pool
 </p>
 <p align="center">
- <!-- <a href="https://immadisairaj.github.io/random_pick">
+ <!-- <a href="https://randompick.immadisairaj.dev">
     <img src="https://img.shields.io/badge/Visit-Website-e91e62" alt="website"></img>
   </a> -->
   <a href="https://github.com/immadisairaj/random_pick/actions/workflows/random_pick.yaml">
@@ -18,7 +18,7 @@
   <a href="https://github.com/immadisairaj/random_pick/blob/main/LICENSE.md">
     <img src="https://img.shields.io/github/license/immadisairaj/random_pick.svg" alt="license">
   </a>
-  <a href="https://immadisairaj.github.io/random_pick/privacy_policy.html">
+  <a href="https://randompick.immadisairaj.dev/privacy_policy.html">
     <img src="https://img.shields.io/badge/privacy-policy-ea4ca0.svg" alt="privacy policy">
   </a>
 </p>
