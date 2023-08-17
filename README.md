@@ -57,7 +57,7 @@ Thanks to the Open Source community for providing many great libraries which imp
 
 ## Privacy Policy
 
-The Privacy Policy of the app is in the site: [immadisairaj.github.io/random_pick/privacy_policy.html](https://immadisairaj.github.io/random_pick/privacy_policy.html)
+The Privacy Policy of the app is in the site: [https://randompick.immadisairaj.dev/privacy_policy.html](https://randompick.immadisairaj.dev/privacy_policy.html)
 
 ## License
 
