@@ -40,8 +40,8 @@ void main() {
         'itemPicked': {'id': '1', 'text': 'Item 1', 'selected': true},
         'itemPool': [
           {'id': '1', 'text': 'Item 1', 'selected': true},
-          {'id': '2', 'text': 'Item 2', 'selected': true}
-        ]
+          {'id': '2', 'text': 'Item 2', 'selected': true},
+        ],
       };
       expect(result, expectedMap);
     });

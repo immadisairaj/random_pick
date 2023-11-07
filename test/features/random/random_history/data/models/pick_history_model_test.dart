@@ -65,9 +65,9 @@ void main() {
           'itemPicked': {'id': '1', 'text': 'Item 1', 'selected': true},
           'itemPool': [
             {'id': '1', 'text': 'Item 1', 'selected': true},
-            {'id': '2', 'text': 'Item 2', 'selected': true}
-          ]
-        }
+            {'id': '2', 'text': 'Item 2', 'selected': true},
+          ],
+        },
       };
       expect(result, expectedMap);
     });
@@ -93,8 +93,8 @@ void main() {
         'dateTime': '2022-05-26 15:56:12.066156',
         'picked': {
           'randomNumber': 5,
-          'numberRange': {'min': 1, 'max': 10}
-        }
+          'numberRange': {'min': 1, 'max': 10},
+        },
       };
       expect(result, expectedMap);
     });
