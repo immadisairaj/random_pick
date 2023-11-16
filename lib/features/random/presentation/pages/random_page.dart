@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:random_pick/core/navigation/random_pick_navigation.dart';
 import 'package:random_pick/features/random/presentation/cubit/random_page_cubit.dart';
+import 'package:random_pick/features/random/presentation/widgets/animated_index_stack.dart';
+import 'package:random_pick/features/random/presentation/widgets/custom_bottom_bar.dart';
 import 'package:random_pick/features/random/random_history/presentation/pages/random_history_page.dart';
 import 'package:random_pick/features/random/random_list/presentation/pages/random_list_page.dart';
 import 'package:random_pick/features/random/random_number/presentation/pages/random_number_page.dart';
@@ -71,7 +73,7 @@ class RandomPageView extends StatelessWidget {
               .currentState!
               .context,
         ),
-        child: IndexedStack(
+        child: AnimatedIndexedStack(
           index: selectedTab.index,
           children: [
             // first tab to display the random number pick
@@ -93,19 +95,19 @@ class RandomPageView extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: CustomBottomBar(
         selectedIndex: selectedTab.index,
         onDestinationSelected: (index) =>
             context.read<RandomPageCubit>().setTab(RandomPageTab.values[index]),
         destinations: const [
-          NavigationDestination(
-            selectedIcon: Icon(CupertinoIcons.number_square_fill),
-            icon: Icon(CupertinoIcons.number_square),
+          CustomBottomBarDestination(
+            selectedIcon: CupertinoIcons.number_square_fill,
+            icon: CupertinoIcons.number_square,
             label: 'Numbers',
           ),
-          NavigationDestination(
-            selectedIcon: Icon(CupertinoIcons.square_list_fill),
-            icon: Icon(CupertinoIcons.square_list),
+          CustomBottomBarDestination(
+            selectedIcon: CupertinoIcons.square_list_fill,
+            icon: CupertinoIcons.square_list,
             label: 'List',
           ),
         ],

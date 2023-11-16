@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: FlexThemeData.light(scheme: FlexScheme.aquaBlue),
       darkTheme: FlexThemeData.dark(scheme: FlexScheme.aquaBlue),
       // TODO(immadisairaj): add theme change option
-      // themeMode: ThemeMode.light,
+      // themeMode: ThemeMode.dark,
       home: const RandomPage(),
     );
   }
