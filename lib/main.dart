@@ -1,3 +1,4 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:random_pick/features/random/presentation/pages/random_page.dart';
 import 'package:random_pick/injection_container.dart' as di;
@@ -19,15 +20,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Random Pick',
       // debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.purple,
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.purple,
-        brightness: Brightness.dark,
-      ),
+      theme: FlexThemeData.light(scheme: FlexScheme.aquaBlue),
+      darkTheme: FlexThemeData.dark(scheme: FlexScheme.aquaBlue),
       // TODO(immadisairaj): add theme change option
       // themeMode: ThemeMode.light,
       home: const RandomPage(),

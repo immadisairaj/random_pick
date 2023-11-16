@@ -38,15 +38,11 @@ class RandomPageView extends StatelessWidget {
         title: const Text('Random Pick'),
         actions: [
           IconButton(
-            onPressed: () async {
-              await PackageInfo.fromPlatform().then(
-                (packageInfo) => Navigator.of(context).push(
-                  MaterialPageRoute<Widget>(
-                    builder: (context) => const RandomHistoryPage(),
-                  ),
-                ),
-              );
-            },
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<Widget>(
+                builder: (context) => const RandomHistoryPage(),
+              ),
+            ),
             icon: const Icon(Icons.history),
           ),
           IconButton(
@@ -68,8 +64,8 @@ class RandomPageView extends StatelessWidget {
           ),
         ],
       ),
-      body: WillPopScope(
-        onWillPop: () async => !await Navigator.maybePop(
+      body: PopScope(
+        onPopInvoked: (_) async => !await Navigator.maybePop(
           getIt<RandomPickNavigation>()
               .navigatorKeys[selectedTab.index]!
               .currentState!
