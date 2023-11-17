@@ -17,11 +17,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of the application.
   @override
   Widget build(BuildContext context) {
+    const colorScheme = FlexScheme.aquaBlue;
+    var lightTheme = FlexThemeData.light(scheme: colorScheme);
+    lightTheme = lightTheme.copyWith(
+      scaffoldBackgroundColor: lightTheme.colorScheme.background
+          .blend(lightTheme.appBarTheme.backgroundColor!, 15),
+    );
+    var darkTheme = FlexThemeData.dark(scheme: colorScheme);
+    darkTheme = darkTheme.copyWith(
+      scaffoldBackgroundColor: darkTheme.colorScheme.background
+          .blend(darkTheme.appBarTheme.backgroundColor!, 15),
+    );
     return MaterialApp(
       title: 'Random Pick',
       // debugShowCheckedModeBanner: false,
-      theme: FlexThemeData.light(scheme: FlexScheme.aquaBlue),
-      darkTheme: FlexThemeData.dark(scheme: FlexScheme.aquaBlue),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       // TODO(immadisairaj): add theme change option
       // themeMode: ThemeMode.dark,
       home: const RandomPage(),

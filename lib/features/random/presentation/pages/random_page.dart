@@ -1,3 +1,4 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,11 +53,18 @@ class RandomPageView extends StatelessWidget {
               await PackageInfo.fromPlatform().then(
                 (packageInfo) => Navigator.of(context).push(
                   MaterialPageRoute<Widget>(
-                    builder: (context) => LicensePage(
-                      applicationIcon:
-                          Image.asset('assets/app_icon_foreground.png'),
-                      applicationName: packageInfo.appName,
-                      applicationVersion: packageInfo.version,
+                    builder: (context) => Theme(
+                      data: Theme.of(context).copyWith(
+                        cardColor: Theme.of(context)
+                            .scaffoldBackgroundColor
+                            .blend(Theme.of(context).colorScheme.primary, 5),
+                      ),
+                      child: LicensePage(
+                        applicationIcon:
+                            Image.asset('assets/app_icon_foreground.png'),
+                        applicationName: packageInfo.appName,
+                        applicationVersion: packageInfo.version,
+                      ),
                     ),
                   ),
                 ),
