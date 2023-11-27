@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:random_pick/core/utils/constants.dart';
 import 'package:random_pick/features/random/random_number/presentation/bloc/random_number_bloc.dart';
 
 /// Widget that controlls the [RandomNumberBloc]
@@ -63,7 +64,11 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
                           const TextInputType.numberWithOptions(signed: true),
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(Constants.circularRadius),
+                          ),
+                        ),
                         hintText: 'Min value',
                       ),
                     ),
@@ -80,7 +85,11 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
                       textInputAction: TextInputAction.done,
                       onSubmitted: (_) => _dispatchRandomNumber(),
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(Constants.circularRadius),
+                          ),
+                        ),
                         hintText: 'Max value',
                       ),
                     ),
@@ -109,6 +118,7 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
               padding: const EdgeInsets.all(20),
               child: ElevatedButton(
                 onPressed: _dispatchRandomNumber,
+                style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                 child: const Text('Pick Random Number'),
               ),
             ),

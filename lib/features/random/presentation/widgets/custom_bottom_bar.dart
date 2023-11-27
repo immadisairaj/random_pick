@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:random_pick/core/utils/constants.dart';
 
 const _animationDuration = Duration(milliseconds: 500);
 
@@ -29,7 +30,7 @@ class CustomBottomBar extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 23, vertical: 10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.inversePrimary,
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(Constants.circularRadius),
           boxShadow: [
             BoxShadow(
               color:
