@@ -27,7 +27,7 @@ class RandomListPickedPage extends StatelessWidget {
       value: currentItem.selected,
       onChanged: (_) {},
       tileColor: currentItem.id == randomItemPicked.itemPicked.id
-          ? Theme.of(context).colorScheme.surfaceVariant
+          ? Theme.of(context).colorScheme.primaryContainer
           : null,
       activeColor: Theme.of(context).colorScheme.onSurfaceVariant,
       title: Text(currentItem.text),

@@ -51,7 +51,6 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
           hintText: 'Input Item',
           prefixIcon: Checkbox(
             value: items[index].selected,
-            shape: const StadiumBorder(),
             activeColor: Theme.of(context).colorScheme.primary,
             // edit the item using add event to select/deselect
             onChanged: (value) => BlocProvider.of<RandomListBloc>(context).add(
@@ -141,9 +140,6 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                             BlocProvider.of<RandomListBloc>(context)
                                 .add(ItemAddRequested(item: Item(text: '')));
                           },
-                          style: ElevatedButton.styleFrom(
-                            shape: const StadiumBorder(),
-                          ),
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -172,8 +168,6 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                       BlocProvider.of<RandomListBloc>(context)
                           .add(const GetRandomItemEvent());
                     },
-                    style:
-                        ElevatedButton.styleFrom(shape: const StadiumBorder()),
                     child: const Text('Pick Random Item'),
                   ),
                 ),

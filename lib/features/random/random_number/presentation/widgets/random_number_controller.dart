@@ -118,7 +118,6 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
               padding: const EdgeInsets.all(20),
               child: ElevatedButton(
                 onPressed: _dispatchRandomNumber,
-                style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                 child: const Text('Pick Random Number'),
               ),
             ),

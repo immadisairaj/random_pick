@@ -14,20 +14,37 @@ class MyApp extends StatelessWidget {
   /// create the main application
   const MyApp({super.key});
 
+  ThemeData _getThemeData(ThemeData copyFromTheme) {
+    return copyFromTheme.copyWith(
+      scaffoldBackgroundColor: copyFromTheme.colorScheme.background
+          .blend(copyFromTheme.appBarTheme.backgroundColor!, 15),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          shape: const StadiumBorder(),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          shape: const StadiumBorder(),
+        ),
+      ),
+      checkboxTheme: const CheckboxThemeData(
+        shape: StadiumBorder(),
+      ),
+      listTileTheme: const ListTileThemeData(
+        shape: StadiumBorder(),
+      ),
+    );
+  }
+
   // This widget is the root of the application.
   @override
   Widget build(BuildContext context) {
     const colorScheme = FlexScheme.aquaBlue;
     var lightTheme = FlexThemeData.light(scheme: colorScheme);
-    lightTheme = lightTheme.copyWith(
-      scaffoldBackgroundColor: lightTheme.colorScheme.background
-          .blend(lightTheme.appBarTheme.backgroundColor!, 15),
-    );
+    lightTheme = _getThemeData(lightTheme);
     var darkTheme = FlexThemeData.dark(scheme: colorScheme);
-    darkTheme = darkTheme.copyWith(
-      scaffoldBackgroundColor: darkTheme.colorScheme.background
-          .blend(darkTheme.appBarTheme.backgroundColor!, 15),
-    );
+    darkTheme = _getThemeData(darkTheme);
     return MaterialApp(
       title: 'Random Pick',
       // debugShowCheckedModeBanner: false,

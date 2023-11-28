@@ -162,7 +162,7 @@ class RandomHistoryListView extends StatelessWidget {
   Future<void> _showMyDialog({required BuildContext context}) async {
     // this contextS is the context save to clear the pick history
     final contextS = context;
-    return showDialog<void>(
+    return showAdaptiveDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
