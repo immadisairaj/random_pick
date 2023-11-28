@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:random_pick/core/utils/constants.dart';
 import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
 import 'package:random_pick/features/random/random_list/presentation/bloc/random_list_bloc.dart';
 
@@ -39,65 +40,60 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
   Widget _singleTextField(List<Item> items, int index) {
     return Padding(
       padding: const EdgeInsets.all(8),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 0,
-            child: Checkbox(
-              value: items[index].selected,
-              // edit the item using add event to select/deselect
-              onChanged: (value) =>
-                  BlocProvider.of<RandomListBloc>(context).add(
-                ItemAddRequested(
-                  item: items[index].copyWith(
-                    selected: value,
-                  ),
+      child: TextFormField(
+        key: Key(items[index].id),
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(Constants.circularRadius),
+            ),
+          ),
+          hintText: 'Input Item',
+          prefixIcon: Checkbox(
+            value: items[index].selected,
+            shape: const StadiumBorder(),
+            activeColor: Theme.of(context).colorScheme.primary,
+            // edit the item using add event to select/deselect
+            onChanged: (value) => BlocProvider.of<RandomListBloc>(context).add(
+              ItemAddRequested(
+                item: items[index].copyWith(
+                  selected: value,
                 ),
               ),
             ),
           ),
-          Expanded(
-            child: TextFormField(
-              key: Key(items[index].id),
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                hintText: 'Input Item',
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    // remove the item using remove event
-                    BlocProvider.of<RandomListBloc>(context)
-                        .add(ItemRemoveRequested(item: items[index]));
-                  },
-                ),
-              ),
-              initialValue: items[index].text,
-              textInputAction: index != (items.length - 1)
-                  ? TextInputAction.next
-                  : TextInputAction.done,
-              // edit the item using add event to change text on go
-              onChanged: (value) =>
-                  BlocProvider.of<RandomListBloc>(context).add(
-                ItemAddRequested(
-                  item: items[index].copyWith(
-                    text: value,
-                  ),
-                ),
-              ),
-              onEditingComplete: () {
-                if (index != (items.length - 1)) {
-                  // focus next 3 times because of
-                  // the current cross button and the next check box
-                  FocusScope.of(context).nextFocus();
-                  FocusScope.of(context).nextFocus();
-                  FocusScope.of(context).nextFocus();
-                } else {
-                  FocusScope.of(context).unfocus();
-                }
-              },
+          suffixIcon: IconButton(
+            icon: const Icon(Icons.clear),
+            onPressed: () {
+              // remove the item using remove event
+              BlocProvider.of<RandomListBloc>(context)
+                  .add(ItemRemoveRequested(item: items[index]));
+            },
+          ),
+        ),
+        initialValue: items[index].text,
+        textInputAction: index != (items.length - 1)
+            ? TextInputAction.next
+            : TextInputAction.done,
+        // edit the item using add event to change text on go
+        onChanged: (value) => BlocProvider.of<RandomListBloc>(context).add(
+          ItemAddRequested(
+            item: items[index].copyWith(
+              text: value,
             ),
           ),
-        ],
+        ),
+        onEditingComplete: () {
+          if (index != (items.length - 1)) {
+            // focus next 3 times because of
+            // the current cross button and the next check box
+            FocusScope.of(context).nextFocus();
+            FocusScope.of(context).nextFocus();
+            FocusScope.of(context).nextFocus();
+          } else {
+            FocusScope.of(context).unfocus();
+          }
+        },
       ),
     );
   }
@@ -136,12 +132,18 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 8,
+                        ),
                         child: TextButton(
                           onPressed: () {
                             BlocProvider.of<RandomListBloc>(context)
                                 .add(ItemAddRequested(item: Item(text: '')));
                           },
+                          style: ElevatedButton.styleFrom(
+                            shape: const StadiumBorder(),
+                          ),
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -170,6 +172,8 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                       BlocProvider.of<RandomListBloc>(context)
                           .add(const GetRandomItemEvent());
                     },
+                    style:
+                        ElevatedButton.styleFrom(shape: const StadiumBorder()),
                     child: const Text('Pick Random Item'),
                   ),
                 ),
