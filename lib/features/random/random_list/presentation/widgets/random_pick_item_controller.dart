@@ -51,7 +51,6 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
           hintText: 'Input Item',
           prefixIcon: Checkbox(
             value: items[index].selected,
-            activeColor: Theme.of(context).colorScheme.primary,
             // edit the item using add event to select/deselect
             onChanged: (value) => BlocProvider.of<RandomListBloc>(context).add(
               ItemAddRequested(

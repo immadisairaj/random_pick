@@ -29,7 +29,6 @@ class RandomListPickedPage extends StatelessWidget {
       tileColor: currentItem.id == randomItemPicked.itemPicked.id
           ? Theme.of(context).colorScheme.primaryContainer
           : null,
-      activeColor: Theme.of(context).colorScheme.onSurfaceVariant,
       title: Text(currentItem.text),
       controlAffinity: ListTileControlAffinity.leading,
     );

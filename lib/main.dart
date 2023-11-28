@@ -28,8 +28,18 @@ class MyApp extends StatelessWidget {
           shape: const StadiumBorder(),
         ),
       ),
-      checkboxTheme: const CheckboxThemeData(
-        shape: StadiumBorder(),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
+            return null;
+          }
+          if (states.contains(MaterialState.selected)) {
+            return copyFromTheme.colorScheme.primary;
+          }
+          return null;
+        }),
+        shape: const StadiumBorder(),
       ),
       listTileTheme: const ListTileThemeData(
         shape: StadiumBorder(),
