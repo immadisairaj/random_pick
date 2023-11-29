@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 0.3.1+66
 
 environment:
-  sdk: ">=3.2.0 <4.0.0"
+  sdk: ">=3.2.1 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -55,11 +55,11 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
 
-  # Mock things
-  mocktail: ^1.0.1
-
   # package information
-  package_info_plus: ^4.2.0
+  package_info_plus: ^5.0.1
+
+  # path for database - used by isar
+  path_provider: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +71,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.1
+
+  # Mock things
+  mocktail: ^1.0.1
 
   # Very good analysis
   very_good_analysis: ^5.1.0
