@@ -47,6 +47,7 @@ class RandomPageView extends StatelessWidget {
               ),
             ),
             icon: const Icon(Icons.history),
+            tooltip: 'View History',
           ),
           IconButton(
             onPressed: () async {
@@ -71,6 +72,7 @@ class RandomPageView extends StatelessWidget {
               );
             },
             icon: const Icon(CupertinoIcons.info),
+            tooltip: 'Info & Licenses',
           ),
         ],
       ),

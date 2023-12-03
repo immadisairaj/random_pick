@@ -70,6 +70,7 @@ class CustomBottomBar extends StatelessWidget {
                               : Theme.of(context)
                                   .colorScheme
                                   .onPrimaryContainer,
+                          semanticLabel: destination.label,
                         ),
                       ),
                       if (highlight)

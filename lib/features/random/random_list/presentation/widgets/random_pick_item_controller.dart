@@ -48,9 +48,11 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
               Radius.circular(Constants.circularRadius),
             ),
           ),
-          hintText: 'Input Item',
+          hintText: 'Input Item ${index + 1}',
           prefixIcon: Checkbox(
             value: items[index].selected,
+            semanticLabel: '${items[index].selected ? 'Unselect' : 'Select'}'
+                ' Item ${index + 1}',
             // edit the item using add event to select/deselect
             onChanged: (value) => BlocProvider.of<RandomListBloc>(context).add(
               ItemAddRequested(
@@ -62,6 +64,7 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
           ),
           suffixIcon: IconButton(
             icon: const Icon(Icons.clear),
+            tooltip: 'Remove Item ${index + 1}',
             onPressed: () {
               // remove the item using remove event
               BlocProvider.of<RandomListBloc>(context)

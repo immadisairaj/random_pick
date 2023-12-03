@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
       // debugShowCheckedModeBanner: false,
       theme: lightTheme,
       darkTheme: darkTheme,
+      // showSemanticsDebugger: true,
       // TODO(immadisairaj): add theme change option
       // themeMode: ThemeMode.dark,
       home: const RandomPage(),
