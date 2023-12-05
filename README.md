@@ -24,6 +24,7 @@
 </p>
 <p align="center">
   <a href='https://play.google.com/store/apps/details?id=com.immadisairaj.random_pick&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height="80px" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+  <a href='https://apps.apple.com/us/app/random-pick-a-click-away/id6473739306'><img height="80px" alt='Download on the App Store' src='https://randompick.immadisairaj.dev/screenshots/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg'/></a>
 </p>
 <br>
 
