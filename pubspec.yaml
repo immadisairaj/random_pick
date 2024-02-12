@@ -17,10 +17,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 # versioning style <major>.<feature>.<fixes>+<commits>
-version: 0.4.1+88
+version: 0.4.2+92
 
 environment:
-  sdk: ">=3.2.1 <4.0.0"
+  sdk: ">=3.2.6 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -36,7 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   # Service locator
-  get_it: ^7.6.4
+  get_it: ^7.6.7
   # Functional Programming
   dartz: ^0.10.1
   # equatable for entities
@@ -44,10 +44,10 @@ dependencies:
   # for theming
   flex_color_scheme: ^7.3.1
   # unique id's
-  uuid: ^4.2.1
+  uuid: ^4.3.3
   # bloc
-  bloc: ^8.1.2
-  flutter_bloc: ^8.1.3
+  bloc: ^8.1.3
+  flutter_bloc: ^8.1.4
   # rxdart for streams
   rxdart: ^0.27.7
 
@@ -59,7 +59,7 @@ dependencies:
   package_info_plus: ^5.0.1
 
   # path for database - used by isar
-  path_provider: ^2.1.1
+  path_provider: ^2.1.2
 
 dev_dependencies:
   flutter_test:
@@ -73,7 +73,7 @@ dev_dependencies:
   flutter_lints: ^3.0.1
 
   # Mock things
-  mocktail: ^1.0.1
+  mocktail: ^1.0.3
 
   # Very good analysis
   very_good_analysis: ^5.1.0
