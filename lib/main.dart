@@ -1,6 +1,9 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:random_pick/features/random/presentation/cubit/random_page_cubit.dart';
 import 'package:random_pick/features/random/presentation/pages/random_page.dart';
+import 'package:random_pick/features/random/random_list/presentation/bloc/random_list_bloc.dart';
 import 'package:random_pick/injection_container.dart' as di;
 
 void main() async {
@@ -55,15 +58,21 @@ class MyApp extends StatelessWidget {
     lightTheme = _getThemeData(lightTheme);
     var darkTheme = FlexThemeData.dark(scheme: colorScheme);
     darkTheme = _getThemeData(darkTheme);
-    return MaterialApp(
-      title: 'Random Pick',
-      // debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      // showSemanticsDebugger: true,
-      // TODO(immadisairaj): add theme change option
-      // themeMode: ThemeMode.dark,
-      home: const RandomPage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => di.getIt<RandomPageCubit>()),
+        BlocProvider(create: (_) => di.getIt<RandomListBloc>()),
+      ],
+      child: MaterialApp(
+        title: 'Random Pick',
+        // debugShowCheckedModeBanner: false,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        // showSemanticsDebugger: true,
+        // TODO(immadisairaj): add theme change option
+        // themeMode: ThemeMode.dark,
+        home: const RandomPage(),
+      ),
     );
   }
 }

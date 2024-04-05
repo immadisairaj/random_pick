@@ -36,6 +36,7 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
   }) : super(const RandomListState()) {
     on<ItemsSubscriptionRequested>(_onItemsSubscriptionRequested);
     on<ItemAddRequested>(_onItemAddRequested);
+    on<ItemsUpdateRequested>(_onItemsUpdateRequested);
     on<ItemRemoveRequested>(_onItemRemoveRequested);
     on<GetRandomItemEvent>(_getRandomItemEvent);
   }
@@ -133,6 +134,14 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
     Emitter<RandomListState> emit,
   ) async {
     await subscribeItems.addItemToPool(Params(item: event.item));
+  }
+
+  /// logic of what to do when the [ItemsUpdateRequested] event is dispatched
+  Future<void> _onItemsUpdateRequested(
+    ItemsUpdateRequested event,
+    Emitter<RandomListState> emit,
+  ) async {
+    await subscribeItems.updateItemPool(ListParams(items: event.items));
   }
 
   /// logic of what to do when the [ItemRemoveRequested] event is dispatched

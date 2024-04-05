@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:random_pick/features/random/presentation/widgets/message_display.dart';
 import 'package:random_pick/features/random/random_list/domain/entities/item.dart';
 import 'package:random_pick/features/random/random_list/domain/entities/random_item_picked.dart';
+import 'package:random_pick/features/random/random_list/helpers/random_list_helper.dart';
 
 /// page to display the [randomItemPicked]
 class RandomListPickedPage extends StatelessWidget {
@@ -40,9 +41,31 @@ class RandomListPickedPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Item list'),
         actions: [
+          IconButton(
+            icon: const Icon(CupertinoIcons.arrow_2_circlepath),
+            tooltip: 'Repick (as it is)',
+            onPressed: () {
+              RandomListHelper.rePick(
+                context,
+                randomItemPicked,
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(CupertinoIcons.arrow_clockwise),
+            tooltip: 'Repick (uncheck picked)',
+            onPressed: () {
+              RandomListHelper.rePick(
+                context,
+                randomItemPicked,
+                uncheckPicked: true,
+              );
+            },
+          ),
           if (isHistory)
             IconButton(
               icon: const Icon(CupertinoIcons.delete),
+              tooltip: 'Delete',
               onPressed: () {
                 Navigator.of(context).pop<bool>(true);
               },

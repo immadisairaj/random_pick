@@ -33,6 +33,18 @@ class ItemAddRequested extends RandomListEvent {
   List<Object> get props => [item];
 }
 
+/// dispatch this event to update all items with new items in the item pool
+class ItemsUpdateRequested extends RandomListEvent {
+  /// create a new [ItemsUpdateRequested] with the [items] to be added
+  const ItemsUpdateRequested({required this.items});
+
+  /// the items to be added
+  final List<Item> items;
+
+  @override
+  List<Object> get props => [items];
+}
+
 /// dispatch this event to remove an item from the item pool
 class ItemRemoveRequested extends RandomListEvent {
   /// create a new [ItemRemoveRequested] with the [item] to be removed

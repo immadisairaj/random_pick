@@ -14,22 +14,8 @@ import 'package:random_pick/injection_container.dart';
 
 /// the main dashboard which contains two tabs
 class RandomPage extends StatelessWidget {
-  /// creates a random page screen
+  /// creates the main page view with tabs for random page
   const RandomPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt<RandomPageCubit>(),
-      child: const RandomPageView(),
-    );
-  }
-}
-
-/// the main dashboard widget/page which is the main page of [RandomPage]
-class RandomPageView extends StatelessWidget {
-  /// builds the main page view with tabs for random page
-  const RandomPageView({super.key});
 
   @override
   Widget build(BuildContext context) {

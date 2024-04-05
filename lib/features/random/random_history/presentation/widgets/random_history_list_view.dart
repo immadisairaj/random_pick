@@ -5,6 +5,7 @@ import 'package:random_pick/features/random/random_history/domain/entities/pick_
 import 'package:random_pick/features/random/random_history/presentation/bloc/random_history_bloc.dart';
 import 'package:random_pick/features/random/random_history/presentation/widgets/random_history_number_page.dart';
 import 'package:random_pick/features/random/random_list/domain/entities/random_item_picked.dart';
+import 'package:random_pick/features/random/random_list/helpers/random_list_helper.dart';
 import 'package:random_pick/features/random/random_list/presentation/pages/random_list_picked_page.dart';
 import 'package:random_pick/features/random/random_number/domain/entities/random_number_picked.dart';
 
@@ -39,14 +40,35 @@ class RandomHistoryListView extends StatelessWidget {
     return ListTile(
       title: Text(_returnPickedByType(currentHistory.picked)),
       subtitle: Text(_formatDateTime(currentHistory.dateTime)),
-      trailing: IconButton(
-        icon: const Icon(CupertinoIcons.delete),
-        onPressed: () {
-          // delete history
-          BlocProvider.of<RandomHistoryBloc>(context).add(
-            ClearHistoryRequested(pickHistory: currentHistory, index: index),
-          );
-        },
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // option to re-pick from a list of items
+          if (currentHistory.picked is RandomItemPicked)
+            IconButton(
+              icon: const Icon(CupertinoIcons.arrow_2_circlepath),
+              tooltip: 'Repick',
+              splashRadius: 24,
+              onPressed: () => RandomListHelper.rePick(
+                context,
+                currentHistory.picked as RandomItemPicked,
+              ),
+            ),
+          IconButton(
+            icon: const Icon(CupertinoIcons.delete),
+            tooltip: 'Delete',
+            splashRadius: 24,
+            onPressed: () {
+              // delete history
+              BlocProvider.of<RandomHistoryBloc>(context).add(
+                ClearHistoryRequested(
+                  pickHistory: currentHistory,
+                  index: index,
+                ),
+              );
+            },
+          ),
+        ],
       ),
       onTap: () {
         if (currentHistory.picked is RandomItemPicked) {
