@@ -35,6 +35,7 @@ The application has the following functions as of now.
 1. Numbers - It takes in two integer values __min__ _(inclusive)_ and __max__ _(inclusive)_, then returns a picked random number from the range.
 2. List - It takes a list of items<sup>[1]</sup>, then returns a random item (picked) from the pool. The items inside the list can be (un)checked to include in the item pool.
 3. History - All the picks are stored in the device, with an option to delete them when not needed.
+4. RePick - Once an item is picked from a List, It can be re-picked from the picked list either immediately or from the History.
 
 <sup>[1]</sup>item: The item can be any string - a number, a name, a place, an animal, a thing, an object, etc.
 
