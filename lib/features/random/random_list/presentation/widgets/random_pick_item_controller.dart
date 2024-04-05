@@ -65,6 +65,7 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
           suffixIcon: IconButton(
             icon: const Icon(Icons.clear),
             tooltip: 'Remove Item ${index + 1}',
+            splashRadius: 20,
             onPressed: () {
               // remove the item using remove event
               BlocProvider.of<RandomListBloc>(context)
