@@ -203,6 +203,9 @@ void main() {
     final tItemPool = <Item>[
       Item(text: 'item1'),
     ];
+    final tUpdatedItemPool = <Item>[
+      Item(text: 'newItem1'),
+    ];
 
     test(
       'should load and subscribe items',
@@ -286,6 +289,22 @@ void main() {
         expectLater(bloc.stream, emitsInOrder(expected));
         // act
         bloc.add(ItemAddRequested(item: tItemPool[0]));
+      },
+    );
+
+    test(
+      'should not emit on items update',
+      () {
+        // act
+        when(
+          () => mockSubscribeItems
+              .updateItemPool(ListParams(items: tUpdatedItemPool)),
+        ).thenAnswer((_) async => Right(returnVoid()));
+        // assert later
+        final expected = <dynamic>[];
+        expectLater(bloc.stream, emitsInOrder(expected));
+        // act
+        bloc.add(ItemsUpdateRequested(items: tUpdatedItemPool));
       },
     );
 
