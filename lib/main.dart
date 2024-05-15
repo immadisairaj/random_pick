@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
 
   ThemeData _getThemeData(ThemeData copyFromTheme) {
     return copyFromTheme.copyWith(
-      scaffoldBackgroundColor: copyFromTheme.colorScheme.background
+      scaffoldBackgroundColor: copyFromTheme.colorScheme.surface
           .blend(copyFromTheme.appBarTheme.backgroundColor!, 15),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -32,12 +32,12 @@ class MyApp extends StatelessWidget {
         ),
       ),
       checkboxTheme: CheckboxThemeData(
-        fillColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-          if (states.contains(MaterialState.disabled)) {
+        fillColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.disabled)) {
             return null;
           }
-          if (states.contains(MaterialState.selected)) {
+          if (states.contains(WidgetState.selected)) {
             return copyFromTheme.colorScheme.primary;
           }
           return null;

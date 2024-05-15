@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 0.5.0+99
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
+  sdk: ">=3.4.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -34,9 +34,9 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6
+  cupertino_icons: ^1.0.8
   # Service locator
-  get_it: ^7.6.8
+  get_it: ^7.7.0
   # Functional Programming
   dartz: ^0.10.1
   # equatable for entities
@@ -44,7 +44,7 @@ dependencies:
   # for theming
   flex_color_scheme: ^7.3.1
   # unique id's
-  uuid: ^4.3.3
+  uuid: ^4.4.0
   # bloc
   bloc: ^8.1.4
   flutter_bloc: ^8.1.5
@@ -56,7 +56,7 @@ dependencies:
   hive_flutter: ^1.1.0
 
   # package information
-  package_info_plus: ^5.0.1
+  package_info_plus: ^8.0.0
 
 dev_dependencies:
   flutter_test:
@@ -67,7 +67,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.2
+  flutter_lints: ^4.0.0
 
   # Mock things
   mocktail: ^1.0.3
