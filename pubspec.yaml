@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 # versioning style <major>.<feature>.<fixes>+<commits>
-version: 0.5.0+99
+version: 0.5.1+102
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
@@ -47,9 +47,9 @@ dependencies:
   uuid: ^4.4.0
   # bloc
   bloc: ^8.1.4
-  flutter_bloc: ^8.1.5
+  flutter_bloc: ^8.1.6
   # rxdart for streams
-  rxdart: ^0.27.7
+  rxdart: ^0.28.0
 
   # database storage
   hive: ^2.2.3
@@ -70,10 +70,10 @@ dev_dependencies:
   flutter_lints: ^4.0.0
 
   # Mock things
-  mocktail: ^1.0.3
+  mocktail: ^1.0.4
 
   # Very good analysis
-  very_good_analysis: ^5.1.0
+  very_good_analysis: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
