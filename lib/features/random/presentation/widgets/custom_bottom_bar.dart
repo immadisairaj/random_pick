@@ -33,8 +33,10 @@ class CustomBottomBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(Constants.circularRadius),
           boxShadow: [
             BoxShadow(
-              color:
-                  Theme.of(context).colorScheme.outlineVariant.withOpacity(0.5),
+              color: Theme.of(context)
+                  .colorScheme
+                  .outlineVariant
+                  .withValues(alpha: 0.5),
               spreadRadius: 2,
               blurRadius: 5,
               offset: const Offset(0, 2),

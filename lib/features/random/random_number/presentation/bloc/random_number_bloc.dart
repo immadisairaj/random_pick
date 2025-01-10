@@ -91,11 +91,11 @@ class RandomNumberBloc extends Bloc<RandomNumberEvent, RandomNumberState> {
 
   String _mapFailureToMessage(Failure failure) {
     switch (failure.runtimeType) {
-      case InvalidInputFailure:
+      case const (InvalidInputFailure):
         return invalidInputError;
-      case InvalidNumberRangeFailure:
+      case const (InvalidNumberRangeFailure):
         return invalidNumberRangeError;
-      case HistoryAlreadyExistsFailure:
+      case const (HistoryAlreadyExistsFailure):
         return historyAlreadyExists;
       default:
         return 'Unexpected error';

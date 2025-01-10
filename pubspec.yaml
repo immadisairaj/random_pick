@@ -17,10 +17,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 # versioning style <major>.<feature>.<fixes>+<commits>
-version: 0.5.1+102
+version: 0.6.0+105
 
 environment:
-  sdk: ">=3.4.0 <4.0.0"
+  sdk: ">=3.6.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -36,15 +36,15 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   # Service locator
-  get_it: ^7.7.0
+  get_it: ^8.0.3
   # Functional Programming
   dartz: ^0.10.1
   # equatable for entities
-  equatable: ^2.0.5
+  equatable: ^2.0.7
   # for theming
-  flex_color_scheme: ^7.3.1
+  flex_color_scheme: ^8.1.0
   # unique id's
-  uuid: ^4.4.0
+  uuid: ^4.5.1
   # bloc
   bloc: ^8.1.4
   flutter_bloc: ^8.1.6
@@ -56,7 +56,7 @@ dependencies:
   hive_flutter: ^1.1.0
 
   # package information
-  package_info_plus: ^8.0.0
+  package_info_plus: ^8.1.2
 
 dev_dependencies:
   flutter_test:
@@ -67,13 +67,13 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
   # Mock things
   mocktail: ^1.0.4
 
   # Very good analysis
-  very_good_analysis: ^6.0.0
+  very_good_analysis: ^7.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

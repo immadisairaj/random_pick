@@ -12,6 +12,7 @@ class InputConverter {
       return Right(NumberRange(min: returnMin, max: returnMax));
     } on FormatException {
       return Left(InvalidInputFailure());
+      // It is fine to catch the error
       // ignore: avoid_catching_errors
     } on ArgumentError {
       return Left(InvalidNumberRangeFailure());

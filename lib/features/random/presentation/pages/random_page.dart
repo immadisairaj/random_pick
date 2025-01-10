@@ -38,23 +38,26 @@ class RandomPage extends StatelessWidget {
           IconButton(
             onPressed: () async {
               await PackageInfo.fromPlatform().then(
-                (packageInfo) => Navigator.of(context).push(
-                  MaterialPageRoute<Widget>(
-                    builder: (context) => Theme(
-                      data: Theme.of(context).copyWith(
-                        cardColor: Theme.of(context)
-                            .scaffoldBackgroundColor
-                            .blend(Theme.of(context).colorScheme.primary, 5),
-                      ),
-                      child: LicensePage(
-                        applicationIcon:
-                            Image.asset('assets/app_icon_foreground.png'),
-                        applicationName: packageInfo.appName,
-                        applicationVersion: packageInfo.version,
+                (packageInfo) {
+                  if (!context.mounted) return;
+                  Navigator.of(context).push(
+                    MaterialPageRoute<Widget>(
+                      builder: (context) => Theme(
+                        data: Theme.of(context).copyWith(
+                          cardColor: Theme.of(context)
+                              .scaffoldBackgroundColor
+                              .blend(Theme.of(context).colorScheme.primary, 5),
+                        ),
+                        child: LicensePage(
+                          applicationIcon:
+                              Image.asset('assets/app_icon_foreground.png'),
+                          applicationName: packageInfo.appName,
+                          applicationVersion: packageInfo.version,
+                        ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                },
               );
             },
             icon: const Icon(CupertinoIcons.info),
@@ -63,7 +66,7 @@ class RandomPage extends StatelessWidget {
         ],
       ),
       body: PopScope(
-        onPopInvoked: (_) async => !await Navigator.maybePop(
+        onPopInvokedWithResult: (_, __) async => !await Navigator.maybePop(
           getIt<RandomPickNavigation>()
               .navigatorKeys[selectedTab.index]!
               .currentState!

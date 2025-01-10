@@ -83,6 +83,7 @@ class RandomHistoryListView extends StatelessWidget {
           )
               .then((value) {
             if (value != null && value) {
+              if (!context.mounted) return;
               // delete history
               BlocProvider.of<RandomHistoryBloc>(context).add(
                 ClearHistoryRequested(
@@ -104,6 +105,7 @@ class RandomHistoryListView extends StatelessWidget {
           )
               .then((value) {
             if (value != null && value) {
+              if (!context.mounted) return;
               // delete history
               BlocProvider.of<RandomHistoryBloc>(context).add(
                 ClearHistoryRequested(

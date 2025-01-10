@@ -172,6 +172,7 @@ void main() {
     );
 
     test(
+      // Adding the whitespace will make the string longer than 80 characters
       // ignore: missing_whitespace_between_adjacent_strings
       'should emit [Loading, Error] when data is gotten successfully'
       'but, history is not saved',

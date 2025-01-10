@@ -165,13 +165,13 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
   /// maps the failure to a message using the failure type
   String _mapFailureToMessage(Failure failure) {
     switch (failure.runtimeType) {
-      case LengthFailure:
+      case const (LengthFailure):
         return _lengthError;
-      case NoSelectionFailure:
+      case const (NoSelectionFailure):
         return _selectionError;
-      case ItemNotFoundFailure:
+      case const (ItemNotFoundFailure):
         return _itemNotFoundError;
-      case HistoryAlreadyExistsFailure:
+      case const (HistoryAlreadyExistsFailure):
         return historyAlreadyExists;
       default:
         return 'Unexpected error';

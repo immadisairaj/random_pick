@@ -116,6 +116,7 @@ void main() {
     }
 
     test(
+      // Adding the whitespace will make the string longer than 80 characters
       // ignore: missing_whitespace_between_adjacent_strings
       'should call input converter validate and convert strings to NumberRange'
       'and get random number from the usecase',
@@ -198,6 +199,7 @@ void main() {
     );
 
     test(
+      // Adding the whitespace will make the string longer than 80 characters
       // ignore: missing_whitespace_between_adjacent_strings
       'should emit [Loading, Error] when data is gotten successfully'
       'but, the history is not saved',
