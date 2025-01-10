@@ -71,7 +71,6 @@
       "size" : "60x60"
     },
     {
-      "filename" : "128.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "2x",
@@ -246,7 +245,6 @@
           "value" : "dark"
         }
       ],
-      "filename" : "128 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "2x",
@@ -451,7 +449,6 @@
           "value" : "tinted"
         }
       ],
-      "filename" : "128 2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "2x",
