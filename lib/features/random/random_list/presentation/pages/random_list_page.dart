@@ -32,9 +32,7 @@ class RandomListPage extends StatelessWidget {
                       ItemsSubscriptionStatus.itemsLoaded) {
                     return const Padding(
                       padding: EdgeInsets.all(8),
-                      child: MessageDisplay(
-                        message: 'Input items to the list',
-                      ),
+                      child: MessageDisplay(message: 'Input items to the list'),
                     );
                   } else if (state.status ==
                       ItemsSubscriptionStatus.randomPickLoaded) {
@@ -80,14 +78,9 @@ class RandomListPage extends StatelessWidget {
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Divider(
-                height: 3,
-                thickness: 2,
-              ),
+              child: Divider(height: 3, thickness: 2),
             ),
-            const Expanded(
-              child: RandomPickItemController(),
-            ),
+            const Expanded(child: RandomPickItemController()),
           ],
         ),
       ),

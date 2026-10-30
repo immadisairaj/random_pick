@@ -13,11 +13,12 @@ class RandomItemPickedModel extends RandomItemPicked {
   /// converts the json map to [RandomItemPickedModel]
   factory RandomItemPickedModel.fromJson(Map<String, dynamic> json) {
     return RandomItemPickedModel(
-      itemPicked:
-          ItemModel.fromJson(json['itemPicked'] as Map<String, dynamic>),
-      itemPool: List<Map<String, dynamic>>.from(json['itemPool'] as List)
-          .map<ItemModel>(ItemModel.fromJson)
-          .toList(),
+      itemPicked: ItemModel.fromJson(
+        json['itemPicked'] as Map<String, dynamic>,
+      ),
+      itemPool: List<Map<String, dynamic>>.from(
+        json['itemPool'] as List,
+      ).map<ItemModel>(ItemModel.fromJson).toList(),
     );
   }
 

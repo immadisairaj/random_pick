@@ -30,76 +30,70 @@ void main() {
     Item(text: 'item2'),
     Item(text: 'item3'),
   ];
-  test(
-    'should return stream of items for pool',
-    () async {
-      // arrange
-      when(() => mockRandomListRepository.getItemPool())
-          .thenAnswer((_) async => Right(tStream));
-      // act
-      final result = await usecase(NoParams());
-      // assert
-      expect(result, Right<dynamic, Stream<List<Item>>>(tStream));
-      verify(() => mockRandomListRepository.getItemPool());
-      verifyNoMoreInteractions(mockRandomListRepository);
-    },
-  );
+  test('should return stream of items for pool', () async {
+    // arrange
+    when(
+      () => mockRandomListRepository.getItemPool(),
+    ).thenAnswer((_) async => Right(tStream));
+    // act
+    final result = await usecase(NoParams());
+    // assert
+    expect(result, Right<dynamic, Stream<List<Item>>>(tStream));
+    verify(() => mockRandomListRepository.getItemPool());
+    verifyNoMoreInteractions(mockRandomListRepository);
+  });
 
   group('should verify params', () {
     void returnVoid() {
       return;
     }
 
-    test(
-      'for addItemToPool',
-      () async {
-        // arrange
-        when(() => mockRandomListRepository.addItemToPool(any()))
-            .thenAnswer((_) async => Right(returnVoid()));
-        // act
-        final result = await usecase.addItemToPool(Params(item: tItemPool[0]));
-        // assert
-        expect(result, Right<dynamic, void>(returnVoid()));
-        verify(() => mockRandomListRepository.addItemToPool(tItemPool[0]));
-        verifyNoMoreInteractions(mockRandomListRepository);
-      },
-    );
+    test('for addItemToPool', () async {
+      // arrange
+      when(
+        () => mockRandomListRepository.addItemToPool(any()),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      // act
+      final result = await usecase.addItemToPool(Params(item: tItemPool[0]));
+      // assert
+      expect(result, Right<dynamic, void>(returnVoid()));
+      verify(() => mockRandomListRepository.addItemToPool(tItemPool[0]));
+      verifyNoMoreInteractions(mockRandomListRepository);
+    });
 
-    test(
-      'for removeItemFromPool',
-      () async {
-        // arrange
-        when(() => mockRandomListRepository.removeItemFromPool(any()))
-            .thenAnswer((_) async => Right(returnVoid()));
-        // act
-        final result =
-            await usecase.removeItemFromPool(Params(item: tItemPool[0]));
-        // assert
-        expect(result, Right<dynamic, void>(returnVoid()));
-        verify(() => mockRandomListRepository.removeItemFromPool(tItemPool[0]));
-        verifyNoMoreInteractions(mockRandomListRepository);
-      },
-    );
+    test('for removeItemFromPool', () async {
+      // arrange
+      when(
+        () => mockRandomListRepository.removeItemFromPool(any()),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      // act
+      final result = await usecase.removeItemFromPool(
+        Params(item: tItemPool[0]),
+      );
+      // assert
+      expect(result, Right<dynamic, void>(returnVoid()));
+      verify(() => mockRandomListRepository.removeItemFromPool(tItemPool[0]));
+      verifyNoMoreInteractions(mockRandomListRepository);
+    });
 
-    test(
-      'for clearItemPool',
-      () async {
-        // arrange
-        when(() => mockRandomListRepository.clearItemPool())
-            .thenAnswer((_) async => Right(returnVoid()));
-        // act
-        final result = await usecase.clearItemPool();
-        // assert
-        expect(result, Right<dynamic, void>(returnVoid()));
-        verify(() => mockRandomListRepository.clearItemPool());
-        verifyNoMoreInteractions(mockRandomListRepository);
-      },
-    );
+    test('for clearItemPool', () async {
+      // arrange
+      when(
+        () => mockRandomListRepository.clearItemPool(),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      // act
+      final result = await usecase.clearItemPool();
+      // assert
+      expect(result, Right<dynamic, void>(returnVoid()));
+      verify(() => mockRandomListRepository.clearItemPool());
+      verifyNoMoreInteractions(mockRandomListRepository);
+    });
 
     test('for updateItemPool', () async {
       // arrange
-      when(() => mockRandomListRepository.updateItemPool(any()))
-          .thenAnswer((_) async => Right(returnVoid()));
+      when(
+        () => mockRandomListRepository.updateItemPool(any()),
+      ).thenAnswer((_) async => Right(returnVoid()));
       // act
       final result = await usecase.updateItemPool(ListParams(items: tItemPool));
       // assert

@@ -15,9 +15,7 @@ class RandomPageState extends Equatable {
   /// creates a random page state.
   ///
   /// defaults to [RandomPageTab.number]
-  const RandomPageState({
-    this.tab = RandomPageTab.number,
-  });
+  const RandomPageState({this.tab = RandomPageTab.number});
 
   /// the tab selected
   final RandomPageTab tab;

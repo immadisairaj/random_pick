@@ -9,9 +9,7 @@ import 'package:random_pick/features/random/random_history/domain/repositories/r
 class RandomHistoryRepositoryImpl implements RandomHistoryRepository {
   /// constructor for [RandomHistoryRepository] implementation which provides
   /// functions for the use of Random History
-  RandomHistoryRepositoryImpl({
-    required this.dataSource,
-  });
+  RandomHistoryRepositoryImpl({required this.dataSource});
 
   /// data source from where the data is fetched
   RandomHistoryDataSource dataSource;

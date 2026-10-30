@@ -9,9 +9,7 @@ import 'package:random_pick/features/random/random_number/presentation/bloc/rand
 /// - emits [GetRandomNumberForRange] event to get a random number
 class RandomNumberController extends StatefulWidget {
   /// creates a random number controller
-  const RandomNumberController({
-    super.key,
-  });
+  const RandomNumberController({super.key});
 
   @override
   State<RandomNumberController> createState() => _RandomNumberControllerState();
@@ -60,8 +58,9 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
                     child: TextField(
                       controller: _minController,
                       textAlign: TextAlign.center,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(signed: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        signed: true,
+                      ),
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
@@ -80,8 +79,9 @@ class _RandomNumberControllerState extends State<RandomNumberController> {
                     child: TextField(
                       controller: _maxController,
                       textAlign: TextAlign.center,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(signed: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        signed: true,
+                      ),
                       textInputAction: TextInputAction.done,
                       onSubmitted: (_) => _dispatchRandomNumber(),
                       decoration: const InputDecoration(

@@ -76,14 +76,12 @@ class RandomListState extends Equatable {
       itemPool: itemPool != null ? itemPool() : this.itemPool,
       status: status != null ? status() : this.status,
       errorMessage: errorMessage != null ? errorMessage() : this.errorMessage,
-      randomItemPicked:
-          randomItemPicked != null ? randomItemPicked() : this.randomItemPicked,
+      randomItemPicked: randomItemPicked != null
+          ? randomItemPicked()
+          : this.randomItemPicked,
     );
   }
 
   @override
-  List<Object> get props => [
-        itemPool,
-        status,
-      ];
+  List<Object> get props => [itemPool, status];
 }

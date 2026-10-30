@@ -10,9 +10,7 @@ import 'package:random_pick/features/random/random_number/domain/repositories/ra
 class RandomNumberRepositoryImpl implements RandomNumberRepository {
   /// constructor for [RandomNumberRepository] implementation which provides
   /// functions for the use of Random Number
-  RandomNumberRepositoryImpl({
-    required this.dataSource,
-  });
+  RandomNumberRepositoryImpl({required this.dataSource});
 
   /// data source for random number pick
   final RandomNumberDataSource dataSource;

@@ -30,10 +30,7 @@ void main() {
       // act
       final result = tNumberRangeModel.toJson();
       // assert
-      final expectedMap = {
-        'min': 1,
-        'max': 10,
-      };
+      final expectedMap = {'min': 1, 'max': 10};
       expect(result, expectedMap);
     });
   });

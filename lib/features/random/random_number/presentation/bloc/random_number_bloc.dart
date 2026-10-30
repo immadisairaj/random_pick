@@ -54,8 +54,9 @@ class RandomNumberBloc extends Bloc<RandomNumberEvent, RandomNumberState> {
           emit(RandomNumberError(errorMessage: _mapFailureToMessage(failure))),
       (numberRange) async {
         emit(RandomNumberLoading());
-        final failureOrResult =
-            await getRandomNumber(Params(numberRange: numberRange));
+        final failureOrResult = await getRandomNumber(
+          Params(numberRange: numberRange),
+        );
         // left event most probably will not happen because
         // the data source repository here doesn't return a failure/left
         await failureOrResult.fold(
@@ -64,18 +65,18 @@ class RandomNumberBloc extends Bloc<RandomNumberEvent, RandomNumberState> {
           ),
           (randomNumberPicked) async {
             final dateTime = DateTime.now();
-            final failureOrResult =
-                await subscribeRandomHistory.putRandomHistory(
-              HistoryParams(
-                pickHistory:
-                    PickHistory(dateTime: dateTime, picked: randomNumberPicked),
-              ),
-            );
+            final failureOrResult = await subscribeRandomHistory
+                .putRandomHistory(
+                  HistoryParams(
+                    pickHistory: PickHistory(
+                      dateTime: dateTime,
+                      picked: randomNumberPicked,
+                    ),
+                  ),
+                );
             await failureOrResult.fold(
               (failure) async => emit(
-                RandomNumberError(
-                  errorMessage: _mapFailureToMessage(failure),
-                ),
+                RandomNumberError(errorMessage: _mapFailureToMessage(failure)),
               ),
               (right) {
                 emit(
@@ -91,10 +92,10 @@ class RandomNumberBloc extends Bloc<RandomNumberEvent, RandomNumberState> {
 
   String _mapFailureToMessage(Failure failure) {
     return switch (failure) {
-    InvalidInputFailure() => invalidInputError,
-    InvalidNumberRangeFailure() => invalidNumberRangeError,
-    HistoryAlreadyExistsFailure() => historyAlreadyExists,
-    _ => 'Unexpected error',
+      InvalidInputFailure() => invalidInputError,
+      InvalidNumberRangeFailure() => invalidNumberRangeError,
+      HistoryAlreadyExistsFailure() => historyAlreadyExists,
+      _ => 'Unexpected error',
     };
   }
 }

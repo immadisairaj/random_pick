@@ -24,21 +24,21 @@ void main() {
     Item(text: 'item3'),
   ];
   final tItemPicked = tItemPool[0];
-  final tRandomItemPicked =
-      RandomItemPicked(itemPicked: tItemPicked, itemPool: tItemPool);
-
-  test(
-    'should return item picked from pool',
-    () async {
-      // arrange
-      when(() => mockRandomListRepository.getRandomItem())
-          .thenAnswer((_) async => Right(tRandomItemPicked));
-      // act
-      final result = await usecase(NoParams());
-      // assert
-      expect(result, Right<dynamic, RandomItemPicked>(tRandomItemPicked));
-      verify(() => mockRandomListRepository.getRandomItem());
-      verifyNoMoreInteractions(mockRandomListRepository);
-    },
+  final tRandomItemPicked = RandomItemPicked(
+    itemPicked: tItemPicked,
+    itemPool: tItemPool,
   );
+
+  test('should return item picked from pool', () async {
+    // arrange
+    when(
+      () => mockRandomListRepository.getRandomItem(),
+    ).thenAnswer((_) async => Right(tRandomItemPicked));
+    // act
+    final result = await usecase(NoParams());
+    // assert
+    expect(result, Right<dynamic, RandomItemPicked>(tRandomItemPicked));
+    verify(() => mockRandomListRepository.getRandomItem());
+    verifyNoMoreInteractions(mockRandomListRepository);
+  });
 }

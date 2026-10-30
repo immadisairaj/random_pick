@@ -45,10 +45,7 @@ class RandomListPickedPage extends StatelessWidget {
             icon: const Icon(CupertinoIcons.arrow_2_circlepath),
             tooltip: 'Repick (as it is)',
             onPressed: () {
-              RandomListHelper.rePick(
-                context,
-                randomItemPicked,
-              );
+              RandomListHelper.rePick(context, randomItemPicked);
             },
           ),
           IconButton(
@@ -82,10 +79,7 @@ class RandomListPickedPage extends StatelessWidget {
               ),
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 10,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) =>

@@ -75,20 +75,17 @@ class RandomHistoryState extends Equatable {
 
   @override
   List<Object?> get props => [
-        historyList,
-        status,
-        errorMessage,
-        lastDeletedHistory,
-      ];
+    historyList,
+    status,
+    errorMessage,
+    lastDeletedHistory,
+  ];
 }
 
 /// deleted history to store previously deleted history
 class DeletedHistory extends Equatable {
   /// creates a deleted history object
-  const DeletedHistory({
-    required this.index,
-    required this.pickHistory,
-  });
+  const DeletedHistory({required this.index, required this.pickHistory});
 
   /// index from where it is deleted
   final int index;

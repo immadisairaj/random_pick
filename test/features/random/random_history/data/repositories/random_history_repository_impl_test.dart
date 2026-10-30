@@ -18,9 +18,7 @@ void main() {
 
   setUp(() {
     mockDataSource = MockRandomHistoryDataSource();
-    repository = RandomHistoryRepositoryImpl(
-      dataSource: mockDataSource,
-    );
+    repository = RandomHistoryRepositoryImpl(dataSource: mockDataSource);
   });
 
   setUpAll(() {
@@ -39,189 +37,167 @@ void main() {
     return;
   }
 
-  test(
-    'should return stream from getRandomHistory',
-    () async {
-      // arrange
-      final tController = StreamController<List<PickHistoryModel>>();
-      final tStream = tController.stream;
+  test('should return stream from getRandomHistory', () async {
+    // arrange
+    final tController = StreamController<List<PickHistoryModel>>();
+    final tStream = tController.stream;
 
-      when(() => mockDataSource.getRandomHistory())
-          .thenAnswer((_) async => tStream);
-      // act
-      final result = await repository.getRandomHistory();
-      // assert
-      verify(() => mockDataSource.getRandomHistory());
-      expect(
-        result,
-        equals(Right<dynamic, Stream<List<PickHistoryModel>>>(tStream)),
-      );
-    },
-  );
+    when(
+      () => mockDataSource.getRandomHistory(),
+    ).thenAnswer((_) async => tStream);
+    // act
+    final result = await repository.getRandomHistory();
+    // assert
+    verify(() => mockDataSource.getRandomHistory());
+    expect(
+      result,
+      equals(Right<dynamic, Stream<List<PickHistoryModel>>>(tStream)),
+    );
+  });
 
-  test(
-    'should verify if add pick to history',
-    () async {
-      // arrange
-      final tPickHistory = PickHistoryModel(
-        dateTime: DateTime.now(),
-        picked: RandomNumberPicked(
-          randomNumber: 0,
-          numberRange: NumberRange(max: 0),
+  test('should verify if add pick to history', () async {
+    // arrange
+    final tPickHistory = PickHistoryModel(
+      dateTime: DateTime.now(),
+      picked: RandomNumberPicked(
+        randomNumber: 0,
+        numberRange: NumberRange(max: 0),
+      ),
+    );
+
+    when(
+      () => mockDataSource.addRandomHistory(any()),
+    ).thenAnswer((_) async => returnVoid());
+    // act
+    final result = await repository.putRandomHistory(tPickHistory);
+    // assert
+    verify(() => mockDataSource.addRandomHistory(tPickHistory));
+    expect(result, equals(Right<dynamic, void>(returnVoid())));
+  });
+
+  test('should fail if add pick to history which already exists', () async {
+    // arrange
+    final tPickHistory = PickHistoryModel(
+      id: '1',
+      dateTime: DateTime.now(),
+      picked: RandomNumberPicked(
+        randomNumber: 0,
+        numberRange: NumberRange(max: 0),
+      ),
+    );
+
+    when(
+      () => mockDataSource.addRandomHistory(any()),
+    ).thenThrow(HistoryAlreadyExistsException());
+    // act
+    final result = await repository.putRandomHistory(tPickHistory);
+    // assert
+    verify(() => mockDataSource.addRandomHistory(tPickHistory));
+    expect(
+      result,
+      equals(
+        Left<HistoryAlreadyExistsFailure, dynamic>(
+          HistoryAlreadyExistsFailure(),
         ),
-      );
+      ),
+    );
+  });
 
-      when(() => mockDataSource.addRandomHistory(any()))
-          .thenAnswer((_) async => returnVoid());
-      // act
-      final result = await repository.putRandomHistory(tPickHistory);
-      // assert
-      verify(() => mockDataSource.addRandomHistory(tPickHistory));
-      expect(result, equals(Right<dynamic, void>(returnVoid())));
-    },
-  );
+  test('should verify if add pick to history at index', () async {
+    // arrange
+    final tPickHistory = PickHistoryModel(
+      dateTime: DateTime.now(),
+      picked: RandomNumberPicked(
+        randomNumber: 0,
+        numberRange: NumberRange(max: 0),
+      ),
+    );
 
-  test(
-    'should fail if add pick to history which already exists',
-    () async {
-      // arrange
-      final tPickHistory = PickHistoryModel(
-        id: '1',
-        dateTime: DateTime.now(),
-        picked: RandomNumberPicked(
-          randomNumber: 0,
-          numberRange: NumberRange(max: 0),
-        ),
-      );
+    when(
+      () => mockDataSource.addRandomHistory(any(), index: any(named: 'index')),
+    ).thenAnswer((_) async => returnVoid());
+    // act
+    final result = await repository.putRandomHistory(tPickHistory, index: 0);
+    // assert
+    verify(() => mockDataSource.addRandomHistory(tPickHistory, index: 0));
+    expect(result, equals(Right<dynamic, void>(returnVoid())));
+  });
 
-      when(() => mockDataSource.addRandomHistory(any()))
-          .thenThrow(HistoryAlreadyExistsException());
-      // act
-      final result = await repository.putRandomHistory(tPickHistory);
-      // assert
-      verify(() => mockDataSource.addRandomHistory(tPickHistory));
-      expect(
-        result,
-        equals(
-          Left<HistoryAlreadyExistsFailure, dynamic>(
-            HistoryAlreadyExistsFailure(),
-          ),
-        ),
-      );
-    },
-  );
+  test('should verify if get pick history by id', () async {
+    // arrange
+    final tPickHistory = PickHistoryModel(
+      dateTime: DateTime.now(),
+      picked: RandomNumberPicked(
+        randomNumber: 0,
+        numberRange: NumberRange(max: 0),
+      ),
+    );
 
-  test(
-    'should verify if add pick to history at index',
-    () async {
-      // arrange
-      final tPickHistory = PickHistoryModel(
-        dateTime: DateTime.now(),
-        picked: RandomNumberPicked(
-          randomNumber: 0,
-          numberRange: NumberRange(max: 0),
-        ),
-      );
+    when(
+      () => mockDataSource.getRandomHistoryById(any()),
+    ).thenAnswer((_) async => tPickHistory);
+    // act
+    final result = await repository.getRandomHistoryById(tPickHistory.id);
+    // assert
+    verify(() => mockDataSource.getRandomHistoryById(tPickHistory.id));
+    expect(result, equals(Right<dynamic, PickHistoryModel>(tPickHistory)));
+  });
 
-      when(
-        () =>
-            mockDataSource.addRandomHistory(any(), index: any(named: 'index')),
-      ).thenAnswer((_) async => returnVoid());
-      // act
-      final result = await repository.putRandomHistory(tPickHistory, index: 0);
-      // assert
-      verify(() => mockDataSource.addRandomHistory(tPickHistory, index: 0));
-      expect(result, equals(Right<dynamic, void>(returnVoid())));
-    },
-  );
+  test('should fail if get pick history by id does not exist', () async {
+    // arrange
+    final tPickHistory = PickHistoryModel(
+      id: '1',
+      dateTime: DateTime.now(),
+      picked: RandomNumberPicked(
+        randomNumber: 0,
+        numberRange: NumberRange(max: 0),
+      ),
+    );
 
-  test(
-    'should verify if get pick history by id',
-    () async {
-      // arrange
-      final tPickHistory = PickHistoryModel(
-        dateTime: DateTime.now(),
-        picked: RandomNumberPicked(
-          randomNumber: 0,
-          numberRange: NumberRange(max: 0),
-        ),
-      );
+    when(
+      () => mockDataSource.getRandomHistoryById(any()),
+    ).thenThrow(HistoryNotFoundException());
+    // act
+    final result = await repository.getRandomHistoryById(tPickHistory.id);
+    // assert
+    verify(() => mockDataSource.getRandomHistoryById(tPickHistory.id));
+    expect(
+      result,
+      equals(Left<HistoryNotFoundFailure, dynamic>(HistoryNotFoundFailure())),
+    );
+  });
 
-      when(() => mockDataSource.getRandomHistoryById(any()))
-          .thenAnswer((_) async => tPickHistory);
-      // act
-      final result = await repository.getRandomHistoryById(tPickHistory.id);
-      // assert
-      verify(() => mockDataSource.getRandomHistoryById(tPickHistory.id));
-      expect(result, equals(Right<dynamic, PickHistoryModel>(tPickHistory)));
-    },
-  );
+  test('should verify if clear pick history', () async {
+    // arrange
+    when(
+      () => mockDataSource.clearAllHistory(),
+    ).thenAnswer((_) async => returnVoid());
+    // act
+    final result = await repository.clearAllHistory();
+    // assert
+    verify(() => mockDataSource.clearAllHistory());
+    expect(result, equals(Right<dynamic, void>(returnVoid())));
+  });
 
-  test(
-    'should fail if get pick history by id does not exist',
-    () async {
-      // arrange
-      final tPickHistory = PickHistoryModel(
-        id: '1',
-        dateTime: DateTime.now(),
-        picked: RandomNumberPicked(
-          randomNumber: 0,
-          numberRange: NumberRange(max: 0),
-        ),
-      );
+  test('should verify if clear pick history by id', () async {
+    // arrange
+    final tPickHistory = PickHistoryModel(
+      dateTime: DateTime.now(),
+      picked: RandomNumberPicked(
+        randomNumber: 0,
+        numberRange: NumberRange(max: 0),
+      ),
+    );
 
-      when(() => mockDataSource.getRandomHistoryById(any()))
-          .thenThrow(HistoryNotFoundException());
-      // act
-      final result = await repository.getRandomHistoryById(tPickHistory.id);
-      // assert
-      verify(() => mockDataSource.getRandomHistoryById(tPickHistory.id));
-      expect(
-        result,
-        equals(
-          Left<HistoryNotFoundFailure, dynamic>(
-            HistoryNotFoundFailure(),
-          ),
-        ),
-      );
-    },
-  );
-
-  test(
-    'should verify if clear pick history',
-    () async {
-      // arrange
-      when(() => mockDataSource.clearAllHistory())
-          .thenAnswer((_) async => returnVoid());
-      // act
-      final result = await repository.clearAllHistory();
-      // assert
-      verify(() => mockDataSource.clearAllHistory());
-      expect(result, equals(Right<dynamic, void>(returnVoid())));
-    },
-  );
-
-  test(
-    'should verify if clear pick history by id',
-    () async {
-      // arrange
-      final tPickHistory = PickHistoryModel(
-        dateTime: DateTime.now(),
-        picked: RandomNumberPicked(
-          randomNumber: 0,
-          numberRange: NumberRange(max: 0),
-        ),
-      );
-
-      when(() => mockDataSource.clearHistory(any()))
-          .thenAnswer((_) async => returnVoid());
-      // act
-      final result = await repository.clearHistory(tPickHistory);
-      // assert
-      verify(() => mockDataSource.clearHistory(tPickHistory));
-      expect(result, equals(Right<dynamic, void>(returnVoid())));
-    },
-  );
+    when(
+      () => mockDataSource.clearHistory(any()),
+    ).thenAnswer((_) async => returnVoid());
+    // act
+    final result = await repository.clearHistory(tPickHistory);
+    // assert
+    verify(() => mockDataSource.clearHistory(tPickHistory));
+    expect(result, equals(Right<dynamic, void>(returnVoid())));
+  });
 
   test(
     'should fail if clear pick history by id which does not exist',
@@ -236,19 +212,16 @@ void main() {
         ),
       );
 
-      when(() => mockDataSource.clearHistory(any()))
-          .thenThrow(HistoryNotFoundException());
+      when(
+        () => mockDataSource.clearHistory(any()),
+      ).thenThrow(HistoryNotFoundException());
       // act
       final result = await repository.clearHistory(tPickHistory);
       // assert
       verify(() => mockDataSource.clearHistory(tPickHistory));
       expect(
         result,
-        equals(
-          Left<HistoryNotFoundFailure, dynamic>(
-            HistoryNotFoundFailure(),
-          ),
-        ),
+        equals(Left<HistoryNotFoundFailure, dynamic>(HistoryNotFoundFailure())),
       );
     },
   );

@@ -29,14 +29,13 @@ class RandomNumberPage extends StatelessWidget {
                           message: 'Input min and max values',
                         );
                       } else if (state is RandomNumberLoading) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return const Center(child: CircularProgressIndicator());
                       } else if (state is RandomNumberLoaded) {
                         final picked = state.randomNumberPicked;
                         return MessageDisplay(
                           randomPicked: picked.randomNumber.toString(),
-                          message: 'is the random number picked from\n'
+                          message:
+                              'is the random number picked from\n'
                               '${picked.numberRange.min}'
                               ' to '
                               '${picked.numberRange.max}',

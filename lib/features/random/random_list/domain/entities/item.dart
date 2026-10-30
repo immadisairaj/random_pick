@@ -8,15 +8,9 @@ class Item extends Equatable {
   /// - id - will randomly fill if not provided
   /// - text - text to display
   /// - selected - indicate if the item is to be picked, defaults to true
-  Item({
-    required this.text,
-    String? id,
-    this.selected = true,
-  })  : assert(
-          id == null || id.isNotEmpty,
-          'id cannot be empty',
-        ),
-        id = id ?? const Uuid().v4();
+  Item({required this.text, String? id, this.selected = true})
+    : assert(id == null || id.isNotEmpty, 'id cannot be empty'),
+      id = id ?? const Uuid().v4();
 
   /// unique identifier of the item
   final String id;
@@ -30,11 +24,7 @@ class Item extends Equatable {
 
   /// copy the item with the given either of [id], [text], [selected]
   /// if not provided, the current item will be copied
-  Item copyWith({
-    String? id,
-    String? text,
-    bool? selected,
-  }) {
+  Item copyWith({String? id, String? text, bool? selected}) {
     return Item(
       id: id ?? this.id,
       text: text ?? this.text,

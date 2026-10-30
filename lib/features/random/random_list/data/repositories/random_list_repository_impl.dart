@@ -10,9 +10,7 @@ import 'package:random_pick/features/random/random_list/domain/repositories/rand
 class RandomListRepositoryImpl implements RandomListRepository {
   /// constructor for [RandomListRepository] implementation which provides
   /// functions for the use of Random List
-  RandomListRepositoryImpl({
-    required this.dataSource,
-  });
+  RandomListRepositoryImpl({required this.dataSource});
 
   /// data source from where the data is fetched
   final RandomListDataSource dataSource;
@@ -59,19 +57,13 @@ class RandomListRepositoryImpl implements RandomListRepository {
   @override
   Future<Either<Failure, void>> updateItemPool(List<Item> items) async {
     return Right(
-      await dataSource.updateItemPool(
-        items.map(_convertItemToModel).toList(),
-      ),
+      await dataSource.updateItemPool(items.map(_convertItemToModel).toList()),
     );
   }
 }
 
 ItemModel _convertItemToModel(Item item) {
-  return ItemModel(
-    id: item.id,
-    text: item.text,
-    selected: item.selected,
-  );
+  return ItemModel(id: item.id, text: item.text, selected: item.selected);
 }
 
 /// failure when the length of the item pool is 0 or too long

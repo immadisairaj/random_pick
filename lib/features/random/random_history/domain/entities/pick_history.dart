@@ -10,15 +10,9 @@ class PickHistory extends Equatable {
   /// for now, the picked type can be either
   /// [RandomItemPicked] or [RandomNumberPicked]
   /// else, it throws an error
-  PickHistory({
-    required this.dateTime,
-    required this.picked,
-    String? id,
-  })  : assert(
-          id == null || id.isNotEmpty,
-          'id cannot be empty',
-        ),
-        id = id ?? const Uuid().v4() {
+  PickHistory({required this.dateTime, required this.picked, String? id})
+    : assert(id == null || id.isNotEmpty, 'id cannot be empty'),
+      id = id ?? const Uuid().v4() {
     if (picked is! RandomItemPicked && picked is! RandomNumberPicked) {
       throw ArgumentError(
         'picked must be of type RandomItemPicked or RandomNumberPicked',

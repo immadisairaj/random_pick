@@ -15,10 +15,7 @@ void main() {
   group('tab check', () {
     test('should emit RandomPageState number by default', () {
       // assert
-      expect(
-        cubit.state,
-        equals(const RandomPageState()),
-      );
+      expect(cubit.state, equals(const RandomPageState()));
     });
     test('should emit RandomPageState with tab list', () {
       // act
@@ -33,10 +30,7 @@ void main() {
       // act
       cubit.setTab(RandomPageTab.number);
       // assert
-      expect(
-        cubit.state,
-        equals(const RandomPageState()),
-      );
+      expect(cubit.state, equals(const RandomPageState()));
     });
   });
 }

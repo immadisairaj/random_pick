@@ -198,9 +198,9 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
   /// maps the failure to a message using the failure type
   String _mapFailureToMessage(Failure failure) {
     return switch (failure) {
-    HistoryAlreadyExistsFailure() => historyAlreadyExists,
-    HistoryNotFoundFailure() => historyNotFoundError,
-    _ => 'Unexpected error',
+      HistoryAlreadyExistsFailure() => historyAlreadyExists,
+      HistoryNotFoundFailure() => historyNotFoundError,
+      _ => 'Unexpected error',
     };
   }
 }

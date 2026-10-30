@@ -46,8 +46,9 @@ void main() {
   group('dealing with JSON for item picked', () {
     test('should return a valid model from JSON', () {
       // arange
-      final jsonMap = json.decode(fixture('pick_history_item.json'))
-          as Map<String, dynamic>;
+      final jsonMap =
+          json.decode(fixture('pick_history_item.json'))
+              as Map<String, dynamic>;
       // act
       final result = PickHistoryModel.fromJson(jsonMap);
       // assert
@@ -76,8 +77,9 @@ void main() {
   group('dealing with JSON for number picked', () {
     test('should return a valid model from JSON', () {
       // arange
-      final jsonMap = json.decode(fixture('pick_history_number.json'))
-          as Map<String, dynamic>;
+      final jsonMap =
+          json.decode(fixture('pick_history_number.json'))
+              as Map<String, dynamic>;
       // act
       final result = PickHistoryModel.fromJson(jsonMap);
       // assert

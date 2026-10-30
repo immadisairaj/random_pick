@@ -10,69 +10,51 @@ void main() {
     dataSource = RandomListDataSourceImpl();
   });
 
-  test(
-    'should return an RandomItemPicked from the given list',
-    () async {
-      // arrange
-      final tItemPool = [
-        ItemModel(text: 'Item 1'),
-        ItemModel(text: 'Item 2'),
-        ItemModel(text: 'Item 3'),
-      ];
-      await dataSource.updateItemPool(tItemPool);
-      // act
-      final result = await dataSource.getRandomItem();
-      // assert
-      expect(result, isA<RandomItemPickedModel>());
-    },
-  );
-  test(
-    'should return an proper value in the given range',
-    () async {
-      // arrange
-      final tItemPool = [
-        ItemModel(text: 'Item 1'),
-      ];
-      await dataSource.updateItemPool(tItemPool);
-      // act
-      final result = await dataSource.getRandomItem();
-      // assert
-      expect(result.itemPicked, equals(tItemPool[0]));
-    },
-  );
+  test('should return an RandomItemPicked from the given list', () async {
+    // arrange
+    final tItemPool = [
+      ItemModel(text: 'Item 1'),
+      ItemModel(text: 'Item 2'),
+      ItemModel(text: 'Item 3'),
+    ];
+    await dataSource.updateItemPool(tItemPool);
+    // act
+    final result = await dataSource.getRandomItem();
+    // assert
+    expect(result, isA<RandomItemPickedModel>());
+  });
+  test('should return an proper value in the given range', () async {
+    // arrange
+    final tItemPool = [ItemModel(text: 'Item 1')];
+    await dataSource.updateItemPool(tItemPool);
+    // act
+    final result = await dataSource.getRandomItem();
+    // assert
+    expect(result.itemPicked, equals(tItemPool[0]));
+  });
 
-  test(
-    'should throw a length exception when length is not valid',
-    () async {
-      // arrange
-      // length can be either 0 or tooo long when it gets exception
-      // act
-      final call = dataSource.getRandomItem;
-      // assert
-      expect(call, throwsA(const TypeMatcher<LengthException>()));
-    },
-  );
+  test('should throw a length exception when length is not valid', () async {
+    // arrange
+    // length can be either 0 or tooo long when it gets exception
+    // act
+    final call = dataSource.getRandomItem;
+    // assert
+    expect(call, throwsA(const TypeMatcher<LengthException>()));
+  });
 
-  test(
-    'should throw a no selection exception when nothing selected',
-    () async {
-      // arrange
-      final tItemPool = <ItemModel>[
-        ItemModel(text: 'Item 1', selected: false),
-      ];
-      await dataSource.updateItemPool(tItemPool);
-      // act
-      final call = dataSource.getRandomItem;
-      // assert
-      expect(call, throwsA(const TypeMatcher<NoSelectionException>()));
-    },
-  );
+  test('should throw a no selection exception when nothing selected', () async {
+    // arrange
+    final tItemPool = <ItemModel>[ItemModel(text: 'Item 1', selected: false)];
+    await dataSource.updateItemPool(tItemPool);
+    // act
+    final call = dataSource.getRandomItem;
+    // assert
+    expect(call, throwsA(const TypeMatcher<NoSelectionException>()));
+  });
 
   test('should check if added into pool', () async {
     // arrange
-    final tItemPool = <ItemModel>[
-      ItemModel(text: 'Item 1'),
-    ];
+    final tItemPool = <ItemModel>[ItemModel(text: 'Item 1')];
     await dataSource.updateItemPool(tItemPool);
     // act
     final tItem = ItemModel(text: 'Item 2');
@@ -86,9 +68,7 @@ void main() {
 
   test('should check return value of getItem', () async {
     // arrange
-    final tItemPool = <ItemModel>[
-      ItemModel(text: 'Item 1'),
-    ];
+    final tItemPool = <ItemModel>[ItemModel(text: 'Item 1')];
     await dataSource.updateItemPool(tItemPool);
     // act
     final result = await dataSource.getItemPool();
@@ -100,9 +80,7 @@ void main() {
 
   test('should check if remove item from pool', () async {
     // arrange
-    final tItemPool = <ItemModel>[
-      ItemModel(text: 'Item 1'),
-    ];
+    final tItemPool = <ItemModel>[ItemModel(text: 'Item 1')];
     await dataSource.updateItemPool(tItemPool);
     // act
     final tItem = tItemPool[0];
@@ -116,9 +94,7 @@ void main() {
 
   test('should check if remove item from pool fails', () async {
     // arrange
-    final tItemPool = <ItemModel>[
-      ItemModel(text: 'Item 1'),
-    ];
+    final tItemPool = <ItemModel>[ItemModel(text: 'Item 1')];
     await dataSource.updateItemPool(tItemPool);
     // act
     final tItem = ItemModel(text: 'Item 2');
@@ -126,9 +102,7 @@ void main() {
     // assert
     expect(
       () => call(tItem),
-      throwsA(
-        const TypeMatcher<ItemNotFoundException>(),
-      ),
+      throwsA(const TypeMatcher<ItemNotFoundException>()),
     );
   });
 
@@ -149,9 +123,7 @@ void main() {
 
   test('should check if add duplicate item to pool', () async {
     // arrange
-    final tItemPool = <ItemModel>[
-      ItemModel(text: 'Item 1'),
-    ];
+    final tItemPool = <ItemModel>[ItemModel(text: 'Item 1')];
     await dataSource.updateItemPool(tItemPool);
     // act
     await dataSource.addItemToPool(tItemPool[0]);
@@ -164,14 +136,10 @@ void main() {
 
   test('should check if update item in pool', () async {
     // arrange
-    final tItemPool = <ItemModel>[
-      ItemModel(id: '1', text: 'Item 1'),
-    ];
+    final tItemPool = <ItemModel>[ItemModel(id: '1', text: 'Item 1')];
     await dataSource.updateItemPool(tItemPool);
     // act
-    final tItemUpdate = <ItemModel>[
-      tItemPool[0].copyWith(selected: false),
-    ];
+    final tItemUpdate = <ItemModel>[tItemPool[0].copyWith(selected: false)];
     await dataSource.addItemToPool(tItemUpdate[0]);
     final result = await dataSource.getItemPool();
     // assert
@@ -182,9 +150,7 @@ void main() {
 
   test('should check if clear item pool', () async {
     // arrange
-    final tItemPool = <ItemModel>[
-      ItemModel(text: 'Item 1'),
-    ];
+    final tItemPool = <ItemModel>[ItemModel(text: 'Item 1')];
     await dataSource.updateItemPool(tItemPool);
     // act
     await dataSource.clearItemPool();
@@ -197,9 +163,7 @@ void main() {
 
   test('should check if update duplicate items to pool', () async {
     // arrange
-    final tItemPool = <ItemModel>[
-      ItemModel(id: '1', text: 'Item 1'),
-    ];
+    final tItemPool = <ItemModel>[ItemModel(id: '1', text: 'Item 1')];
     final tDuplicateItemPool = <ItemModel>[
       ItemModel(id: '1', text: 'Item 1'),
       ItemModel(id: '1', text: 'Item 1'),

@@ -33,10 +33,9 @@ class CustomBottomBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(Constants.circularRadius),
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context)
-                  .colorScheme
-                  .outlineVariant
-                  .withValues(alpha: 0.5),
+              color: Theme.of(
+                context,
+              ).colorScheme.outlineVariant.withValues(alpha: 0.5),
               spreadRadius: 2,
               blurRadius: 5,
               offset: const Offset(0, 2),
@@ -45,52 +44,48 @@ class CustomBottomBar extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: destinations.asMap().entries.map(
-            (item) {
-              final index = item.key;
-              final destination = item.value;
-              final highlight = index == selectedIndex;
+          children: destinations.asMap().entries.map((item) {
+            final index = item.key;
+            final destination = item.value;
+            final highlight = index == selectedIndex;
 
-              final defaultIconSize = Theme.of(context).iconTheme.size ?? 24;
+            final defaultIconSize = Theme.of(context).iconTheme.size ?? 24;
 
-              return GestureDetector(
-                onTap: () => onDestinationSelected?.call(index),
-                child: Container(
-                  color: Colors.transparent,
-                  padding: const EdgeInsets.all(13),
-                  child: Row(
-                    children: [
-                      AnimatedSize(
-                        duration: _animationDuration,
-                        child: Icon(
-                          destination.icon,
-                          size: highlight
-                              ? (defaultIconSize + 5)
-                              : defaultIconSize,
-                          color: highlight
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer,
-                          semanticLabel: destination.label,
-                        ),
+            return GestureDetector(
+              onTap: () => onDestinationSelected?.call(index),
+              child: Container(
+                color: Colors.transparent,
+                padding: const EdgeInsets.all(13),
+                child: Row(
+                  children: [
+                    AnimatedSize(
+                      duration: _animationDuration,
+                      child: Icon(
+                        destination.icon,
+                        size: highlight
+                            ? (defaultIconSize + 5)
+                            : defaultIconSize,
+                        color: highlight
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.onPrimaryContainer,
+                        semanticLabel: destination.label,
                       ),
-                      if (highlight)
-                        Padding(
-                          padding: const EdgeInsets.all(6),
-                          child: Text(
-                            destination.label,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
+                    ),
+                    if (highlight)
+                      Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: Text(
+                          destination.label,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
-              );
-            },
-          ).toList(),
+              ),
+            );
+          }).toList(),
         ),
       ),
     );

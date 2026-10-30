@@ -63,8 +63,9 @@ void main() {
 
     test('should emit [Error] state when no proper input', () {
       // arrage
-      when(() => mockInputConverter.stringsToNumberRange(any(), any()))
-          .thenReturn(Left(InvalidInputFailure()));
+      when(
+        () => mockInputConverter.stringsToNumberRange(any(), any()),
+      ).thenReturn(Left(InvalidInputFailure()));
       // assert later
       final expected = [
         // RandomNumberEmpty(),
@@ -72,18 +73,14 @@ void main() {
       ];
       unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
       // act
-      bloc.add(
-        const GetRandomNumberForRange(
-          min: tMinString,
-          max: tMaxString,
-        ),
-      );
+      bloc.add(const GetRandomNumberForRange(min: tMinString, max: tMaxString));
     });
 
     test('should emit [Error] state when no proper input range', () {
       // arrage
-      when(() => mockInputConverter.stringsToNumberRange(any(), any()))
-          .thenReturn(Left(InvalidNumberRangeFailure()));
+      when(
+        () => mockInputConverter.stringsToNumberRange(any(), any()),
+      ).thenReturn(Left(InvalidNumberRangeFailure()));
       // assert later
       final expected = [
         // RandomNumberEmpty(),
@@ -91,17 +88,13 @@ void main() {
       ];
       unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
       // act
-      bloc.add(
-        const GetRandomNumberForRange(
-          min: tMaxString,
-          max: tMinString,
-        ),
-      );
+      bloc.add(const GetRandomNumberForRange(min: tMaxString, max: tMinString));
     });
 
     void setUpMockInputSuccess() {
-      when(() => mockInputConverter.stringsToNumberRange(any(), any()))
-          .thenReturn(Right(tNumberRange));
+      when(
+        () => mockInputConverter.stringsToNumberRange(any(), any()),
+      ).thenReturn(Right(tNumberRange));
     }
 
     void returnVoid() {
@@ -113,8 +106,9 @@ void main() {
     });
 
     void setUpMockHistorySuccess() {
-      when(() => mockSubscribeRandomHistory.putRandomHistory(any()))
-          .thenAnswer((_) async => Right(returnVoid()));
+      when(
+        () => mockSubscribeRandomHistory.putRandomHistory(any()),
+      ).thenAnswer((_) async => Right(returnVoid()));
     }
 
     test(
@@ -126,14 +120,12 @@ void main() {
         // arrange
         setUpMockInputSuccess();
         setUpMockHistorySuccess();
-        when(() => mockGetRandomNumber(any()))
-            .thenAnswer((_) async => Right(tRandomNumberPicked));
+        when(
+          () => mockGetRandomNumber(any()),
+        ).thenAnswer((_) async => Right(tRandomNumberPicked));
         // act
         bloc.add(
-          const GetRandomNumberForRange(
-            min: tMinString,
-            max: tMaxString,
-          ),
+          const GetRandomNumberForRange(min: tMinString, max: tMaxString),
         );
         await untilCalled(
           () => mockInputConverter.stringsToNumberRange(any(), any()),
@@ -150,30 +142,23 @@ void main() {
       },
     );
 
-    test(
-      'should emit [Loading, Loaded] when data is gotten successfully',
-      () {
-        // arrange
-        setUpMockInputSuccess();
-        setUpMockHistorySuccess();
-        when(() => mockGetRandomNumber(any()))
-            .thenAnswer((_) async => Right(tRandomNumberPicked));
-        // assert later
-        final expected = [
-          // RandomNumberEmpty(),
-          RandomNumberLoading(),
-          RandomNumberLoaded(randomNumberPicked: tRandomNumberPicked),
-        ];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(
-          const GetRandomNumberForRange(
-            min: tMinString,
-            max: tMaxString,
-          ),
-        );
-      },
-    );
+    test('should emit [Loading, Loaded] when data is gotten successfully', () {
+      // arrange
+      setUpMockInputSuccess();
+      setUpMockHistorySuccess();
+      when(
+        () => mockGetRandomNumber(any()),
+      ).thenAnswer((_) async => Right(tRandomNumberPicked));
+      // assert later
+      final expected = [
+        // RandomNumberEmpty(),
+        RandomNumberLoading(),
+        RandomNumberLoaded(randomNumberPicked: tRandomNumberPicked),
+      ];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(const GetRandomNumberForRange(min: tMinString, max: tMaxString));
+    });
 
     test(
       'should emit [Loading, Error] when data is not gotten successfully',
@@ -181,8 +166,9 @@ void main() {
         // arrange
         setUpMockInputSuccess();
         setUpMockHistorySuccess();
-        when(() => mockGetRandomNumber(any()))
-            .thenAnswer((_) async => const Left(UnknownFailure()));
+        when(
+          () => mockGetRandomNumber(any()),
+        ).thenAnswer((_) async => const Left(UnknownFailure()));
         // assert later
         final expected = [
           // RandomNumberEmpty(),
@@ -192,10 +178,7 @@ void main() {
         unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(
-          const GetRandomNumberForRange(
-            min: tMinString,
-            max: tMaxString,
-          ),
+          const GetRandomNumberForRange(min: tMinString, max: tMaxString),
         );
       },
     );
@@ -208,10 +191,12 @@ void main() {
       () {
         // arrange
         setUpMockInputSuccess();
-        when(() => mockGetRandomNumber(any()))
-            .thenAnswer((_) async => Right(tRandomNumberPicked));
-        when(() => mockSubscribeRandomHistory.putRandomHistory(any()))
-            .thenAnswer((_) async => Left(HistoryAlreadyExistsFailure()));
+        when(
+          () => mockGetRandomNumber(any()),
+        ).thenAnswer((_) async => Right(tRandomNumberPicked));
+        when(
+          () => mockSubscribeRandomHistory.putRandomHistory(any()),
+        ).thenAnswer((_) async => Left(HistoryAlreadyExistsFailure()));
         // assert later
         final expected = [
           // RandomNumberEmpty(),
@@ -221,10 +206,7 @@ void main() {
         unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(
-          const GetRandomNumberForRange(
-            min: tMinString,
-            max: tMaxString,
-          ),
+          const GetRandomNumberForRange(min: tMinString, max: tMaxString),
         );
       },
     );

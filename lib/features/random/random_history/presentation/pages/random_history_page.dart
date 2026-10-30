@@ -13,19 +13,16 @@ class RandomHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pick History'),
-      ),
+      appBar: AppBar(title: const Text('Pick History')),
       body: BlocProvider(
-        create: (_) => getIt<RandomHistoryBloc>()
-          ..add(const HistorySubscriptionRequested()),
+        create: (_) =>
+            getIt<RandomHistoryBloc>()
+              ..add(const HistorySubscriptionRequested()),
         child: Center(
           child: BlocBuilder<RandomHistoryBloc, RandomHistoryState>(
             builder: (context, state) {
               if (state.status == RandomHistoryStatus.initial) {
-                return const MessageDisplay(
-                  message: 'Starting to load',
-                );
+                return const MessageDisplay(message: 'Starting to load');
               } else if (state.status == RandomHistoryStatus.loading) {
                 return const CircularProgressIndicator();
               } else if (state.status == RandomHistoryStatus.error) {
@@ -36,9 +33,7 @@ class RandomHistoryPage extends StatelessWidget {
                   message: state.errorMessage!,
                 );
               } else if (state.status == RandomHistoryStatus.loaded) {
-                return RandomHistoryListView(
-                  history: state.historyList,
-                );
+                return RandomHistoryListView(history: state.historyList);
               }
               return const Placeholder();
             },

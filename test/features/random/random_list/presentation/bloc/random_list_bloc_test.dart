@@ -51,9 +51,7 @@ void main() {
   });
 
   group('get random item picked from item pool', () {
-    final tItemPool = [
-      Item(text: 'item1'),
-    ];
+    final tItemPool = [Item(text: 'item1')];
     final tItemPicked = tItemPool[0];
     final tRandomItemPicked = RandomItemPicked(
       itemPicked: tItemPicked,
@@ -70,64 +68,63 @@ void main() {
     });
 
     void successClearItems() {
-      when(() => mockSubscribeItems.clearItemPool())
-          .thenAnswer((_) async => Right(returnVoid()));
+      when(
+        () => mockSubscribeItems.clearItemPool(),
+      ).thenAnswer((_) async => Right(returnVoid()));
     }
 
     void setUpMockHistorySuccess() {
-      when(() => mockSubscribeRandomHistory.putRandomHistory(any()))
-          .thenAnswer((_) async => Right(returnVoid()));
+      when(
+        () => mockSubscribeRandomHistory.putRandomHistory(any()),
+      ).thenAnswer((_) async => Right(returnVoid()));
     }
 
-    test(
-      'should call and validate get random item usecase'
-      ' along with clear item pool',
-      () async {
-        // arrange
-        when(() => mockGetRandomItem(any()))
-            .thenAnswer((_) async => Right(tRandomItemPicked));
-        successClearItems();
-        setUpMockHistorySuccess();
-        // act
-        bloc.add(const GetRandomItemEvent());
-        await untilCalled(() => mockGetRandomItem(any()));
-        await untilCalled(() => mockSubscribeItems.clearItemPool());
-        // assert
-        verify(() => mockGetRandomItem(NoParams()));
-        verify(() => mockSubscribeItems.clearItemPool());
-      },
-    );
+    test('should call and validate get random item usecase'
+        ' along with clear item pool', () async {
+      // arrange
+      when(
+        () => mockGetRandomItem(any()),
+      ).thenAnswer((_) async => Right(tRandomItemPicked));
+      successClearItems();
+      setUpMockHistorySuccess();
+      // act
+      bloc.add(const GetRandomItemEvent());
+      await untilCalled(() => mockGetRandomItem(any()));
+      await untilCalled(() => mockSubscribeItems.clearItemPool());
+      // assert
+      verify(() => mockGetRandomItem(NoParams()));
+      verify(() => mockSubscribeItems.clearItemPool());
+    });
 
-    test(
-      'should emit [Loading, Loaded] when data is gotten successfully',
-      () {
-        // arrange
-        when(() => mockGetRandomItem(any()))
-            .thenAnswer((_) async => Right(tRandomItemPicked));
-        successClearItems();
-        setUpMockHistorySuccess();
-        // assert later
-        final expected = [
-          tRandomListState.copyWith(
-            status: () => ItemsSubscriptionStatus.randomPickLoading,
-          ),
-          tRandomListState.copyWith(
-            randomItemPicked: () => tRandomItemPicked,
-            status: () => ItemsSubscriptionStatus.randomPickLoaded,
-          ),
-        ];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(const GetRandomItemEvent());
-      },
-    );
+    test('should emit [Loading, Loaded] when data is gotten successfully', () {
+      // arrange
+      when(
+        () => mockGetRandomItem(any()),
+      ).thenAnswer((_) async => Right(tRandomItemPicked));
+      successClearItems();
+      setUpMockHistorySuccess();
+      // assert later
+      final expected = [
+        tRandomListState.copyWith(
+          status: () => ItemsSubscriptionStatus.randomPickLoading,
+        ),
+        tRandomListState.copyWith(
+          randomItemPicked: () => tRandomItemPicked,
+          status: () => ItemsSubscriptionStatus.randomPickLoaded,
+        ),
+      ];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(const GetRandomItemEvent());
+    });
 
     test(
       'should emit [Loading, Error] when get random item is length failed',
       () {
         // arrange
-        when(() => mockGetRandomItem(any()))
-            .thenAnswer((_) async => Left(LengthFailure()));
+        when(
+          () => mockGetRandomItem(any()),
+        ).thenAnswer((_) async => Left(LengthFailure()));
         successClearItems();
         setUpMockHistorySuccess();
         // assert later
@@ -152,8 +149,9 @@ void main() {
       'should emit [Loading, Error] when get random item is selection failed',
       () {
         // arrange
-        when(() => mockGetRandomItem(any()))
-            .thenAnswer((_) async => Left(NoSelectionFailure()));
+        when(
+          () => mockGetRandomItem(any()),
+        ).thenAnswer((_) async => Left(NoSelectionFailure()));
         successClearItems();
         setUpMockHistorySuccess();
         // assert later
@@ -180,11 +178,13 @@ void main() {
       'but, history is not saved',
       () {
         // arrange
-        when(() => mockGetRandomItem(any()))
-            .thenAnswer((_) async => Right(tRandomItemPicked));
+        when(
+          () => mockGetRandomItem(any()),
+        ).thenAnswer((_) async => Right(tRandomItemPicked));
         successClearItems();
-        when(() => mockSubscribeRandomHistory.putRandomHistory(any()))
-            .thenAnswer((_) async => Left(HistoryAlreadyExistsFailure()));
+        when(
+          () => mockSubscribeRandomHistory.putRandomHistory(any()),
+        ).thenAnswer((_) async => Left(HistoryAlreadyExistsFailure()));
         // assert later
         final expected = [
           tRandomListState.copyWith(
@@ -203,149 +203,127 @@ void main() {
   });
 
   group('subscribe items', () {
-    final tItemPool = <Item>[
-      Item(text: 'item1'),
-    ];
-    final tUpdatedItemPool = <Item>[
-      Item(text: 'newItem1'),
-    ];
+    final tItemPool = <Item>[Item(text: 'item1')];
+    final tUpdatedItemPool = <Item>[Item(text: 'newItem1')];
 
-    test(
-      'should load and subscribe items',
-      () {
-        // arrange
-        final tController = BehaviorSubject<List<Item>>.seeded(const []);
-        final tStream = tController.asBroadcastStream();
-        when(() => mockSubscribeItems(any()))
-            .thenAnswer((_) async => Right(tStream));
-        // assert later
-        final expected = [
-          tRandomListState.copyWith(
-            status: () => ItemsSubscriptionStatus.itemsLoading,
-          ),
-          tRandomListState.copyWith(
-            status: () => ItemsSubscriptionStatus.itemsLoaded,
-          ),
-        ];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(const ItemsSubscriptionRequested());
-      },
-    );
+    test('should load and subscribe items', () {
+      // arrange
+      final tController = BehaviorSubject<List<Item>>.seeded(const []);
+      final tStream = tController.asBroadcastStream();
+      when(
+        () => mockSubscribeItems(any()),
+      ).thenAnswer((_) async => Right(tStream));
+      // assert later
+      final expected = [
+        tRandomListState.copyWith(
+          status: () => ItemsSubscriptionStatus.itemsLoading,
+        ),
+        tRandomListState.copyWith(
+          status: () => ItemsSubscriptionStatus.itemsLoaded,
+        ),
+      ];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(const ItemsSubscriptionRequested());
+    });
 
-    test(
-      'should fail when subscribe items',
-      () {
-        // arrange
-        when(() => mockSubscribeItems(any()))
-            .thenAnswer((_) async => const Left(UnknownFailure()));
-        // assert later
-        final expected = [
-          tRandomListState.copyWith(
-            status: () => ItemsSubscriptionStatus.itemsLoading,
-          ),
-          tRandomListState.copyWith(
-            status: () => ItemsSubscriptionStatus.error,
-            errorMessage: () => 'Unexpected error',
-          ),
-        ];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(const ItemsSubscriptionRequested());
-      },
-    );
+    test('should fail when subscribe items', () {
+      // arrange
+      when(
+        () => mockSubscribeItems(any()),
+      ).thenAnswer((_) async => const Left(UnknownFailure()));
+      // assert later
+      final expected = [
+        tRandomListState.copyWith(
+          status: () => ItemsSubscriptionStatus.itemsLoading,
+        ),
+        tRandomListState.copyWith(
+          status: () => ItemsSubscriptionStatus.error,
+          errorMessage: () => 'Unexpected error',
+        ),
+      ];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(const ItemsSubscriptionRequested());
+    });
 
-    test(
-      'should fail when subscribe items in right',
-      () {
-        // arrange
-        final tController = BehaviorSubject<List<Item>>.seeded(const [])
-          // add error to stream
-          ..addError(const UnknownFailure());
-        final tStream = tController.asBroadcastStream();
-        when(() => mockSubscribeItems(any()))
-            .thenAnswer((_) async => Right(tStream));
-        // assert later
-        final expected = [
-          tRandomListState.copyWith(
-            status: () => ItemsSubscriptionStatus.itemsLoading,
-          ),
-          tRandomListState.copyWith(
-            status: () => ItemsSubscriptionStatus.error,
-            errorMessage: () => 'Unexpected error',
-          ),
-        ];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(const ItemsSubscriptionRequested());
-      },
-    );
+    test('should fail when subscribe items in right', () {
+      // arrange
+      final tController = BehaviorSubject<List<Item>>.seeded(const [])
+        // add error to stream
+        ..addError(const UnknownFailure());
+      final tStream = tController.asBroadcastStream();
+      when(
+        () => mockSubscribeItems(any()),
+      ).thenAnswer((_) async => Right(tStream));
+      // assert later
+      final expected = [
+        tRandomListState.copyWith(
+          status: () => ItemsSubscriptionStatus.itemsLoading,
+        ),
+        tRandomListState.copyWith(
+          status: () => ItemsSubscriptionStatus.error,
+          errorMessage: () => 'Unexpected error',
+        ),
+      ];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(const ItemsSubscriptionRequested());
+    });
 
-    test(
-      'should not emit on item added',
-      () {
-        // act
-        when(() => mockSubscribeItems.addItemToPool(Params(item: tItemPool[0])))
-            .thenAnswer((_) async => Right(returnVoid()));
-        // assert later
-        final expected = <dynamic>[];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(ItemAddRequested(item: tItemPool[0]));
-      },
-    );
+    test('should not emit on item added', () {
+      // act
+      when(
+        () => mockSubscribeItems.addItemToPool(Params(item: tItemPool[0])),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      // assert later
+      final expected = <dynamic>[];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(ItemAddRequested(item: tItemPool[0]));
+    });
 
-    test(
-      'should not emit on items update',
-      () {
-        // act
-        when(
-          () => mockSubscribeItems
-              .updateItemPool(ListParams(items: tUpdatedItemPool)),
-        ).thenAnswer((_) async => Right(returnVoid()));
-        // assert later
-        final expected = <dynamic>[];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(ItemsUpdateRequested(items: tUpdatedItemPool));
-      },
-    );
+    test('should not emit on items update', () {
+      // act
+      when(
+        () => mockSubscribeItems.updateItemPool(
+          ListParams(items: tUpdatedItemPool),
+        ),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      // assert later
+      final expected = <dynamic>[];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(ItemsUpdateRequested(items: tUpdatedItemPool));
+    });
 
-    test(
-      'should not emit on item removed',
-      () {
-        // act
-        when(
-          () =>
-              mockSubscribeItems.removeItemFromPool(Params(item: tItemPool[0])),
-        ).thenAnswer((_) async => Right(returnVoid()));
-        // assert later
-        final expected = <dynamic>[];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(ItemRemoveRequested(item: tItemPool[0]));
-      },
-    );
+    test('should not emit on item removed', () {
+      // act
+      when(
+        () => mockSubscribeItems.removeItemFromPool(Params(item: tItemPool[0])),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      // assert later
+      final expected = <dynamic>[];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(ItemRemoveRequested(item: tItemPool[0]));
+    });
 
-    test(
-      'should emit error on item removed failed',
-      () {
-        // act
-        when(
-          () =>
-              mockSubscribeItems.removeItemFromPool(Params(item: tItemPool[0])),
-        ).thenAnswer((_) async => Left(ItemNotFoundFailure()));
-        // assert later
-        final expected = [
-          tRandomListState.copyWith(
-            status: () => ItemsSubscriptionStatus.error,
-            errorMessage: () => 'Item not found to remove',
-          ),
-        ];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(ItemRemoveRequested(item: tItemPool[0]));
-      },
-    );
+    test('should emit error on item removed failed', () {
+      // act
+      when(
+        () => mockSubscribeItems.removeItemFromPool(Params(item: tItemPool[0])),
+      ).thenAnswer((_) async => Left(ItemNotFoundFailure()));
+      // assert later
+      final expected = [
+        tRandomListState.copyWith(
+          status: () => ItemsSubscriptionStatus.error,
+          errorMessage: () => 'Item not found to remove',
+        ),
+      ];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(ItemRemoveRequested(item: tItemPool[0]));
+    });
   });
 }

@@ -84,18 +84,14 @@ class RandomHistoryListView extends StatelessWidget {
             if (!context.mounted) return;
             // delete history
             BlocProvider.of<RandomHistoryBloc>(context).add(
-              ClearHistoryRequested(
-                pickHistory: currentHistory,
-                index: index,
-              ),
+              ClearHistoryRequested(pickHistory: currentHistory, index: index),
             );
           }
         } else if (currentHistory.picked is RandomNumberPicked) {
           final value = await Navigator.of(context).push<bool>(
             MaterialPageRoute(
               builder: (context) => RandomHistoryNumberPage(
-                randomNumberPicked:
-                    currentHistory.picked as RandomNumberPicked,
+                randomNumberPicked: currentHistory.picked as RandomNumberPicked,
                 isHistory: true,
               ),
             ),
@@ -104,10 +100,7 @@ class RandomHistoryListView extends StatelessWidget {
             if (!context.mounted) return;
             // delete history
             BlocProvider.of<RandomHistoryBloc>(context).add(
-              ClearHistoryRequested(
-                pickHistory: currentHistory,
-                index: index,
-              ),
+              ClearHistoryRequested(pickHistory: currentHistory, index: index),
             );
           }
         }

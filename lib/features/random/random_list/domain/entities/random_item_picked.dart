@@ -5,10 +5,7 @@ import 'package:random_pick/features/random/random_list/domain/entities/item.dar
 class RandomItemPicked extends Equatable {
   /// create a new [RandomItemPicked] where
   /// [itemPicked] is picked from [itemPool]
-  const RandomItemPicked({
-    required this.itemPicked,
-    required this.itemPool,
-  });
+  const RandomItemPicked({required this.itemPicked, required this.itemPool});
 
   /// picked random number from [itemPool]
   final Item itemPicked;

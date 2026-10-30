@@ -39,7 +39,8 @@ class RandomHistoryNumberPage extends StatelessWidget {
       body: Center(
         child: MessageDisplay(
           randomPicked: randomNumberPicked.randomNumber.toString(),
-          message: 'is the random number picked from\n'
+          message:
+              'is the random number picked from\n'
               '${randomNumberPicked.numberRange.min}'
               ' to '
               '${randomNumberPicked.numberRange.max}',

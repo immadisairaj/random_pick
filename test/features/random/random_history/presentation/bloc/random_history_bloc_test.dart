@@ -65,113 +65,95 @@ void main() {
       ),
     ];
 
-    test(
-      'should load and subscribe items',
-      () {
-        // arrange
-        final tController = BehaviorSubject<List<PickHistory>>.seeded(const []);
-        final tStream = tController.asBroadcastStream();
-        when(() => mockSubscribeRandomHistory(any()))
-            .thenAnswer((_) async => Right(tStream));
-        // assert later
-        final expected = [
-          tRandomHistoryState.copyWith(
-            status: () => RandomHistoryStatus.loading,
-          ),
-          tRandomHistoryState.copyWith(
-            status: () => RandomHistoryStatus.loaded,
-          ),
-        ];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(const HistorySubscriptionRequested());
-      },
-    );
+    test('should load and subscribe items', () {
+      // arrange
+      final tController = BehaviorSubject<List<PickHistory>>.seeded(const []);
+      final tStream = tController.asBroadcastStream();
+      when(
+        () => mockSubscribeRandomHistory(any()),
+      ).thenAnswer((_) async => Right(tStream));
+      // assert later
+      final expected = [
+        tRandomHistoryState.copyWith(status: () => RandomHistoryStatus.loading),
+        tRandomHistoryState.copyWith(status: () => RandomHistoryStatus.loaded),
+      ];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(const HistorySubscriptionRequested());
+    });
 
-    test(
-      'should fail when subscribe items',
-      () {
-        // arrange
-        when(() => mockSubscribeRandomHistory(any()))
-            .thenAnswer((_) async => const Left(UnknownFailure()));
-        // assert later
-        final expected = [
-          tRandomHistoryState.copyWith(
-            status: () => RandomHistoryStatus.loading,
-          ),
-          tRandomHistoryState.copyWith(
-            status: () => RandomHistoryStatus.error,
-            errorMessage: () => 'Unexpected error',
-          ),
-        ];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(const HistorySubscriptionRequested());
-      },
-    );
+    test('should fail when subscribe items', () {
+      // arrange
+      when(
+        () => mockSubscribeRandomHistory(any()),
+      ).thenAnswer((_) async => const Left(UnknownFailure()));
+      // assert later
+      final expected = [
+        tRandomHistoryState.copyWith(status: () => RandomHistoryStatus.loading),
+        tRandomHistoryState.copyWith(
+          status: () => RandomHistoryStatus.error,
+          errorMessage: () => 'Unexpected error',
+        ),
+      ];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(const HistorySubscriptionRequested());
+    });
 
-    test(
-      'should fail when subscribe items in right',
-      () {
-        // arrange
-        final tController = BehaviorSubject<List<PickHistory>>.seeded(const [])
-          // add error to stream
-          ..addError(const UnknownFailure());
-        final tStream = tController.asBroadcastStream();
-        when(() => mockSubscribeRandomHistory(any()))
-            .thenAnswer((_) async => Right(tStream));
-        // assert later
-        final expected = [
-          tRandomHistoryState.copyWith(
-            status: () => RandomHistoryStatus.loading,
-          ),
-          tRandomHistoryState.copyWith(
-            status: () => RandomHistoryStatus.error,
-            errorMessage: () => 'Unexpected error',
-          ),
-        ];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(const HistorySubscriptionRequested());
-      },
-    );
+    test('should fail when subscribe items in right', () {
+      // arrange
+      final tController = BehaviorSubject<List<PickHistory>>.seeded(const [])
+        // add error to stream
+        ..addError(const UnknownFailure());
+      final tStream = tController.asBroadcastStream();
+      when(
+        () => mockSubscribeRandomHistory(any()),
+      ).thenAnswer((_) async => Right(tStream));
+      // assert later
+      final expected = [
+        tRandomHistoryState.copyWith(status: () => RandomHistoryStatus.loading),
+        tRandomHistoryState.copyWith(
+          status: () => RandomHistoryStatus.error,
+          errorMessage: () => 'Unexpected error',
+        ),
+      ];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(const HistorySubscriptionRequested());
+    });
 
-    test(
-      'should not emit on pick history added',
-      () {
-        // arrange
-        when(
-          () => mockSubscribeRandomHistory
-              .putRandomHistory(HistoryParams(pickHistory: tHistoryList[0])),
-        ).thenAnswer((_) async => Right(returnVoid()));
-        // assert later
-        final expected = <dynamic>[];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(HistoryAddRequested(pickHistory: tHistoryList[0]));
-      },
-    );
+    test('should not emit on pick history added', () {
+      // arrange
+      when(
+        () => mockSubscribeRandomHistory.putRandomHistory(
+          HistoryParams(pickHistory: tHistoryList[0]),
+        ),
+      ).thenAnswer((_) async => Right(returnVoid()));
+      // assert later
+      final expected = <dynamic>[];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(HistoryAddRequested(pickHistory: tHistoryList[0]));
+    });
 
-    test(
-      'should fail on pick history added',
-      () {
-        // arrange
-        when(
-          () => mockSubscribeRandomHistory
-              .putRandomHistory(HistoryParams(pickHistory: tHistoryList[0])),
-        ).thenAnswer((_) async => Left(HistoryAlreadyExistsFailure()));
-        // assert later
-        final expected = <dynamic>[
-          tRandomHistoryState.copyWith(
-            status: () => RandomHistoryStatus.error,
-            errorMessage: () => historyAlreadyExists,
-          ),
-        ];
-        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
-        // act
-        bloc.add(HistoryAddRequested(pickHistory: tHistoryList[0]));
-      },
-    );
+    test('should fail on pick history added', () {
+      // arrange
+      when(
+        () => mockSubscribeRandomHistory.putRandomHistory(
+          HistoryParams(pickHistory: tHistoryList[0]),
+        ),
+      ).thenAnswer((_) async => Left(HistoryAlreadyExistsFailure()));
+      // assert later
+      final expected = <dynamic>[
+        tRandomHistoryState.copyWith(
+          status: () => RandomHistoryStatus.error,
+          errorMessage: () => historyAlreadyExists,
+        ),
+      ];
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
+      // act
+      bloc.add(HistoryAddRequested(pickHistory: tHistoryList[0]));
+    });
 
     test('should not emit on clearAllHistory', () {
       // arrange
@@ -262,9 +244,7 @@ void main() {
           lastDeletedHistory: () =>
               DeletedHistory(index: 0, pickHistory: tHistoryList[0]),
         ),
-        tRandomHistoryState.copyWith(
-          lastDeletedHistory: () => null,
-        ),
+        tRandomHistoryState.copyWith(lastDeletedHistory: () => null),
       ];
       unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
       // act

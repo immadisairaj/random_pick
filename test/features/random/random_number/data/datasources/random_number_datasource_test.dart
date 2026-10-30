@@ -10,35 +10,25 @@ void main() {
     dataSource = RandomNumberDataSourceImpl();
   });
 
-  test(
-    'should return an RandomNumberPicked in the given range',
-    () async {
-      // arrange
-      const tMin = 1;
-      const tMax = 10;
-      final tNumberRange = NumberRangeModel(min: tMin, max: tMax);
-      // act
-      final result = await dataSource.getRandomNumber(
-        tNumberRange,
-      );
-      // assert
-      expect(result, isA<RandomNumberPickedModel>());
-    },
-  );
-  test(
-    'should return an proper value in the given range',
-    () async {
-      // arrange
-      const tMin = 3;
-      const tMax = 3;
-      final tNumberRange = NumberRangeModel(min: tMin, max: tMax);
-      // act
-      final result = await dataSource.getRandomNumber(
-        tNumberRange,
-      );
-      // assert
-      expect(result.randomNumber, greaterThanOrEqualTo(tMin));
-      expect(result.randomNumber, lessThanOrEqualTo(tMax));
-    },
-  );
+  test('should return an RandomNumberPicked in the given range', () async {
+    // arrange
+    const tMin = 1;
+    const tMax = 10;
+    final tNumberRange = NumberRangeModel(min: tMin, max: tMax);
+    // act
+    final result = await dataSource.getRandomNumber(tNumberRange);
+    // assert
+    expect(result, isA<RandomNumberPickedModel>());
+  });
+  test('should return an proper value in the given range', () async {
+    // arrange
+    const tMin = 3;
+    const tMax = 3;
+    final tNumberRange = NumberRangeModel(min: tMin, max: tMax);
+    // act
+    final result = await dataSource.getRandomNumber(tNumberRange);
+    // assert
+    expect(result.randomNumber, greaterThanOrEqualTo(tMin));
+    expect(result.randomNumber, lessThanOrEqualTo(tMax));
+  });
 }

@@ -16,9 +16,7 @@ void main() {
 
   setUp(() {
     mockBox = MockHiveBox();
-    dataSource = RandomHistoryDataSourceImpl(
-      box: mockBox,
-    );
+    dataSource = RandomHistoryDataSourceImpl(box: mockBox);
   });
 
   test('should get data from box on init', () async {
@@ -33,18 +31,13 @@ void main() {
       ),
     ];
     final tJson = json.encode(
-      tHistoryList
-          .map<dynamic>(
-            (pickHistory) => pickHistory.toJson(),
-          )
-          .toList(),
+      tHistoryList.map<dynamic>((pickHistory) => pickHistory.toJson()).toList(),
     );
-    when(() => mockBox.get(RandomHistoryDataSourceImpl.kHistoryKey))
-        .thenAnswer((_) => tJson);
+    when(
+      () => mockBox.get(RandomHistoryDataSourceImpl.kHistoryKey),
+    ).thenAnswer((_) => tJson);
     // act
-    final resultDataSource = RandomHistoryDataSourceImpl(
-      box: mockBox,
-    );
+    final resultDataSource = RandomHistoryDataSourceImpl(box: mockBox);
     final result = await resultDataSource.getRandomHistory();
     // assert
     verify(() => mockBox.get(RandomHistoryDataSourceImpl.kHistoryKey));
@@ -78,8 +71,9 @@ void main() {
         ),
       ),
     ];
-    when(() => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()))
-        .thenAnswer((_) async => returnVoid());
+    when(
+      () => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()),
+    ).thenAnswer((_) async => returnVoid());
     // act
     await dataSource.addRandomHistory(tHistoryList[0]);
     final result = await dataSource.getRandomHistory();
@@ -108,17 +102,16 @@ void main() {
         ),
       ),
     ];
-    when(() => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()))
-        .thenAnswer((_) async => returnVoid());
+    when(
+      () => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()),
+    ).thenAnswer((_) async => returnVoid());
     // act
     await dataSource.addRandomHistory(tHistoryList[0]);
     final call = dataSource.addRandomHistory;
     // assert
     expect(
       () => call(tHistoryList[0]),
-      throwsA(
-        const TypeMatcher<HistoryAlreadyExistsException>(),
-      ),
+      throwsA(const TypeMatcher<HistoryAlreadyExistsException>()),
     );
   });
 
@@ -140,8 +133,9 @@ void main() {
         ),
       ),
     ];
-    when(() => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()))
-        .thenAnswer((_) async => returnVoid());
+    when(
+      () => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()),
+    ).thenAnswer((_) async => returnVoid());
     await dataSource.addRandomHistory(tHistoryList[0]);
     // act
     await dataSource.addRandomHistory(tHistoryList[1], index: 1);
@@ -171,8 +165,9 @@ void main() {
         ),
       ),
     ];
-    when(() => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()))
-        .thenAnswer((_) async => returnVoid());
+    when(
+      () => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()),
+    ).thenAnswer((_) async => returnVoid());
     await dataSource.addRandomHistory(tHistoryList[0]);
     // act
     final result = await dataSource.getRandomHistoryById(tHistoryList[0].id);
@@ -186,9 +181,7 @@ void main() {
     // assert
     expect(
       () => call('something'),
-      throwsA(
-        const TypeMatcher<HistoryNotFoundException>(),
-      ),
+      throwsA(const TypeMatcher<HistoryNotFoundException>()),
     );
   });
 
@@ -210,8 +203,9 @@ void main() {
         ),
       ),
     ];
-    when(() => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()))
-        .thenAnswer((_) async => returnVoid());
+    when(
+      () => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()),
+    ).thenAnswer((_) async => returnVoid());
     await dataSource.addRandomHistory(tHistoryList[0]);
     await dataSource.addRandomHistory(tHistoryList[1]);
     // act
@@ -245,8 +239,9 @@ void main() {
         ),
       ),
     ];
-    when(() => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()))
-        .thenAnswer((_) async => returnVoid());
+    when(
+      () => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()),
+    ).thenAnswer((_) async => returnVoid());
     // act
     await dataSource.clearAllHistory();
     final result = await dataSource.getRandomHistory();
@@ -284,11 +279,10 @@ void main() {
         ),
       ),
     ];
-    final tHistoryResult = [
-      tHistoryList[1],
-    ];
-    when(() => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()))
-        .thenAnswer((_) async => returnVoid());
+    final tHistoryResult = [tHistoryList[1]];
+    when(
+      () => mockBox.put(RandomHistoryDataSourceImpl.kHistoryKey, any()),
+    ).thenAnswer((_) async => returnVoid());
     await dataSource.addRandomHistory(tHistoryList[0]);
     await dataSource.addRandomHistory(tHistoryList[1]);
     // act
@@ -323,9 +317,7 @@ void main() {
     // assert
     expect(
       () => call(tHistory),
-      throwsA(
-        const TypeMatcher<HistoryNotFoundException>(),
-      ),
+      throwsA(const TypeMatcher<HistoryNotFoundException>()),
     );
   });
 }

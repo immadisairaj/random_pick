@@ -21,20 +21,17 @@ class RandomListHelper {
     final itemPool = [...picked.itemPool];
     // uncheck the picked item from the pool if the flag is true
     if (uncheckPicked) {
-      final itemIndex =
-          itemPool.indexWhere((i) => i.id == picked.itemPicked.id);
-      itemPool.replaceRange(
-        itemIndex,
-        itemIndex + 1,
-        [itemPool[itemIndex].copyWith(selected: false) as ItemModel],
+      final itemIndex = itemPool.indexWhere(
+        (i) => i.id == picked.itemPicked.id,
       );
+      itemPool.replaceRange(itemIndex, itemIndex + 1, [
+        itemPool[itemIndex].copyWith(selected: false) as ItemModel,
+      ]);
     }
     // Update the list of items in the pool
-    BlocProvider.of<RandomListBloc>(context).add(
-      ItemsUpdateRequested(
-        items: itemPool,
-      ),
-    );
+    BlocProvider.of<RandomListBloc>(
+      context,
+    ).add(ItemsUpdateRequested(items: itemPool));
     // Pop till the first route
     Navigator.of(context).popUntil((route) => route.isFirst);
     context.read<RandomPageCubit>().setTab(RandomPageTab.list);

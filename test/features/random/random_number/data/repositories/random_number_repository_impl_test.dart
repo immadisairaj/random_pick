@@ -15,36 +15,30 @@ void main() {
 
   setUp(() {
     mockNumberDataSource = MockRandomNumberDataSource();
-    repository = RandomNumberRepositoryImpl(
-      dataSource: mockNumberDataSource,
-    );
+    repository = RandomNumberRepositoryImpl(dataSource: mockNumberDataSource);
   });
 
-  test(
-    'should return if picked properly',
-    () async {
-      // arrange
-      const tMin = 1;
-      const tMax = 10;
-      final tNumberRange = NumberRangeModel(min: tMin, max: tMax);
-      const tRandomNumber = 5;
-      final tRandomNumberPicked = RandomNumberPickedModel(
-        randomNumber: tRandomNumber,
-        numberRange: tNumberRange,
-      );
+  test('should return if picked properly', () async {
+    // arrange
+    const tMin = 1;
+    const tMax = 10;
+    final tNumberRange = NumberRangeModel(min: tMin, max: tMax);
+    const tRandomNumber = 5;
+    final tRandomNumberPicked = RandomNumberPickedModel(
+      randomNumber: tRandomNumber,
+      numberRange: tNumberRange,
+    );
 
-      when(() => mockNumberDataSource.getRandomNumber(tNumberRange))
-          .thenAnswer((_) async => tRandomNumberPicked);
-      // act
-      final result = await repository.getRandomNumber(tNumberRange);
-      // assert
-      verify(() => mockNumberDataSource.getRandomNumber(tNumberRange));
-      expect(
-        result,
-        equals(
-          Right<dynamic, RandomNumberPickedModel>(tRandomNumberPicked),
-        ),
-      );
-    },
-  );
+    when(
+      () => mockNumberDataSource.getRandomNumber(tNumberRange),
+    ).thenAnswer((_) async => tRandomNumberPicked);
+    // act
+    final result = await repository.getRandomNumber(tNumberRange);
+    // assert
+    verify(() => mockNumberDataSource.getRandomNumber(tNumberRange));
+    expect(
+      result,
+      equals(Right<dynamic, RandomNumberPickedModel>(tRandomNumberPicked)),
+    );
+  });
 }

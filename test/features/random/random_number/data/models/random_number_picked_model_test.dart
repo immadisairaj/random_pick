@@ -23,8 +23,9 @@ void main() {
   group('dealing with JSON', () {
     test('should return a valid model from JSON', () {
       // arange
-      final jsonMap = json.decode(fixture('random_number_picked.json'))
-          as Map<String, dynamic>;
+      final jsonMap =
+          json.decode(fixture('random_number_picked.json'))
+              as Map<String, dynamic>;
       // act
       final result = RandomNumberPickedModel.fromJson(jsonMap);
       // assert
@@ -37,10 +38,7 @@ void main() {
       // assert
       final expectedMap = {
         'randomNumber': 5,
-        'numberRange': {
-          'min': 1,
-          'max': 10,
-        },
+        'numberRange': {'min': 1, 'max': 10},
       };
       expect(result, expectedMap);
     });

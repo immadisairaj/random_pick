@@ -20,40 +20,38 @@ void main() {
       // assert
       expect(
         result,
-        Right<dynamic, NumberRange>(
-          NumberRange(min: 1, max: 100),
-        ),
+        Right<dynamic, NumberRange>(NumberRange(min: 1, max: 100)),
       );
     });
-    test('should return a number range failure when number range is not proper',
-        () {
-      // arrage
-      const min = '100';
-      const max = '1';
-      // act
-      final result = inputConverter.stringsToNumberRange(min, max);
-      // assert
-      expect(
-        result,
-        Left<InvalidNumberRangeFailure, dynamic>(
-          InvalidNumberRangeFailure(),
-        ),
-      );
-    });
-    test('should return a invalid input failure when strings are convertable',
-        () {
-      // arrage
-      const min = 'ab';
-      const max = 'cd';
-      // act
-      final result = inputConverter.stringsToNumberRange(min, max);
-      // assert
-      expect(
-        result,
-        Left<InvalidInputFailure, dynamic>(
-          InvalidInputFailure(),
-        ),
-      );
-    });
+    test(
+      'should return a number range failure when number range is not proper',
+      () {
+        // arrage
+        const min = '100';
+        const max = '1';
+        // act
+        final result = inputConverter.stringsToNumberRange(min, max);
+        // assert
+        expect(
+          result,
+          Left<InvalidNumberRangeFailure, dynamic>(InvalidNumberRangeFailure()),
+        );
+      },
+    );
+    test(
+      'should return a invalid input failure when strings are convertable',
+      () {
+        // arrage
+        const min = 'ab';
+        const max = 'cd';
+        // act
+        final result = inputConverter.stringsToNumberRange(min, max);
+        // assert
+        expect(
+          result,
+          Left<InvalidInputFailure, dynamic>(InvalidInputFailure()),
+        );
+      },
+    );
   });
 }

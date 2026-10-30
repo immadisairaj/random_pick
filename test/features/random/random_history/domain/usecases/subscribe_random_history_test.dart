@@ -34,34 +34,26 @@ void main() {
     itemPool: tItemPool,
   );
   final tDateTime = DateTime.now();
-  final tPickHistory = PickHistory(
-    picked: tItemPicked,
-    dateTime: tDateTime,
-  );
+  final tPickHistory = PickHistory(picked: tItemPicked, dateTime: tDateTime);
 
   setUpAll(() {
     registerFallbackValue(
-      PickHistory(
-        dateTime: tDateTime,
-        picked: tItemPicked,
-      ),
+      PickHistory(dateTime: tDateTime, picked: tItemPicked),
     );
   });
 
-  test(
-    'should return stream of history',
-    () async {
-      // arrange
-      when(() => mockRandomHistoryRepository.getRandomHistory())
-          .thenAnswer((_) async => Right(tStream));
-      // act
-      final result = await usecase(NoParams());
-      // assert
-      expect(result, Right<dynamic, Stream<List<PickHistory>>>(tStream));
-      verify(() => mockRandomHistoryRepository.getRandomHistory());
-      verifyNoMoreInteractions(mockRandomHistoryRepository);
-    },
-  );
+  test('should return stream of history', () async {
+    // arrange
+    when(
+      () => mockRandomHistoryRepository.getRandomHistory(),
+    ).thenAnswer((_) async => Right(tStream));
+    // act
+    final result = await usecase(NoParams());
+    // assert
+    expect(result, Right<dynamic, Stream<List<PickHistory>>>(tStream));
+    verify(() => mockRandomHistoryRepository.getRandomHistory());
+    verifyNoMoreInteractions(mockRandomHistoryRepository);
+  });
 
   group('should verify params', () {
     void returnVoid() {
@@ -70,17 +62,16 @@ void main() {
 
     test('for putRandomHistory if index is null', () async {
       // arrange
-      when(() => mockRandomHistoryRepository.putRandomHistory(any()))
-          .thenAnswer((_) async => Right(returnVoid()));
+      when(
+        () => mockRandomHistoryRepository.putRandomHistory(any()),
+      ).thenAnswer((_) async => Right(returnVoid()));
       // act
       final result = await usecase.putRandomHistory(
         HistoryParams(pickHistory: tPickHistory),
       );
       // assert
       expect(result, Right<dynamic, void>(returnVoid()));
-      verify(
-        () => mockRandomHistoryRepository.putRandomHistory(tPickHistory),
-      );
+      verify(() => mockRandomHistoryRepository.putRandomHistory(tPickHistory));
       verifyNoMoreInteractions(mockRandomHistoryRepository);
     });
 
@@ -109,8 +100,9 @@ void main() {
 
     test('for getRandomHistoryById', () async {
       // arrange
-      when(() => mockRandomHistoryRepository.getRandomHistoryById(any()))
-          .thenAnswer((_) async => Right(tPickHistory));
+      when(
+        () => mockRandomHistoryRepository.getRandomHistoryById(any()),
+      ).thenAnswer((_) async => Right(tPickHistory));
       // act
       final result = await usecase.getRandomHistoryById(
         IdParams(id: tPickHistory.id),
@@ -125,8 +117,9 @@ void main() {
 
     test('for clearHistory', () async {
       // arrange
-      when(() => mockRandomHistoryRepository.clearAllHistory())
-          .thenAnswer((_) async => Right(returnVoid()));
+      when(
+        () => mockRandomHistoryRepository.clearAllHistory(),
+      ).thenAnswer((_) async => Right(returnVoid()));
       // act
       final result = await usecase.clearAllHistory(NoParams());
       // assert
@@ -137,17 +130,16 @@ void main() {
 
     test('for clearHistoryById', () async {
       // arrange
-      when(() => mockRandomHistoryRepository.clearHistory(any()))
-          .thenAnswer((_) async => Right(returnVoid()));
+      when(
+        () => mockRandomHistoryRepository.clearHistory(any()),
+      ).thenAnswer((_) async => Right(returnVoid()));
       // act
       final result = await usecase.clearHistory(
         HistoryParams(pickHistory: tPickHistory),
       );
       // assert
       expect(result, Right<dynamic, void>(returnVoid()));
-      verify(
-        () => mockRandomHistoryRepository.clearHistory(tPickHistory),
-      );
+      verify(() => mockRandomHistoryRepository.clearHistory(tPickHistory));
       verifyNoMoreInteractions(mockRandomHistoryRepository);
     });
   });

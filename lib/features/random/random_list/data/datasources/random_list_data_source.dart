@@ -31,14 +31,15 @@ abstract class RandomListDataSource {
 
 /// implementation of the [RandomListDataSource]
 class RandomListDataSourceImpl implements RandomListDataSource {
-  final _itemsStreamController =
-      BehaviorSubject<List<ItemModel>>.seeded(const []);
+  final _itemsStreamController = BehaviorSubject<List<ItemModel>>.seeded(
+    const [],
+  );
 
   @override
   Future<RandomItemPickedModel> getRandomItem() {
-    final itemPool = [..._itemsStreamController.value]
-        .where((item) => item.text != '')
-        .toList();
+    final itemPool = [
+      ..._itemsStreamController.value,
+    ].where((item) => item.text != '').toList();
     // throw length exception if pool is empty or too long
     if (itemPool.isEmpty || itemPool.length >= (1 << 32)) {
       throw LengthException();

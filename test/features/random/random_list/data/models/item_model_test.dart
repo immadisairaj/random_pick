@@ -34,11 +34,7 @@ void main() {
       // act
       final result = tItemModel.toJson();
       // assert
-      final expectedMap = {
-        'id': '1',
-        'text': 'Item 1',
-        'selected': true,
-      };
+      final expectedMap = {'id': '1', 'text': 'Item 1', 'selected': true};
       expect(result, expectedMap);
     });
   });

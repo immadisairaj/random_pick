@@ -13,9 +13,7 @@ import 'package:random_pick/features/random/random_list/presentation/bloc/random
 /// - dispatches the random item pick event
 class RandomPickItemController extends StatefulWidget {
   /// creates a controller for random list
-  const RandomPickItemController({
-    super.key,
-  });
+  const RandomPickItemController({super.key});
 
   @override
   State<RandomPickItemController> createState() =>
@@ -51,15 +49,12 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
           hintText: 'Input Item ${index + 1}',
           prefixIcon: Checkbox(
             value: items[index].selected,
-            semanticLabel: '${items[index].selected ? 'Unselect' : 'Select'}'
+            semanticLabel:
+                '${items[index].selected ? 'Unselect' : 'Select'}'
                 ' Item ${index + 1}',
             // edit the item using add event to select/deselect
             onChanged: (value) => BlocProvider.of<RandomListBloc>(context).add(
-              ItemAddRequested(
-                item: items[index].copyWith(
-                  selected: value,
-                ),
-              ),
+              ItemAddRequested(item: items[index].copyWith(selected: value)),
             ),
           ),
           suffixIcon: IconButton(
@@ -68,8 +63,9 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
             splashRadius: 20,
             onPressed: () {
               // remove the item using remove event
-              BlocProvider.of<RandomListBloc>(context)
-                  .add(ItemRemoveRequested(item: items[index]));
+              BlocProvider.of<RandomListBloc>(
+                context,
+              ).add(ItemRemoveRequested(item: items[index]));
             },
           ),
         ),
@@ -78,13 +74,9 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
             ? TextInputAction.next
             : TextInputAction.done,
         // edit the item using add event to change text on go
-        onChanged: (value) => BlocProvider.of<RandomListBloc>(context).add(
-          ItemAddRequested(
-            item: items[index].copyWith(
-              text: value,
-            ),
-          ),
-        ),
+        onChanged: (value) => BlocProvider.of<RandomListBloc>(
+          context,
+        ).add(ItemAddRequested(item: items[index].copyWith(text: value))),
         onEditingComplete: () {
           if (index != (items.length - 1)) {
             // focus next 3 times because of
@@ -140,24 +132,18 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            BlocProvider.of<RandomListBloc>(context)
-                                .add(ItemAddRequested(item: Item(text: '')));
+                            BlocProvider.of<RandomListBloc>(
+                              context,
+                            ).add(ItemAddRequested(item: Item(text: '')));
                           },
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.add),
-                              Text('Add Item'),
-                            ],
+                            children: [Icon(Icons.add), Text('Add Item')],
                           ),
                         ),
                       ),
                     ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 60,
-                      ),
-                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 60)),
                   ],
                 ),
               ),
@@ -168,8 +154,9 @@ class _RandomPickItemControllerState extends State<RandomPickItemController> {
                   child: ElevatedButton(
                     onPressed: () {
                       FocusScope.of(context).unfocus();
-                      BlocProvider.of<RandomListBloc>(context)
-                          .add(const GetRandomItemEvent());
+                      BlocProvider.of<RandomListBloc>(
+                        context,
+                      ).add(const GetRandomItemEvent());
                     },
                     child: const Text('Pick Random Item'),
                   ),

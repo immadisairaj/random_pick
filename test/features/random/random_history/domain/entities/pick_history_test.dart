@@ -8,23 +8,11 @@ import 'package:random_pick/features/random/random_number/domain/entities/random
 void main() {
   group('random pick history initialization', () {
     final randomItemPicked = RandomItemPicked(
-      itemPicked: Item(
-        id: '1',
-        text: 'item 1',
-      ),
+      itemPicked: Item(id: '1', text: 'item 1'),
       itemPool: [
-        Item(
-          id: '1',
-          text: 'item 1',
-        ),
-        Item(
-          id: '2',
-          text: 'item 2',
-        ),
-        Item(
-          id: '3',
-          text: 'item 3',
-        ),
+        Item(id: '1', text: 'item 1'),
+        Item(id: '2', text: 'item 2'),
+        Item(id: '3', text: 'item 3'),
       ],
     );
     final randomNumberPicked = RandomNumberPicked(
@@ -33,40 +21,28 @@ void main() {
     );
     test('random item pick type', () {
       expect(
-        () => PickHistory(
-          dateTime: DateTime.now(),
-          picked: randomItemPicked,
-        ),
+        () => PickHistory(dateTime: DateTime.now(), picked: randomItemPicked),
         returnsNormally,
       );
     });
 
     test('random number picked', () {
       expect(
-        () => PickHistory(
-          dateTime: DateTime.now(),
-          picked: randomNumberPicked,
-        ),
+        () => PickHistory(dateTime: DateTime.now(), picked: randomNumberPicked),
         returnsNormally,
       );
     });
 
     test('other types', () {
       expect(
-        () => PickHistory(
-          dateTime: DateTime.now(),
-          picked: null,
-        ),
+        () => PickHistory(dateTime: DateTime.now(), picked: null),
         throwsA(const TypeMatcher<ArgumentError>()),
       );
     });
 
     test('other types error message', () {
       expect(
-        () => PickHistory(
-          dateTime: DateTime.now(),
-          picked: 0,
-        ),
+        () => PickHistory(dateTime: DateTime.now(), picked: 0),
         throwsA(
           isArgumentError.having(
             (e) => e.message,

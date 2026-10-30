@@ -24,18 +24,16 @@ void main() {
     numberRange: tNumberRange,
   );
 
-  test(
-    'should get random number picked from repository',
-    () async {
-      // arrange
-      when(() => mockNumberRangeRepository.getRandomNumber(tNumberRange))
-          .thenAnswer((_) async => Right(tRandomNumberPicked));
-      // act
-      final result = await usecase(Params(numberRange: tNumberRange));
-      // assert
-      expect(result, Right<dynamic, RandomNumberPicked>(tRandomNumberPicked));
-      verify(() => mockNumberRangeRepository.getRandomNumber(tNumberRange));
-      verifyNoMoreInteractions(mockNumberRangeRepository);
-    },
-  );
+  test('should get random number picked from repository', () async {
+    // arrange
+    when(
+      () => mockNumberRangeRepository.getRandomNumber(tNumberRange),
+    ).thenAnswer((_) async => Right(tRandomNumberPicked));
+    // act
+    final result = await usecase(Params(numberRange: tNumberRange));
+    // assert
+    expect(result, Right<dynamic, RandomNumberPicked>(tRandomNumberPicked));
+    verify(() => mockNumberRangeRepository.getRandomNumber(tNumberRange));
+    verifyNoMoreInteractions(mockNumberRangeRepository);
+  });
 }

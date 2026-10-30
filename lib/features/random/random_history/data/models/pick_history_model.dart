@@ -9,11 +9,7 @@ class PickHistoryModel extends PickHistory {
   /// creates a [PickHistoryModel] which contains
   /// the copyWith function and also
   /// the functions for json conversions
-  PickHistoryModel({
-    required super.dateTime,
-    required super.picked,
-    super.id,
-  });
+  PickHistoryModel({required super.dateTime, required super.picked, super.id});
 
   /// converts the json map to [PickHistoryModel]
   factory PickHistoryModel.fromJson(Map<String, dynamic> json) {
