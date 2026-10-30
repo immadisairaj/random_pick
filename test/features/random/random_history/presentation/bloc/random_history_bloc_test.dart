@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -80,7 +82,7 @@ void main() {
             status: () => RandomHistoryStatus.loaded,
           ),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(const HistorySubscriptionRequested());
       },
@@ -102,7 +104,7 @@ void main() {
             errorMessage: () => 'Unexpected error',
           ),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(const HistorySubscriptionRequested());
       },
@@ -128,7 +130,7 @@ void main() {
             errorMessage: () => 'Unexpected error',
           ),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(const HistorySubscriptionRequested());
       },
@@ -144,7 +146,7 @@ void main() {
         ).thenAnswer((_) async => Right(returnVoid()));
         // assert later
         final expected = <dynamic>[];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(HistoryAddRequested(pickHistory: tHistoryList[0]));
       },
@@ -165,7 +167,7 @@ void main() {
             errorMessage: () => historyAlreadyExists,
           ),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(HistoryAddRequested(pickHistory: tHistoryList[0]));
       },
@@ -178,7 +180,7 @@ void main() {
       ).thenAnswer((_) async => Right(returnVoid()));
       // assert later
       final expected = <dynamic>[];
-      expectLater(bloc.stream, emitsInOrder(expected));
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
       // act
       bloc.add(const ClearAllHistoryRequested());
     });
@@ -195,7 +197,7 @@ void main() {
           errorMessage: () => 'Unexpected error',
         ),
       ];
-      expectLater(bloc.stream, emitsInOrder(expected));
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
       // act
       bloc.add(const ClearAllHistoryRequested());
     });
@@ -207,7 +209,7 @@ void main() {
       ).thenAnswer((_) async => Right(returnVoid()));
       // assert later
       final expected = <dynamic>[];
-      expectLater(bloc.stream, emitsInOrder(expected));
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
       // act
       bloc.add(ClearHistoryRequested(pickHistory: tHistoryList[0]));
     });
@@ -224,7 +226,7 @@ void main() {
               DeletedHistory(index: 0, pickHistory: tHistoryList[0]),
         ),
       ];
-      expectLater(bloc.stream, emitsInOrder(expected));
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
       // act
       bloc.add(ClearHistoryRequested(pickHistory: tHistoryList[0], index: 0));
     });
@@ -241,7 +243,7 @@ void main() {
           errorMessage: () => historyNotFoundError,
         ),
       ];
-      expectLater(bloc.stream, emitsInOrder(expected));
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
       // act
       bloc.add(ClearHistoryRequested(pickHistory: tHistoryList[0]));
     });
@@ -264,7 +266,7 @@ void main() {
           lastDeletedHistory: () => null,
         ),
       ];
-      expectLater(bloc.stream, emitsInOrder(expected));
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
       // act
       bloc
         ..add(ClearHistoryRequested(pickHistory: tHistoryList[0], index: 0))
@@ -291,7 +293,7 @@ void main() {
           lastDeletedHistory: () => null,
         ),
       ];
-      expectLater(bloc.stream, emitsInOrder(expected));
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
       // act
       bloc
         ..add(ClearHistoryRequested(pickHistory: tHistoryList[0], index: 0))

@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:random_pick/features/random/random_history/domain/entities/pick_history.dart';
 import 'package:random_pick/features/random/random_history/presentation/bloc/random_history_bloc.dart';
 import 'package:random_pick/features/random/random_history/presentation/widgets/random_history_number_page.dart';
@@ -70,51 +70,46 @@ class RandomHistoryListView extends StatelessWidget {
           ),
         ],
       ),
-      onTap: () {
+      onTap: () async {
         if (currentHistory.picked is RandomItemPicked) {
-          Navigator.of(context)
-              .push<bool>(
+          final value = await Navigator.of(context).push<bool>(
             MaterialPageRoute(
               builder: (context) => RandomListPickedPage(
                 randomItemPicked: currentHistory.picked as RandomItemPicked,
                 isHistory: true,
               ),
             ),
-          )
-              .then((value) {
-            if (value != null && value) {
-              if (!context.mounted) return;
-              // delete history
-              BlocProvider.of<RandomHistoryBloc>(context).add(
-                ClearHistoryRequested(
-                  pickHistory: currentHistory,
-                  index: index,
-                ),
-              );
-            }
-          });
+          );
+          if (value != null && value) {
+            if (!context.mounted) return;
+            // delete history
+            BlocProvider.of<RandomHistoryBloc>(context).add(
+              ClearHistoryRequested(
+                pickHistory: currentHistory,
+                index: index,
+              ),
+            );
+          }
         } else if (currentHistory.picked is RandomNumberPicked) {
-          Navigator.of(context)
-              .push<bool>(
+          final value = await Navigator.of(context).push<bool>(
             MaterialPageRoute(
               builder: (context) => RandomHistoryNumberPage(
-                randomNumberPicked: currentHistory.picked as RandomNumberPicked,
+                randomNumberPicked:
+                    currentHistory.picked as RandomNumberPicked,
                 isHistory: true,
               ),
             ),
-          )
-              .then((value) {
-            if (value != null && value) {
-              if (!context.mounted) return;
-              // delete history
-              BlocProvider.of<RandomHistoryBloc>(context).add(
-                ClearHistoryRequested(
-                  pickHistory: currentHistory,
-                  index: index,
-                ),
-              );
-            }
-          });
+          );
+          if (value != null && value) {
+            if (!context.mounted) return;
+            // delete history
+            BlocProvider.of<RandomHistoryBloc>(context).add(
+              ClearHistoryRequested(
+                pickHistory: currentHistory,
+                index: index,
+              ),
+            );
+          }
         }
       },
     );
@@ -138,9 +133,9 @@ class RandomHistoryListView extends StatelessWidget {
                 label: 'Undo',
                 onPressed: () {
                   messenger.hideCurrentSnackBar();
-                  context
-                      .read<RandomHistoryBloc>()
-                      .add(const ClearHistoryUndoRequested());
+                  context.read<RandomHistoryBloc>().add(
+                    const ClearHistoryUndoRequested(),
+                  );
                 },
               ),
             ),
@@ -183,13 +178,13 @@ class RandomHistoryListView extends StatelessWidget {
     );
   }
 
-  Future<void> _showMyDialog({required BuildContext context}) async {
+  Future<void> _showMyDialog({required BuildContext context}) {
     // this contextS is the context save to clear the pick history
     final contextS = context;
     return showAdaptiveDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           title: const Text('Clear History'),
           content: const SingleChildScrollView(
@@ -211,8 +206,9 @@ class RandomHistoryListView extends StatelessWidget {
               child: const Text('Clear'),
               onPressed: () {
                 // clear all history
-                BlocProvider.of<RandomHistoryBloc>(contextS)
-                    .add(const ClearAllHistoryRequested());
+                BlocProvider.of<RandomHistoryBloc>(
+                  contextS,
+                ).add(const ClearAllHistoryRequested());
 
                 Navigator.of(context).pop();
               },

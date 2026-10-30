@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -114,7 +116,7 @@ void main() {
             status: () => ItemsSubscriptionStatus.randomPickLoaded,
           ),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(const GetRandomItemEvent());
       },
@@ -140,7 +142,7 @@ void main() {
                 'most 2^32-1 items',
           ),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(const GetRandomItemEvent());
       },
@@ -165,7 +167,7 @@ void main() {
                 'No item selected - Please, select at least one item',
           ),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(const GetRandomItemEvent());
       },
@@ -193,7 +195,7 @@ void main() {
             errorMessage: () => historyAlreadyExists,
           ),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(const GetRandomItemEvent());
       },
@@ -225,7 +227,7 @@ void main() {
             status: () => ItemsSubscriptionStatus.itemsLoaded,
           ),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(const ItemsSubscriptionRequested());
       },
@@ -247,7 +249,7 @@ void main() {
             errorMessage: () => 'Unexpected error',
           ),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(const ItemsSubscriptionRequested());
       },
@@ -273,7 +275,7 @@ void main() {
             errorMessage: () => 'Unexpected error',
           ),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(const ItemsSubscriptionRequested());
       },
@@ -287,7 +289,7 @@ void main() {
             .thenAnswer((_) async => Right(returnVoid()));
         // assert later
         final expected = <dynamic>[];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(ItemAddRequested(item: tItemPool[0]));
       },
@@ -303,7 +305,7 @@ void main() {
         ).thenAnswer((_) async => Right(returnVoid()));
         // assert later
         final expected = <dynamic>[];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(ItemsUpdateRequested(items: tUpdatedItemPool));
       },
@@ -319,7 +321,7 @@ void main() {
         ).thenAnswer((_) async => Right(returnVoid()));
         // assert later
         final expected = <dynamic>[];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(ItemRemoveRequested(item: tItemPool[0]));
       },
@@ -340,7 +342,7 @@ void main() {
             errorMessage: () => 'Item not found to remove',
           ),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(ItemRemoveRequested(item: tItemPool[0]));
       },

@@ -1,6 +1,8 @@
 // referred from https://gist.github.com/fleepgeek/aacc7e956debb2b2a7b5b596575941f0
 
-import 'package:flutter/material.dart';
+import 'dart:async';
+
+import 'package:material_ui/material_ui.dart';
 
 /// This is a wrapper for [IndexedStack] for slide transition
 ///
@@ -28,8 +30,8 @@ class _AnimatedIndexedStackState extends State<AnimatedIndexedStack>
   late AnimationController _controller;
   late int _index;
 
-  var _begin = Offset.zero;
-  final _end = Offset.zero;
+  Offset _begin = Offset.zero;
+  final Offset _end = Offset.zero;
 
   @override
   void initState() {
@@ -48,13 +50,15 @@ class _AnimatedIndexedStackState extends State<AnimatedIndexedStack>
   void didUpdateWidget(AnimatedIndexedStack oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.index != _index) {
-      _controller.reverse().then((_) {
-        setState(() {
-          _index = widget.index;
-          _begin = _index == 0 ? const Offset(-1, 0) : const Offset(1, 0);
-        });
-        _controller.forward();
-      });
+      unawaited(
+        _controller.reverse().then((_) {
+          setState(() {
+            _index = widget.index;
+            _begin = _index == 0 ? const Offset(-1, 0) : const Offset(1, 0);
+          });
+          _controller.forward();
+        }),
+      );
     }
   }
 
@@ -70,22 +74,17 @@ class _AnimatedIndexedStackState extends State<AnimatedIndexedStack>
       animation: _controller,
       builder: (context, child) {
         return SlideTransition(
-          position: Tween(begin: _begin, end: _end).animate(
-            CurvedAnimation(
-              parent: _controller,
-              curve: Curves.ease,
-            ),
-          ),
+          position: Tween(
+            begin: _begin,
+            end: _end,
+          ).animate(CurvedAnimation(parent: _controller, curve: Curves.ease)),
           child: Transform.scale(
             scale: 1.015 - (_controller.value * 0.015),
             child: child,
           ),
         );
       },
-      child: IndexedStack(
-        index: _index,
-        children: widget.children,
-      ),
+      child: IndexedStack(index: _index, children: widget.children),
     );
   }
 }

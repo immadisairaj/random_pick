@@ -90,15 +90,11 @@ class RandomNumberBloc extends Bloc<RandomNumberEvent, RandomNumberState> {
   }
 
   String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case const (InvalidInputFailure):
-        return invalidInputError;
-      case const (InvalidNumberRangeFailure):
-        return invalidNumberRangeError;
-      case const (HistoryAlreadyExistsFailure):
-        return historyAlreadyExists;
-      default:
-        return 'Unexpected error';
-    }
+    return switch (failure) {
+    InvalidInputFailure() => invalidInputError,
+    InvalidNumberRangeFailure() => invalidNumberRangeError,
+    HistoryAlreadyExistsFailure() => historyAlreadyExists,
+    _ => 'Unexpected error',
+    };
   }
 }

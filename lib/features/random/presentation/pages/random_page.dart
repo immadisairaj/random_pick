@@ -1,7 +1,7 @@
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:random_pick/core/navigation/random_pick_navigation.dart';
 import 'package:random_pick/features/random/presentation/cubit/random_page_cubit.dart';
@@ -19,8 +19,9 @@ class RandomPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedTab =
-        context.select((RandomPageCubit cubit) => cubit.state.tab);
+    final selectedTab = context.select<RandomPageCubit, RandomPageTab>(
+      (cubit) => cubit.state.tab,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -37,28 +38,26 @@ class RandomPage extends StatelessWidget {
           ),
           IconButton(
             onPressed: () async {
-              await PackageInfo.fromPlatform().then(
-                (packageInfo) {
-                  if (!context.mounted) return;
-                  Navigator.of(context).push(
-                    MaterialPageRoute<Widget>(
-                      builder: (context) => Theme(
-                        data: Theme.of(context).copyWith(
-                          cardColor: Theme.of(context)
-                              .scaffoldBackgroundColor
-                              .blend(Theme.of(context).colorScheme.primary, 5),
+              await PackageInfo.fromPlatform().then((packageInfo) {
+                if (!context.mounted) return;
+                Navigator.of(context).push(
+                  MaterialPageRoute<Widget>(
+                    builder: (context) => Theme(
+                      data: Theme.of(context).copyWith(
+                        cardColor: Theme.of(context).scaffoldBackgroundColor
+                            .blend(Theme.of(context).colorScheme.primary, 5),
+                      ),
+                      child: LicensePage(
+                        applicationIcon: Image.asset(
+                          'assets/app_icon_foreground.png',
                         ),
-                        child: LicensePage(
-                          applicationIcon:
-                              Image.asset('assets/app_icon_foreground.png'),
-                          applicationName: packageInfo.appName,
-                          applicationVersion: packageInfo.version,
-                        ),
+                        applicationName: packageInfo.appName,
+                        applicationVersion: packageInfo.version,
                       ),
                     ),
-                  );
-                },
-              );
+                  ),
+                );
+              });
             },
             icon: const Icon(CupertinoIcons.info),
             tooltip: 'Info & Licenses',
@@ -66,7 +65,7 @@ class RandomPage extends StatelessWidget {
         ],
       ),
       body: PopScope(
-        onPopInvokedWithResult: (_, __) async => !await Navigator.maybePop(
+        onPopInvokedWithResult: (_, _) async => !await Navigator.maybePop(
           getIt<RandomPickNavigation>()
               .navigatorKeys[selectedTab.index]!
               .currentState!

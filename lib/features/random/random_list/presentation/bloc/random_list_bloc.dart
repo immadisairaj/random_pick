@@ -56,9 +56,7 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
     Emitter<RandomListState> emit,
   ) async {
     emit(
-      state.copyWith(
-        status: () => ItemsSubscriptionStatus.randomPickLoading,
-      ),
+      state.copyWith(status: () => ItemsSubscriptionStatus.randomPickLoading),
     );
     final failureOrResult = await getRandomItem(NoParams());
 
@@ -74,8 +72,10 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
         final dateTime = DateTime.now();
         final failureOrResult = await subscribeRandomHistory.putRandomHistory(
           HistoryParams(
-            pickHistory:
-                PickHistory(dateTime: dateTime, picked: randomItemPicked),
+            pickHistory: PickHistory(
+              dateTime: dateTime,
+              picked: randomItemPicked,
+            ),
           ),
         );
         await failureOrResult.fold(
@@ -114,13 +114,13 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
           errorMessage: () => _mapFailureToMessage(failure),
         ),
       ),
-      (items) async => emit.forEach<List<Item>>(
+      (items) => emit.forEach<List<Item>>(
         items,
         onData: (items) => state.copyWith(
           status: () => ItemsSubscriptionStatus.itemsLoaded,
           itemPool: () => items,
         ),
-        onError: (_, __) => state.copyWith(
+        onError: (_, _) => state.copyWith(
           status: () => ItemsSubscriptionStatus.error,
           errorMessage: () => _mapFailureToMessage(const UnknownFailure()),
         ),
@@ -149,8 +149,9 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
     ItemRemoveRequested event,
     Emitter<RandomListState> emit,
   ) async {
-    final failureOrItems =
-        await subscribeItems.removeItemFromPool(Params(item: event.item));
+    final failureOrItems = await subscribeItems.removeItemFromPool(
+      Params(item: event.item),
+    );
     await failureOrItems.fold(
       (failure) async => emit(
         state.copyWith(
@@ -164,17 +165,12 @@ class RandomListBloc extends Bloc<RandomListEvent, RandomListState> {
 
   /// maps the failure to a message using the failure type
   String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case const (LengthFailure):
-        return _lengthError;
-      case const (NoSelectionFailure):
-        return _selectionError;
-      case const (ItemNotFoundFailure):
-        return _itemNotFoundError;
-      case const (HistoryAlreadyExistsFailure):
-        return historyAlreadyExists;
-      default:
-        return 'Unexpected error';
-    }
+    return switch (failure) {
+    LengthFailure() => _lengthError,
+    NoSelectionFailure() => _selectionError,
+    ItemNotFoundFailure() => _itemNotFoundError,
+    HistoryAlreadyExistsFailure() => historyAlreadyExists,
+    _ => 'Unexpected error',
+    };
   }
 }

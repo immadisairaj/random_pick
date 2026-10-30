@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -68,7 +70,7 @@ void main() {
         // RandomNumberEmpty(),
         const RandomNumberError(errorMessage: invalidInputError),
       ];
-      expectLater(bloc.stream, emitsInOrder(expected));
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
       // act
       bloc.add(
         const GetRandomNumberForRange(
@@ -87,7 +89,7 @@ void main() {
         // RandomNumberEmpty(),
         const RandomNumberError(errorMessage: invalidNumberRangeError),
       ];
-      expectLater(bloc.stream, emitsInOrder(expected));
+      unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
       // act
       bloc.add(
         const GetRandomNumberForRange(
@@ -162,7 +164,7 @@ void main() {
           RandomNumberLoading(),
           RandomNumberLoaded(randomNumberPicked: tRandomNumberPicked),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(
           const GetRandomNumberForRange(
@@ -187,7 +189,7 @@ void main() {
           RandomNumberLoading(),
           const RandomNumberError(errorMessage: 'Unexpected error'),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(
           const GetRandomNumberForRange(
@@ -216,7 +218,7 @@ void main() {
           RandomNumberLoading(),
           const RandomNumberError(errorMessage: historyAlreadyExists),
         ];
-        expectLater(bloc.stream, emitsInOrder(expected));
+        unawaited(expectLater(bloc.stream, emitsInOrder(expected)));
         // act
         bloc.add(
           const GetRandomNumberForRange(

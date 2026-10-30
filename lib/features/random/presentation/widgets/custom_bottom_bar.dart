@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:random_pick/core/utils/constants.dart';
 
 const _animationDuration = Duration(milliseconds: 500);

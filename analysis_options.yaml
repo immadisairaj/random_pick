@@ -15,6 +15,13 @@ include: package:very_good_analysis/analysis_options.yaml
 analyzer:
   exclude:
     - pubspec.yaml
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
 linter:
   # The lint rules applied to this project can be customized in the

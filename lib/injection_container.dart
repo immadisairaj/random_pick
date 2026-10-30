@@ -21,17 +21,14 @@ import 'package:random_pick/features/random/random_number/domain/usecases/get_ra
 import 'package:random_pick/features/random/random_number/presentation/bloc/random_number_bloc.dart';
 
 /// get all registered injection containers
-final getIt = GetIt.instance;
+final GetIt getIt = GetIt.instance;
 
 /// Register all the dependencies
 Future<void> init() async {
   getIt
     // ! Features - Random
     // Cubit
-    ..registerFactory(
-      RandomPageCubit.new,
-    )
-
+    ..registerFactory(RandomPageCubit.new)
     // ! Random Features - Random Number
     // Bloc
     ..registerFactory(
@@ -41,20 +38,16 @@ Future<void> init() async {
         subscribeRandomHistory: getIt(),
       ),
     )
-
     // Use cases
     ..registerLazySingleton(() => GetRandomNumber(getIt()))
-
     // Repository
     ..registerLazySingleton<RandomNumberRepository>(
       () => RandomNumberRepositoryImpl(dataSource: getIt()),
     )
-
     // Data sources
     ..registerLazySingleton<RandomNumberDataSource>(
       RandomNumberDataSourceImpl.new,
     )
-
     // ! Random Features - Random List
     // Bloc
     ..registerFactory(
@@ -64,40 +57,28 @@ Future<void> init() async {
         subscribeRandomHistory: getIt(),
       ),
     )
-
     // Use cases
     ..registerLazySingleton(() => GetRandomItem(getIt()))
     ..registerLazySingleton(() => SubscribeItems(getIt()))
-
     // Repository
     ..registerLazySingleton<RandomListRepository>(
       () => RandomListRepositoryImpl(dataSource: getIt()),
     )
-
     // Data sources
     ..registerLazySingleton<RandomListDataSource>(RandomListDataSourceImpl.new)
-
     // ! Random Features - Random History
     // Bloc
-    ..registerFactory(
-      () => RandomHistoryBloc(
-        subscribeRandomHistory: getIt(),
-      ),
-    )
-
+    ..registerFactory(() => RandomHistoryBloc(subscribeRandomHistory: getIt()))
     // Use cases
     ..registerLazySingleton(() => SubscribeRandomHistory(getIt()))
-
     // Repository
     ..registerLazySingleton<RandomHistoryRepository>(
       () => RandomHistoryRepositoryImpl(dataSource: getIt()),
     )
-
     // Data sources
     ..registerLazySingleton<RandomHistoryDataSource>(
       () => RandomHistoryDataSourceImpl(box: getIt()),
     )
-
     // ! Core
     ..registerLazySingleton(InputConverter.new)
     ..registerLazySingleton(RandomPickNavigation.new);

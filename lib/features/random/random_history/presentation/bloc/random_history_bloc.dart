@@ -22,9 +22,8 @@ const String historyNotFoundError = 'History not found';
 /// business logic for random history
 class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
   /// Random history bloc which handles the subscription of history
-  RandomHistoryBloc({
-    required this.subscribeRandomHistory,
-  }) : super(const RandomHistoryState()) {
+  RandomHistoryBloc({required this.subscribeRandomHistory})
+    : super(const RandomHistoryState()) {
     on<HistorySubscriptionRequested>(_onHistorySubscriptionRequested);
     on<HistoryAddRequested>(_onHistoryAddRequested);
     on<ClearAllHistoryRequested>(_onClearAllHistoryRequested);
@@ -52,13 +51,13 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
           errorMessage: () => _mapFailureToMessage(failure),
         ),
       ),
-      (history) async => emit.forEach<List<PickHistory>>(
+      (history) => emit.forEach<List<PickHistory>>(
         history,
         onData: (historyList) => state.copyWith(
           status: () => RandomHistoryStatus.loaded,
           historyList: () => historyList,
         ),
-        onError: (_, __) => state.copyWith(
+        onError: (_, _) => state.copyWith(
           status: () => RandomHistoryStatus.error,
           errorMessage: () => _mapFailureToMessage(const UnknownFailure()),
         ),
@@ -72,9 +71,7 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
     Emitter<RandomHistoryState> emit,
   ) async {
     final failureOrResult = await subscribeRandomHistory.putRandomHistory(
-      HistoryParams(
-        pickHistory: event.pickHistory,
-      ),
+      HistoryParams(pickHistory: event.pickHistory),
     );
     await failureOrResult.fold(
       (failure) async => emit(
@@ -95,8 +92,9 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
     ClearAllHistoryRequested event,
     Emitter<RandomHistoryState> emit,
   ) async {
-    final failureOrResult =
-        await subscribeRandomHistory.clearAllHistory(NoParams());
+    final failureOrResult = await subscribeRandomHistory.clearAllHistory(
+      NoParams(),
+    );
     await failureOrResult.fold(
       (failure) async => emit(
         state.copyWith(
@@ -117,9 +115,7 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
     Emitter<RandomHistoryState> emit,
   ) async {
     final failureOrResult = await subscribeRandomHistory.clearHistory(
-      HistoryParams(
-        pickHistory: event.pickHistory,
-      ),
+      HistoryParams(pickHistory: event.pickHistory),
     );
     await failureOrResult.fold(
       (failure) async => emit(
@@ -170,11 +166,7 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
           lastDeletedHistory: () => null,
         ),
       ),
-      (right) async => emit(
-        state.copyWith(
-          lastDeletedHistory: () => null,
-        ),
-      ),
+      (right) async => emit(state.copyWith(lastDeletedHistory: () => null)),
     );
   }
 
@@ -205,13 +197,10 @@ class RandomHistoryBloc extends Bloc<RandomHistoryEvent, RandomHistoryState> {
 
   /// maps the failure to a message using the failure type
   String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case const (HistoryAlreadyExistsFailure):
-        return historyAlreadyExists;
-      case const (HistoryNotFoundFailure):
-        return historyNotFoundError;
-      default:
-        return 'Unexpected error';
-    }
+    return switch (failure) {
+    HistoryAlreadyExistsFailure() => historyAlreadyExists,
+    HistoryNotFoundFailure() => historyNotFoundError,
+    _ => 'Unexpected error',
+    };
   }
 }

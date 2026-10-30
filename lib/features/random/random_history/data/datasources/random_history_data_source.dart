@@ -36,7 +36,7 @@ abstract class RandomHistoryDataSource {
 /// implimentation of the [RandomHistoryDataSource]
 class RandomHistoryDataSourceImpl implements RandomHistoryDataSource {
   /// constructor for [RandomHistoryDataSource] implementation
-  RandomHistoryDataSourceImpl({required Box<String> box}) : _box = box {
+  RandomHistoryDataSourceImpl({required this._box}) {
     _init();
   }
 
@@ -55,11 +55,7 @@ class RandomHistoryDataSourceImpl implements RandomHistoryDataSource {
       _box.put(
         key,
         json.encode(
-          history
-              .map<dynamic>(
-                (pickHistory) => pickHistory.toJson(),
-              )
-              .toList(),
+          history.map<dynamic>((pickHistory) => pickHistory.toJson()).toList(),
         ),
       );
 
@@ -69,9 +65,7 @@ class RandomHistoryDataSourceImpl implements RandomHistoryDataSource {
       final historyJsonMap = (json.decode(historyJson) as List<dynamic>)
           .cast<Map<String, dynamic>>();
       final history = historyJsonMap
-          .map<PickHistoryModel>(
-            PickHistoryModel.fromJson,
-          )
+          .map<PickHistoryModel>(PickHistoryModel.fromJson)
           .toList();
       _randomHistoryStreamController.add(history);
     } else {
@@ -100,7 +94,7 @@ class RandomHistoryDataSourceImpl implements RandomHistoryDataSource {
     }
 
     _randomHistoryStreamController.add(history);
-    return _setValue(kHistoryKey, history);
+    await _setValue(kHistoryKey, history);
   }
 
   @override

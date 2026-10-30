@@ -1,6 +1,6 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:random_pick/features/random/presentation/cubit/random_page_cubit.dart';
 import 'package:random_pick/features/random/presentation/pages/random_page.dart';
 import 'package:random_pick/features/random/random_list/presentation/bloc/random_list_bloc.dart';
@@ -19,21 +19,18 @@ class MyApp extends StatelessWidget {
 
   ThemeData _getThemeData(ThemeData copyFromTheme) {
     return copyFromTheme.copyWith(
-      scaffoldBackgroundColor: copyFromTheme.colorScheme.surface
-          .blend(copyFromTheme.appBarTheme.backgroundColor!, 15),
+      scaffoldBackgroundColor: copyFromTheme.colorScheme.surface.blend(
+        copyFromTheme.appBarTheme.backgroundColor!,
+        15,
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          shape: const StadiumBorder(),
-        ),
+        style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
       ),
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          shape: const StadiumBorder(),
-        ),
+        style: TextButton.styleFrom(shape: const StadiumBorder()),
       ),
       checkboxTheme: CheckboxThemeData(
-        fillColor:
-            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+        fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
           if (states.contains(WidgetState.disabled)) {
             return null;
           }
@@ -44,9 +41,7 @@ class MyApp extends StatelessWidget {
         }),
         shape: const StadiumBorder(),
       ),
-      listTileTheme: const ListTileThemeData(
-        shape: StadiumBorder(),
-      ),
+      listTileTheme: const ListTileThemeData(shape: StadiumBorder()),
     );
   }
 
